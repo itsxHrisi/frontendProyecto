@@ -4,32 +4,27 @@ on:
   push:
     branches:
       - master
-     workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # Paso 1: Checar el repositorio
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Paso 2: Configurar Node.js
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '20'
 
-    # Paso 3: Instalar dependencias en el directorio
     - name: Install dependencies
       run: npm install
 
-    # Paso 4: Construir el proyecto Angular
     - name: Build Angular App
       run: npm run build --base-href=''
 
-    # Paso 5: Copiar los archivos a la máquina remota por SCP
     - name: Copy build to remote server
       env:
         REMOTE_USER: ${{ secrets.REMOTE_USER }}
