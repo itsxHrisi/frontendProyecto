@@ -1,0 +1,46 @@
+<nav class="nav">
+        <img class="logo" src="logoFM.png" alt="Unió Europea">
+  <!-- Logo principal (extremo izquierdo) -->
+  <!-- <img id="fotoHeader" src="LETRAS_LOGO_editado-removebg-preview.png" alt="Unió Europea"> -->
+
+  <!-- Contenedor derecho: menú, enlaces y logo secundario -->
+  <div class="nav-right">
+    <!-- Botón de menú para pantallas pequeñas -->
+    <button class="menu-toggle" (click)="toggleMenu()">☰</button>
+
+    <!-- Enlaces de navegación -->
+    <div class="nav-links" [ngClass]="{ active: isMenuOpen }">
+      @if (!isLoggedIn) {
+        <!-- rutas en caso del que el usuario NO ESTE LOGEADO -->
+        <a [routerLink]="['/inicio']" routerLinkActive="router-link-active">Inicio</a>
+        <a [routerLink]="['/login']" routerLinkActive="router-link-active">Login/SignUp</a>
+      } @else {
+        @if ( hayAdmin == true) {
+          <a [routerLink]="['/home']" routerLinkActive="router-link-active">Inicio</a>
+        } @else {
+          <a [routerLink]="['/inicio']" routerLinkActive="router-link-active">Inicio</a>
+        }
+        
+        @for (rol of userRole; track $index) {
+          @if ( rol === 'ROL_USER') {
+            <!-- rutas para USUARIO -->
+          } @else if ( rol === 'ROL_ADMIN') {
+            <!-- rutas para ADMINISTRADOR -->
+            <a [routerLink]="['/users-list']">Lista Usuarios</a>
+            <a [routerLink]="['/crear-usuario']">Crear usuario</a>
+            <a [routerLink]="['/users-list-block']">Usuarios bloqueados</a>
+          } @else {
+            <!-- error de rol -->
+            <h2>Error en la app.</h2>
+          }
+        }
+        <a class="no-pointer" (click)="logout()">Logout</a>
+      }
+    </div>
+
+    <!-- Logo secundario (extremo derecho) -->
+    <!-- <div class="img-section">
+      <img class="logo" src="logoFM.png" alt="Unió Europea">
+    </div> -->
+  </div>
+</nav>

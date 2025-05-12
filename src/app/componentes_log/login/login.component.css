@@ -1,0 +1,169 @@
+/* ========================================
+   Base Styles
+   ======================================== */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;                  /* altura base: ocupa toda la ventana */
+  background-color: var(--color_fondo);
+  padding: 20px;
+}
+
+.login-box {
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+  border-right: 1px solid black;
+}
+
+h2 {
+  font-size: 35px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  margin-bottom: 5px;
+  margin-top: 25px;
+}
+
+.input-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.login-button {
+  background-color: var(--button_login);
+  color: white;
+  margin-top: 20px;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.login-button:hover {
+  background-color: var(--button_login_hover);
+}
+
+.register-link {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: var(--button_login_hover);
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.register-link:hover {
+  text-decoration: underline;
+}
+
+.invalid-feedback {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.image-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.image-section2 {
+  display: none;
+  margin-top: 20px;
+  text-align: center;
+}
+
+#fotoHeader {
+  width: 400px;
+}
+
+/* ========================================
+   Desktop (≥ 900px)
+   ======================================== */
+@media (min-width: 900px) {
+  .container {
+    flex-direction: row;
+    height: 100vh;               /* mantiene altura completa */
+  }
+}
+
+/* ========================================
+   Tablet (≤ 900px)
+   ======================================== */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    height: 80vh;                /* altura reducida en tablet */
+  }
+
+  .login-box {
+    max-width: 100%;
+    border: none;
+  }
+
+  .text-section h1 {
+    font-size: 35px;
+  }
+
+  .text-section h2 {
+    font-size: 25px;
+  }
+}
+
+/* ========================================
+   Mobile (≤ 600px)
+   ======================================== */
+@media (max-width: 600px) {
+  .container {
+    padding: 15px;
+    width: 100%;
+    height: 60vh;                /* altura aún menor en móvil */
+  }
+
+  .image-section2 {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .image-section {
+    display: none;
+  }
+
+  .login-button {
+    font-size: 14px;
+    padding: 8px;
+  }
+}

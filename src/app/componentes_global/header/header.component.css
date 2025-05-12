@@ -1,0 +1,154 @@
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--fondo_hf);
+  padding: 20px 30px;
+  box-shadow: 5px 5px 10px rgba(70,70,70,0.5);
+  font-family: 'Poppins', sans-serif;
+  width: 100%;
+}
+
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  flex: 1 1 auto;
+  justify-content: center;
+
+  /* --- Ajustes para centrar verticalmente --- */
+  align-self: stretch;  /* Llenar toda la altura de .nav */
+  align-items: center;  /* Centrar los <a> verticalmente */
+  margin-right: 2vw;
+}
+
+.nav-links a {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  color: var(--color_texto_hf);
+  background-color: transparent;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px 15px;
+  transition: 0.5s;
+}
+.no-pointer {
+  cursor: default;  /* o cursor: auto; */
+}
+.nav-links a:hover {
+  background-color: var(--button_login);
+  color: white;
+}
+
+#fotoHeader {
+  width: 400px;
+}
+
+.router-link-active {
+  background-color: blue;
+  color: white;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+/* SECCIÓN DE LOGO SECUNDARIO (extremo derecho dentro de .nav-right) */
+.img-section {
+  display: flex;
+  align-items: center;
+  margin-left: auto;     /* empuja todo este bloque a la derecha */
+  /* permitimos que se encoja si hace falta */
+  flex: 0 1 auto;        
+  /* opcional: quita márgenes grandes si los tenías */
+  margin-right: 0;      
+  background-color:var(--fondo_hf);
+}
+
+/* logo: ancho fijo en px en vez de % */
+.logo {
+  margin-left: 10px;
+  width: 80px;           /* ajústalo al tamaño real de tu imagen */
+  height: auto;
+  border-radius: 5px;
+  flex-shrink: 0;        /* que no se reduzca más allá de este ancho */
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  /* ------------------------------------------ */
+  align-self: stretch;   /* ← rellena la altura del .nav */
+  /* ------------------------------------------ */
+  margin-right: 4vw;
+}@media (max-width: 600px) {
+
+  .nav {
+    position: relative;      /* contenedor de referencia para los absolute */
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+  }
+
+  .menu-toggle {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+
+  /* cuando esté cerrado */
+  .nav-links {
+    display: none;
+  }
+
+  /* cuando tenga .active: ocupa toda la anchura y baja */
+  .nav-links.active {
+    display: flex;
+    position: absolute;        /* fuera del flujo flex */
+    top: 100%;                 /* justo debajo del header */
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: center;
+    background: var(--fondo_hf);
+    padding: 10px 0;
+    gap: 5px;
+    z-index: 5;                /* bajo el toggle si hace falta */
+  }
+
+  .nav-links.active a {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Logos límites de tamaño */
+  .nav img {
+    max-height: 40px;
+    width: auto;
+  }
+}
+
+
+/* ===========================
+   Mobile (≤600px)
+   =========================== */
+@media (max-width: 800px) {
+  #fotoHeader{
+    width: 250px;
+  }
+  /* imágenes dentro de .nav: nunca superar cierta altura */
+.nav img {    
+  width: 100px;         /* mantiene la proporción */
+}
+}

@@ -1,0 +1,111 @@
+<div class="container">
+  <div class="image-section2">
+      <img id="fotoHeader" src="LETRAS_LOGO_editado-removebg-preview.png" alt="Unió Europea">
+  </div>
+    <div class="login-box">
+      <form [formGroup]="formRegistro" (ngSubmit)="newUser()">
+        <h2>Registro</h2>
+  
+        <!-- Nickname -->
+        <div class="input-group">
+          <label for="nickname">Nickname:</label>
+          <input id="nickname" type="text" formControlName="nickname" class="form-control"/>
+          
+          @if (formSubmitted && formRegistro.get('nickname')?.invalid) {
+            <div class="invalid-feedback">
+              El nickname es obligatorio.
+            </div>
+          }
+        </div>
+      
+        <!-- Nombre -->
+        <div class="input-group">
+          <label for="nombre">Nombre:</label>
+          <input id="nombre" type="text" formControlName="nombre" class="form-control"/>
+          
+          @if (formSubmitted && formRegistro.get('nombre')?.invalid) {
+            <div class="invalid-feedback">
+              El nombre es obligatorio.
+            </div>
+          }
+        </div>
+      
+        <!-- Email -->
+        <div class="input-group">
+          <label for="email">Email:</label>
+          <input id="email" type="email" formControlName="email" class="form-control"/>
+          
+          @if (formSubmitted && formRegistro.get('email')?.invalid) {
+            @if (formRegistro.get('email')?.errors?.['required']) {
+              <div class="invalid-feedback">
+                El email es obligatorio.
+              </div>
+            }
+            @if (formRegistro.get('email')?.errors?.['email']) {
+              <div class="invalid-feedback">
+                El email no es válido.
+              </div>
+            }
+          }
+        </div>
+      
+        <!-- Password -->
+        <div class="input-group">
+          <label for="password">Contraseña:</label>
+          <input id="password" type="password" formControlName="password" class="form-control"/>
+          
+          @if (formSubmitted && formRegistro.get('password')?.invalid) {
+            @if (formRegistro.get('password')?.errors?.['required']) {
+              <div class="invalid-feedback">
+                La contraseña es obligatoria.
+              </div>
+            }
+            @if (formRegistro.get('password')?.errors?.['pattern']) {
+              <div class="invalid-feedback">
+                La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo.
+              </div>
+            }
+          }
+        </div>
+      
+        <!-- Teléfono -->
+        <div class="input-group">
+          <label for="telefono">Teléfono:</label>
+          <input id="telefono" type="text" formControlName="telefono" class="form-control"/>
+          
+          @if (formSubmitted && formRegistro.get('telefono')?.invalid) {
+            @if (formRegistro.get('telefono')?.errors?.['required']) {
+              <div class="invalid-feedback">
+                El teléfono es obligatorio.
+              </div>
+            }
+            @if (formRegistro.get('telefono')?.errors?.['pattern']) {
+              <div class="invalid-feedback">
+                El teléfono debe tener 9 dígitos numéricos.
+              </div>
+            }
+          }
+        </div>
+      
+
+        @if (messageError != '') {
+          <div class="invalid-feedback">{{ messageError }}</div>
+        }
+  
+        <!-- Botón de registro -->
+        <button type="submit" class="register-button">
+          Registrarse
+        </button>
+  
+        <!-- Enlace para iniciar sesión -->
+        <a class="login-link" [routerLink]="['/login']">¿Ya tienes cuenta? Iniciar sesión</a>
+      </form>
+    </div>
+  
+    <!-- Sección de texto -->
+    <div class="image-section">
+         <img id="fotoHeader" src="LETRAS_LOGO_editado-removebg-preview.png" alt="Unió Europea">
+
+    </div>
+  </div>
+  
