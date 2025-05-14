@@ -75,13 +75,24 @@ export class ServiceLogService {
     this.updateUserRoles();
     this.router.navigate(['/inicio']);
   }
+logout(): void {
+  const token = localStorage.getItem('auth_token');
+  const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
 
-  logout(): void {
-    this.http.post(`${this.authUrl}/logout`, {}, this.httpOptions).subscribe({
-      next: () => this.logoutLocally(),
-      error: err => console.error('Error al cerrar sesión:', err)
-    });
-  }
+  this.http.post(
+    `${this.authUrl}/logout`,
+    {},
+    { headers }
+  ).subscribe({
+    next: () => this.logoutLocally(),
+    error: err => {
+      console.error('Error al cerrar sesión:', err);
+      // Opcional: forzar limpieza local aunque falle el logout en servidor
+      this.logoutLocally();
+    }
+  });
+}
+
 //Metodo para registrar
   userRegistro(user: RecipeUser): Observable<RecipeUser> {
     return this.http.post<RecipeUser>(`${this.authUrl}/nuevo`,user, this.httpOptions).pipe(
