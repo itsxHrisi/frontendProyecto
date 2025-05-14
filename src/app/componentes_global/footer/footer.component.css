@@ -1,23 +1,18 @@
 
 /* 3. Footer ya no está fijo, fluye al final */
 footer {
-  position: static;      /* nada de fixed */
-  bottom: auto;
-  left: auto;
   width: 100%;
-  margin-top: auto;      /* si algo queda de hueco, lo ocupa antes de footer */
-  z-index: 1;            /* si lo necesitas, pero no sobre el contenido */
-  
-  /* tus estilos previos */
+  margin-top: auto;        /* empuja al footer hacia el fondo */
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
   padding: 20px;
   border-top: 1px solid black;
-  color: var(--color_texto_hf);
   background-color: var(--fondo_hf);
+  color: var(--color_texto_hf);
 }
+
 footer #txtSimarro {
     font-family: 'Poppins',sans-serif;
     font-weight: 500;

@@ -109,6 +109,15 @@ h2 {
     text-align: center;
     font-weight: 600;
   }
+  /* ========================================
+   Desktop (≥ 900px)
+   ======================================== */
+@media (min-width: 900px) {
+  .container {
+    flex-direction: row;
+    height: 75vh;               /* mantiene altura completa */
+  }
+}
 @media (max-width: 900px) {
     .container {
         flex-direction: column;

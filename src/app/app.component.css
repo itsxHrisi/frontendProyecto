@@ -1,11 +1,33 @@
-/* 1. Flex en body para pinchar el footer al final */
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-body {
+
+/* Convierte el root en un contenedor flex columna */
+app-root {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+}
+
+/* Header mantiene su altura natural */
+app-header {
+  flex: 1 0 auto;
+}
+
+/* Wrapper principal crece para ocupar todo el espacio entre header y footer */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+/* Contenedor interior centra el <router-outlet> en el espacio disponible */
+.contenedor {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;    /* centra verticalmente */
+  justify-content: center;/* centra horizontalmente */
+  padding: 20px;          /* opcional: separación interna */
+}
+
+/* Footer se queda pegado abajo */
+app-footer {
+  flex: 0 0 auto;
 }
