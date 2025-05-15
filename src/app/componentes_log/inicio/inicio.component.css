@@ -4,3 +4,12 @@ h1{
     font-weight: 900;
     font-style: normal;
 }
+/* ========================================
+   Desktop (≥ 900px)
+   ======================================== */
+@media (min-width: 900px) {
+  .container {
+    flex-direction: row;
+    height: 75vh;               /* mantiene altura completa */
+  }
+}

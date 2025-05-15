@@ -5,50 +5,49 @@ import { ServiceLogService } from '../../componentes_log/service/service-log.ser
 
 @Component({
   selector: 'app-header',
+  standalone: true,
   imports: [RouterLink, CommonModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
   isMenuOpen = false;
-  isLoggedIn: boolean = false;
-  userRole: string [] = [];
-  hayAdmin:boolean =false;
+  isLoggedIn = false;
+  userRole: string[] = [];
+  hayAdmin = false;
 
-  constructor(private authService: ServiceLogService, private router:Router) { }
+  // Nueva propiedad para el nombre de usuario
+  userName: string = '';
+
+  constructor(
+    private authService: ServiceLogService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    //Suscripcion al estado actual de la autenticacion
+    // Estado de autenticación
     this.authService.isLoggedIn$.subscribe(status => {
       this.isLoggedIn = status;
+      if (status) {
+        // Cuando ya esté logeado, obtenemos el nickname
+        this.userName = this.authService.getUsernameFromToken();
+      } else {
+        this.userName = '';
+      }
     });
 
-    //Suscripcion actual al estado de el rol del usuario
-    this.authService.userRole$.subscribe(role => {
-      this.userRole = role;
-      this.funcHayAdmin();
-    })
+    // Roles de usuario
+    this.authService.userRole$.subscribe(roles => {
+      this.userRole = roles;
+      this.hayAdmin = roles.includes('ROL_ADMIN');
+    });
   }
 
-  //Cuando pulsas el boton de logaut actua esta funcion 
-  // que llama al metodo de logout del service
-  logout(){
+  logout() {
     this.authService.logout();
   }
 
-  //Menu desplegable para responsive nav
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
-  }
-
-  //Comprueva si el usuario logeado tiene el rol de administrador 
-  // para asi mostrar el inicio normal o el del admin
-  funcHayAdmin(){
-    if(this.userRole.includes("ROL_ADMIN")){
-      this.hayAdmin = true;
-      console.log(this.hayAdmin);
-      
-    }
   }
 }

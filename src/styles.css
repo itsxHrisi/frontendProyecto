@@ -1,13 +1,13 @@
 /*Variables root*/
 :root{
   --color_fondo: #E7EEF2;
-  --fondo_hf: #B1C7D2;
+  --fondo_hf: #a2a2a2;
   --color_button: #2d4a5b;
   --color_button_opacity: rgba(45, 74, 91, 0.5); 
   --color_button_hover: #1E2B34;
   --button_login:#0b0c5e;
   --button_login_hover:#060735;
-  --color_texto_hf:#2C4F63;
+  --color_texto_hf:#ffffff;
   --color_texto_hf_hover:#3F708D;
 }
 

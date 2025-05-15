@@ -8,7 +8,21 @@
   font-family: 'Poppins', sans-serif;
   width: 100%;
 }
+/* 1) Forzar tamaño fijo al avatar: */
+#imgPerf {
+  width: 40px;
+  height: 40px;       /* misma altura que anchura */
+  object-fit: cover;  /* recortar si hace falta */
+  border-radius: 50%;
+}
 
+/* 2) Alineación vertical de texto e imagen juntos */
+.profile-link, .nav-links a.profile-link {
+  display: inline-flex;      /* o flex si ya no es inline */
+  align-items: center;       /* centra verticalmente */
+  gap: 8px;                  /* separación imagen–texto */
+  padding: 5px 10px;         /* ajusta si quieres */
+}
 
 .nav-links {
   display: flex;

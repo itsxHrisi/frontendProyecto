@@ -59,7 +59,9 @@ footer p:hover {
     color: var(--color_texto_hf);
     margin: 0 5px;
 }
-
+.no-pointer {
+  cursor: default;  /* o cursor: auto; */
+}
 .links a:hover {
     color: var(--color_texto_hf_hover);
 }
