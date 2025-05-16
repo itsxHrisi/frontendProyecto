@@ -1,3 +1,7 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
 
 /* Convierte el root en un contenedor flex columna */
 app-root {

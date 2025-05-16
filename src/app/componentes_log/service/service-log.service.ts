@@ -144,6 +144,15 @@ export class ServiceLogService {
       }),
     );
   }
+changePassword(oldPwd: string, newPwd: string): Observable<any> {
+  const token = localStorage.getItem('auth_token') || '';
+  const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+  return this.http.post(
+    `${this.apiUrl}/usuarios/${this.getUsernameFromToken()}/cambiar-password`,
+    { oldPassword: oldPwd, newPassword: newPwd },
+    { headers }
+  );
+}
 
   /**  GET perfil del usuario autenticado */
   getPerfil(): Observable<any> {

@@ -22,10 +22,39 @@ body {
   background: var(--color_fondo);
   
 }
+/* 1) Asegúrate de que el <html> y el <body> ocupen el 100% de la ventana */
 html, body {
-  margin: 0;
-  padding: 0;
   height: 100%;
+  margin: 0;
+}
+
+/* 2) Convierte <app-root> en un flex-column de altura mínima 100vh */
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* 3) El header debe mantener su tamaño natural (no “crecer”) */
+app-header {
+  flex: 0 0 auto;
+}
+
+/* 4) El contenedor principal (contenido + footer) ocupa todo el espacio restante */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+/* 5) Tu zona de contenido (“.contenedor”) crece para empujar el footer hacia abajo */
+.contenedor {
+  flex: 1 1 auto;
+}
+
+/* 6) El footer mantiene su tamaño natural y queda siempre abajo */
+app-footer {
+  flex: 0 0 auto;
 }
 
 @font-face {

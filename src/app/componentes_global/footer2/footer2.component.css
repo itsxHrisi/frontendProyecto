@@ -148,26 +148,82 @@ margin-left: -145px;
 .footer-main .footer-col.info {
   position: absolute;   /* ya lo tienes absoluto */
   z-index: 10;          /* lo sitúa por encima de “About” */
-}
-/* responsive */
-@media (max-width: 800px) {
-  /* vuelve al flujo normal */
+}/* Desde 2000px hasta 1920px: ajustamos los absolute a porcentajes */
+/* ===========================
+   1) RESPONSIVE “4 CUARTILES”
+   Para pantallas entre 769px y 1600px de ancho
+   ———————————————— */
+@media (max-width: 1600px) and (min-width: 769px) {
   .footer-main {
-    position: static;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    min-height: auto;
+    /* anulamos cualquier absolute, y usamos flex */
+    position: static !important;
+    display: flex !important;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 40px 20px;
     gap: 20px;
   }
-  .footer-col {
-    position: static !important;
-    width: auto !important;
-    margin-bottom: 20px;
+
+  .footer-main .footer-col {
+    /* cada columna ocupa el 25% del ancho */
+    position: relative !important;
+    width: 25% !important;
+    margin: 0 !important;
+    text-align: left; /* alinear texto a la izquierda */
   }
+
+  /* Ajustes concretos en el primer cuartil (logo + texto) */
+  .footer-main .footer-col.about {
+    display: block;  /* ya no flex fila */
+  }
+  .footer-logo {
+    margin-bottom: 1rem; /* separa del título/texto */
+    margin-left: 0;      /* quita márgenes extra */
+  }
+  #textoLorem {
+    margin: 0;           /* quita empujones */
+  }
+}
+
+/* ===========================
+   2) STACK VERTICAL (tabletas/móvil)
+   Para pantallas de hasta 768px de ancho
+   ———————————————— */
+@media (max-width: 768px) {
+  .footer-main {
+    /* pasa a columna */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 20px !important;
+    gap: 30px;
+  }
+
+  .footer-main .footer-col {
+    /* cada bloque al 100% y centrado */
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+    text-align: center !important;
+  }
+
+  .footer-main .footer-col.about {
+    /* en móvil sacamos el layout “imagen+texto” a bloque vertical */
+    display: block !important;
+  }
+  .footer-logo {
+    margin: 0 auto 1rem auto !important;
+  }
+  #textoLorem {
+    margin: 0 1rem !important; /* un poquito de padding lateral */
+  }
+
   .footer-bottom {
-    text-align: center;
+    text-align: center !important;
+    padding: 10px 0 !important;
+  }
+  .footer-bottom a {
+    display: inline-block !important;
+    margin: 0 10px !important;
   }
 }
