@@ -1,51 +1,52 @@
-<form #perfilForm="ngForm" (ngSubmit)="onSubmit()">
-  <h2>Mi Perfil</h2>
-
-  <div class="input-group">
-    <label for="nickname">Nickname</label>
-    <input
-      type="text"
-      id="nickname"
-      name="nickname"
-      [(ngModel)]="nickname"
-      required
-    />
+<!-- src/app/componentes_global/perfil/perfil.component.html -->
+<div class="container">
+  <!-- (opcional) Logo superior -->
+  <div class="image-section2">
+    <img id="fotoHeader" src="LETRAS_LOGO_editado-removebg-preview.png" alt="FM Logo">
   </div>
 
-  <div class="input-group">
-    <label for="email">Email</label>
-    <input
-      type="email"
-      id="email"
-      name="email"
-      [(ngModel)]="email"
-      required
-    />
+  <div class="login-box">
+    <form #perfilForm="ngForm" (ngSubmit)="onSubmit()">
+      <h2>Mi Perfil</h2>
+
+      <div class="input-group">
+        <label for="nickname">Nickname</label>
+        <input type="text" id="nickname" name="nickname"
+               [(ngModel)]="nickname" required />
+      </div>
+
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email"
+               [(ngModel)]="email" required />
+      </div>
+
+      <div class="input-group">
+        <label for="nombre">Nombre completo</label>
+        <input type="text" id="nombre" name="nombre"
+               [(ngModel)]="nombre" />
+      </div>
+
+      <div class="input-group">
+        <label for="telefono">Teléfono</label>
+        <input type="text" id="telefono" name="telefono"
+               [(ngModel)]="telefono" />
+      </div>
+
+      <div *ngIf="errorMsg" class="invalid-feedback">
+        {{ errorMsg }}
+      </div>
+
+      <button type="submit"
+              class="login-button"
+              [disabled]="perfilForm.invalid">
+        Guardar cambios
+      </button>
+    </form>
   </div>
 
-  <div class="input-group">
-    <label for="nombre">Nombre completo</label>
-    <input
-      type="text"
-      id="nombre"
-      name="nombre"
-      [(ngModel)]="nombre"
-    />
+  <!-- (opcional) Logo inferior -->
+  <div class="image-section">
+    <img id="fotoHeader" src="LETRAS_LOGO_editado-removebg-preview.png" alt="FM Logo">
   </div>
-
-  <div class="input-group">
-    <label for="telefono">Teléfono</label>
-    <input
-      type="text"
-      id="telefono"
-      name="telefono"
-      [(ngModel)]="telefono"
-    />
-  </div>
-
-  <div *ngIf="errorMsg" class="invalid-feedback">{{ errorMsg }}</div>
-
-  <button type="submit" class="login-button" [disabled]="perfilForm.invalid">
-    Guardar cambios
-  </button>
-</form>
+</div>

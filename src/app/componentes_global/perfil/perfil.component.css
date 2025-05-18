@@ -1,0 +1,103 @@
+/* src/app/componentes_global/perfil/perfil.component.css */
+
+/* ========================================
+   Base Styles (idénticos a los de login)
+   ======================================== */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 80vh;
+  background-color: var(--color_fondo);
+  padding: 20px;
+}
+
+.login-box {
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+  border-right: 1px solid black;
+}
+
+h2 {
+  font-size: 35px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+.input-group label {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  margin-bottom: 5px;
+  margin-top: 25px;
+}
+.input-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.login-button {
+  background-color: var(--button_login);
+  color: white;
+  margin-top: 20px;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+}
+.login-button:hover {
+  background-color: var(--button_login_hover);
+}
+
+.invalid-feedback {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.image-section, .image-section2 {
+  text-align: center;
+}
+.image-section {
+  margin-top: 20px;
+}
+.image-section2 {
+  display: none;
+  margin-top: 20px;
+}
+#fotoHeader {
+  width: 400px;
+}
+
+/* ====== Responsive ====== */
+@media (min-width: 900px) {
+  .container { flex-direction: row; height: 75vh; }
+}
+@media (max-width: 900px) {
+  .container { flex-direction: column; text-align: center; height: 80vh; }
+  .login-box { border: none; }
+  .image-section2 { display: block; }
+  .image-section  { display: none; }
+}
+@media (max-width: 600px) {
+  .container { height: 60vh; padding: 15px; }
+  .login-button { font-size: 14px; padding: 8px; }
+}

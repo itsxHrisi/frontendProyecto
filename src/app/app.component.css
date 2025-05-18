@@ -1,37 +1,42 @@
+/* 1) Reset y base de HTML/Body */
 html, body {
   height: 100%;
   margin: 0;
 }
 
-/* Convierte el root en un contenedor flex columna */
+/* Convertimos <app-root> en columna flex de altura 100vh */
 app-root {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 
-/* Header mantiene su altura natural */
+/* Header: tamaño natural + breathing room debajo */
 app-header {
-  flex: 1 0 auto;
+  flex: 0 0 auto;
+  margin-bottom: 60px;
 }
 
-/* Wrapper principal crece para ocupar todo el espacio entre header y footer */
+/* Contenedor principal ocupa todo el espacio restante
+   + breathing room abajo */
 .app-container {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
+  padding-bottom: 40px;  /* empuja al contenido fuera del footer */
 }
 
-/* Contenedor interior centra el <router-outlet> en el espacio disponible */
+/* Zona de contenido centrada */
 .contenedor {
   flex: 1 0 auto;
   display: flex;
-  align-items: center;    /* centra verticalmente */
-  justify-content: center;/* centra horizontalmente */
-  padding: 20px;          /* opcional: separación interna */
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
-/* Footer se queda pegado abajo */
+/* Footer: tamaño natural */
 app-footer {
   flex: 0 0 auto;
+  margin-top: 0; /* ya lo damos al .site-footer */
 }

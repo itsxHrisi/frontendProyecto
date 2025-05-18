@@ -1,5 +1,7 @@
-/* Colors */
 .site-footer {
+  /* breathing room sobre este elemento */
+  margin-top: 40px !important;
+  
   box-shadow: 0 -5px 10px rgba(70,70,70,0.5);
   background-color: var(--fondo_hf);
   color: white;
@@ -13,117 +15,95 @@
   width: 100%;
 }
 
-/* main three-column area with absolute positioning */
+/* main four-column area */
 .footer-main {
-  position: relative;    /* contenedor relativo */
-  width: 100%;           /* ocupa todo el ancho */
-  padding: 40px 20px;
-  min-height: 240px;     /* ajusta según tu contenido */
-  display: block;        /* anula el flex original */
-}
-#h2Main{
-    white-space: nowrap;
-  color: var(--button_login);
-
-}
-/* 1) Primer bloque (“about”):
-     - 30px hacia abajo
-     - 30px hacia la derecha
-     - texto al lado derecho de la imagen */
-.footer-main .footer-col.about {
-  position: absolute;
-  top: 30px;             /* movido 30px hacia abajo */
-  left: 60px;            /* 30px original + 30px extra */
-  display: flex;         /* layout en fila */
+  display: flex;
+  justify-content: space-between;
   align-items: flex-start;
-  gap: 20px;             /* espacio entre imagen y texto */
-  width: auto;           /* se adapta al contenido */
-  
-}
-#textoLorem{
-  margin-top: 40px;
-margin-left: -145px;
-}
-.footer-logo {
-  width: 500px;      /* controla ancho del logo */
-  flex-shrink: 0;        /* no se reduce */
-  margin-left: 20px;
+  padding: 40px 20px;
+  box-sizing: border-box;
 }
 
-.footer-col.about p {
+/* cada bloque ocupa 25% */
+.footer-main .footer-col {
+  flex: 0 0 25%;
+  box-sizing: border-box;
+  margin: 0;
+  text-align: left;
+}
+
+/*––– LOGO –––*/
+.logo-col .footer-logo,
+.footer-main .footer-col.logo-col .footer-logo {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  margin: 0 auto 1rem;
+}
+
+/*––– ABOUT –––*/
+.footer-main .footer-col.about-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+#h2Main {
+  white-space: nowrap;
+  color: var(--button_login);
+  margin: 0;
+}
+#textoLorem {
+  margin: 0;
   line-height: 1.6;
-  min-width: 400px;      /* ancho máximo del párrafo */
-  margin: 0;             /* elimina márgenes por defecto */
 }
 
-/* 2) Segundo bloque (“info”):
-     - 30px hacia abajo
-     - 50px hacia la derecha desde el centro */
-.footer-main .footer-col.info {
-  position: absolute;
-  top: 30px;             
-  left: 50%;
-  transform: translateX(calc(-50% + 200px)); /* -50% +50px +30px extra */
-  width: 200px;          
-}
-
-/* Info styles */
-.footer-col.info h3 {
+/*––– INFORMACIÓN –––*/
+.footer-main .footer-col.info-col h3 {
   color: var(--button_login);
   margin-bottom: 1rem;
   font-size: 1.2rem;
 }
-.footer-col.info ul {
+.footer-main .footer-col.info-col ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.footer-col.info ul li {
-  margin-bottom: 0.75rem;
+.footer-main .footer-col.info-col ul li {
+  margin-bottom: 0.5rem;
 }
-.footer-col.info ul li a {
+.footer-main .footer-col.info-col ul li a {
   color: var(--footer-link);
   text-decoration: none;
   transition: color 0.2s;
 }
-.footer-col.info ul li a:hover {
+.footer-main .footer-col.info-col ul li a:hover {
   color: var(--button_login);
 }
 
-/* 3) Tercer bloque (“contact”):  
-     - 30px hacia abajo  
-     - 50px más a la derecha de “info” */
-.footer-main .footer-col.contact {
-  position: absolute;
-  top: 30px;
-  left: calc(50% + 200px + 400px); /* 50% + ancho-info(200) + 80(offset) +50 extra */
-  width: 200px;          
-}
-
-/* Contact styles */
-.footer-col.contact h3 {
+/*––– CONTACTO –––*/
+.footer-main .footer-col.contact-col h3 {
   color: var(--button_login);
   margin-bottom: 1rem;
   font-size: 1.2rem;
 }
-.footer-col.contact ul {
+.footer-main .footer-col.contact-col ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.footer-col.contact ul li {
-  margin-bottom: 0.75rem;
+.footer-main .footer-col.contact-col ul li {
+  margin-bottom: 0.5rem;
 }
-
-.footer-col.contact ul li a {
+.footer-main .footer-col.contact-col ul li a {
   text-decoration: none;
   transition: color 0.2s;
 }
-.footer-col.contact ul li a:hover {
+.footer-main .footer-col.contact-col ul li a:hover {
   color: var(--footer-link-hover);
 }
 
-/* bottom row */
+/*––– footer-bottom –––*/
 .footer-bottom {
   border-top: 3px solid #ffffff;
   padding: 15px 20px;
@@ -131,99 +111,177 @@ margin-left: -145px;
   font-size: 0.9rem;
   background-color: var(--button_login_hover);
 }
-
 .footer-bottom a {
   color: white;
-  margin-left: 5rem;
   text-decoration: none;
   transition: color 0.2s;
+  margin-left: 1rem;
 }
 .footer-bottom a:hover {
   color: var(--color_texto_hf_hover);
 }
-.footer-main .footer-col.about {
-  /* en vez de width: auto; */
-  width: 800px;        /* o el ancho que necesites para logo + texto */
-}
-.footer-main .footer-col.info {
-  position: absolute;   /* ya lo tienes absoluto */
-  z-index: 10;          /* lo sitúa por encima de “About” */
-}/* Desde 2000px hasta 1920px: ajustamos los absolute a porcentajes */
-/* ===========================
-   1) RESPONSIVE “4 CUARTILES”
-   Para pantallas entre 769px y 1600px de ancho
-   ———————————————— */
-@media (max-width: 1600px) and (min-width: 769px) {
+
+/* =========================
+   DESKTOP ULTRA (>1920px)
+   ========================= */
+@media (min-width: 1921px) {
   .footer-main {
-    /* anulamos cualquier absolute, y usamos flex */
-    position: static !important;
     display: flex !important;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 40px 20px;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    padding: 40px 100px !important;     /* más espacio a los lados */
+    gap: 0;
+  }
+  .footer-main .footer-col {
+    flex: 0 0 25% !important; /* cuatro columnas al 25% */
+    max-width: 25% !important;
+    position: relative !important;
+    margin: 0;
+    text-align: left;
+  }
+
+  /* LIMITAR "ABOUT US" PARA SALTO DE LÍNEA TEMPRANO */
+  .footer-main .about-col {
+    /* sigue ocupando 25%, pero dentro limitamos el párrafo */
+    flex: 0 0 25% !important;
+    max-width: 25% !important;
+  }
+  #textoLorem {
+    /* fuerza que el párrafo sea más compacto dentro de su columna */
+    max-width: 50%;
+    line-height: 1.6;
+  }
+
+  /* DESPLAZAR INFO y CONTACT hacia la derecha internamente */
+  .footer-main .info-col,
+  .footer-main .contact-col {
+    /* ocupan 25% igual, pero con padding interno para empujarlas */
+    flex: 0 0 25% !important;
+    max-width: 25% !important;
+    padding-left: 1rem;
+  }
+
+  /* Ajuste de logo en ultra-pantallas */
+  .footer-logo {
+    max-width: 400px !important;
+    width: 100%;
+    height: auto;
+    margin: 0 auto 1rem;
+  }
+}
+
+/* =========================
+   TABLET / SMALL DESKTOP (769px – 1200px)
+   ========================= */
+@media (min-width: 769px) and (max-width: 1200px) {
+  /* el contenedor sigue con 4 columnas, pero limitamos el logo */
+  .footer-main .logo-col {
+    flex: 0 0 25% !important;      /* que siga ocupando 1/4 */
+    max-width: 25% !important;
+  }
+
+ .footer-main .logo-col .footer-logo {
+  width: 100% !important;        /* ↪ ocupa siempre el 100% de su columna */
+  max-width: 1000px !important;   /* ↪ pero nunca más grande que 400px */
+  min-width: 300px !important;   /* ↪ y nunca más pequeño que 200px */
+  height: 100% !important;
+}
+
+#FMLogo{
+  margin-left: -40px;
+}
+}
+/* =========================
+   MÓVIL (≤768px)
+   ========================= */
+@media (max-width: 768px) {
+  .footer-main {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 20px !important;
     gap: 20px;
   }
 
-  .footer-main .footer-col {
-    /* cada columna ocupa el 25% del ancho */
-    position: relative !important;
-    width: 25% !important;
-    margin: 0 !important;
-    text-align: left; /* alinear texto a la izquierda */
+  /* About Us ahora al 50% pero pegado a la izquierda */
+  .footer-main .about-col {
+    flex: 0 0 50% !important;
+    width: 50% !important;
+    max-width: 50% !important;
+    margin: 0 !important;           /* pegado al lado izquierdo */
+    text-align: left !important;
   }
 
-  /* Ajustes concretos en el primer cuartil (logo + texto) */
-  .footer-main .footer-col.about {
-    display: block;  /* ya no flex fila */
-  }
-  .footer-logo {
-    margin-bottom: 1rem; /* separa del título/texto */
-    margin-left: 0;      /* quita márgenes extra */
-  }
-  #textoLorem {
-    margin: 0;           /* quita empujones */
-  }
-}
-
-/* ===========================
-   2) STACK VERTICAL (tabletas/móvil)
-   Para pantallas de hasta 768px de ancho
-   ———————————————— */
-@media (max-width: 768px) {
-  .footer-main {
-    /* pasa a columna */
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    padding: 20px !important;
-    gap: 30px;
-  }
-
-  .footer-main .footer-col {
-    /* cada bloque al 100% y centrado */
-    position: static !important;
+  /* Los demás bloques al 100% */
+  .footer-main .logo-col,
+  .footer-main .info-col,
+  .footer-main .contact-col {
+    flex: 0 0 100% !important;
     width: 100% !important;
+    max-width: none !important;
     margin: 0 !important;
-    text-align: center !important;
+    text-align: left !important;
   }
 
-  .footer-main .footer-col.about {
-    /* en móvil sacamos el layout “imagen+texto” a bloque vertical */
-    display: block !important;
-  }
+  /* Logo más pequeño y alineado a la izquierda */
   .footer-logo {
-    margin: 0 auto 1rem auto !important;
-  }
-  #textoLorem {
-    margin: 0 1rem !important; /* un poquito de padding lateral */
+    max-width: 300px !important;
+    width: 100%;
+    height: auto;
+    margin: 0 0 1rem 0 !important;  /* todo a la izquierda */
   }
 
   .footer-bottom {
-    text-align: center !important;
+    text-align: right !important;
     padding: 10px 0 !important;
   }
   .footer-bottom a {
     display: inline-block !important;
-    margin: 0 10px !important;
+    margin: 0 8px !important;
+  }
+}
+
+/* ────────────────────────────────
+   AJUSTE FINAL: desplazar About y Contact
+   para resoluciones “típicas” (769–1920px)
+────────────────────────────────*/
+@media (min-width: 769px) and (max-width: 1920px) {
+  .footer-main {
+    /* ampliamos el padding lateral para añadir “espacio muerto” */
+    padding: 40px 80px !important;
+    justify-content: space-between !important;
+  }
+  /* Empujamos About US hacia el centro */
+  .footer-main .about-col {
+    flex: 0 0 20% !important;
+    margin-right: 5% !important;
+  }
+  /* Info en el medio sin margen extra */
+  .footer-main .info-col {
+    flex: 0 0 20% !important;
+    margin: 0 !important;
+  }
+  /* Empujamos Contacto hacia la izquierda */
+  .footer-main .contact-col {
+    flex: 0 0 20% !important;
+    margin-left: 5% !important;
+  }
+}
+/* ────────────────────────────────
+   DESPLAZAR INFO y CONTACT 50px A LA DERECHA
+   para todas las vistas excepto móviles
+──────────────────────────────── */
+@media (min-width: 769px) {
+  .footer-main .info-col,
+  .footer-main .contact-col {
+    padding-left: 60px !important;
+  }
+}
+
+/* anula en móvil por si acaso */
+@media (max-width: 768px) {
+  .footer-main .info-col,
+  .footer-main .contact-col {
+    margin-left: 0 !important;
   }
 }
