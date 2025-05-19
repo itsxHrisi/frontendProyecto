@@ -37,6 +37,12 @@
         {{ errorMsg }}
       </div>
 
+      <!-- Enlace para cambiar contraseña -->
+      <div class="input-group">
+        <a routerLink="/cambiarpass" class="link-button">
+          Cambiar mi contraseña
+        </a>
+      </div>
       <button type="submit"
               class="login-button"
               [disabled]="perfilForm.invalid">

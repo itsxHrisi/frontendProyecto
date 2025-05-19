@@ -143,16 +143,31 @@ export class ServiceLogService {
         return throwError(() => error);
       }),
     );
-  }
-changePassword(oldPwd: string, newPwd: string): Observable<any> {
+  }// src/app/componentes_log/service/service-log.service.ts
+/** Cambiar sólo la nueva contraseña (sin pedir la actual) */
+changePassword(newPassword: string): Observable<JwtDto> {
+  const nickname = this.getUsernameFromToken();
   const token = localStorage.getItem('auth_token') || '';
   const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
-  return this.http.post(
-    `${this.apiUrl}/usuarios/${this.getUsernameFromToken()}/cambiar-password`,
-    { oldPassword: oldPwd, newPassword: newPwd },
+
+  return this.http.put<JwtDto>(
+    `${this.apiUrl}/usuarios/${nickname}/cambiar-password`,
+    { newPassword, confirmPassword: newPassword }, // tu DTO espera ambos
     { headers }
+  ).pipe(
+    tap(response => {
+      // si llega nuevo token, lo guardamos
+      if (response.token) {
+        localStorage.setItem('auth_token', response.token);
+        const roles = response.authorities.map(a => a.authority);
+        localStorage.setItem('user_roles', JSON.stringify(roles));
+        this.updateLoginStatus();
+        this.updateUserRoles();
+      }
+    })
   );
 }
+
 
   /**  GET perfil del usuario autenticado */
   getPerfil(): Observable<any> {

@@ -1,8 +1,9 @@
-/* src/app/componentes_global/perfil/perfil.component.css */
+/* src/app/componentes_global/change-password/change-password.component.css */
 
-/* ========================================
-   Base Styles (idénticos a los de login)
-   ======================================== */
+/* ================================
+   Copiado de perfil.component.css
+   ================================ */
+
 .container {
   display: flex;
   flex-direction: column;
@@ -12,17 +13,6 @@
   height: 80vh;
   background-color: var(--color_fondo);
   padding: 20px;
-}
-.link-button {
-  display: inline-block;
-  margin-bottom: 12px;
-  color: var(--button_login);
-  text-decoration: underline;
-  cursor: pointer;
-  font-weight: 500;
-}
-.link-button:hover {
-  color: var(--button_login_hover);
 }
 
 .login-box {
@@ -45,12 +35,14 @@ h2 {
   flex-direction: column;
   margin-bottom: 15px;
 }
+
 .input-group label {
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   margin-bottom: 5px;
   margin-top: 25px;
 }
+
 .input-group input {
   padding: 10px;
   border: 1px solid #ccc;
@@ -72,6 +64,7 @@ h2 {
   font-family: "Poppins", sans-serif;
   font-weight: 500;
 }
+
 .login-button:hover {
   background-color: var(--button_login_hover);
 }
@@ -84,31 +77,61 @@ h2 {
   font-weight: 600;
 }
 
-.image-section, .image-section2 {
+.alert {
+  margin-top: 10px;
   text-align: center;
 }
+
+.image-section,
+.image-section2 {
+  text-align: center;
+}
+
 .image-section {
   margin-top: 20px;
 }
+
 .image-section2 {
   display: none;
   margin-top: 20px;
 }
+
 #fotoHeader {
   width: 400px;
 }
 
-/* ====== Responsive ====== */
+/* Responsive */
 @media (min-width: 900px) {
-  .container { flex-direction: row; height: 75vh; }
+  .container {
+    flex-direction: row;
+    height: 75vh;
+  }
 }
+
 @media (max-width: 900px) {
-  .container { flex-direction: column; text-align: center; height: 80vh; }
-  .login-box { border: none; }
-  .image-section2 { display: block; }
-  .image-section  { display: none; }
+  .container {
+    flex-direction: column;
+    text-align: center;
+    height: 80vh;
+  }
+  .login-box {
+    border: none;
+  }
+  .image-section2 {
+    display: block;
+  }
+  .image-section {
+    display: none;
+  }
 }
+
 @media (max-width: 600px) {
-  .container { height: 60vh; padding: 15px; }
-  .login-button { font-size: 14px; padding: 8px; }
+  .container {
+    height: 60vh;
+    padding: 15px;
+  }
+  .login-button {
+    font-size: 14px;
+    padding: 8px;
+  }
 }
