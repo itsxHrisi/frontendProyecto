@@ -1,20 +1,26 @@
 <nav class="nav">
   <!-- Logo izquierdo -->
-  <img class="logo" src="logoFM.png" alt="Unió Europea">
+  <img class="logo" src="logoFM.png" alt="Unió Europea" />
 
   <div class="nav-right">
     <button class="menu-toggle" (click)="toggleMenu()">☰</button>
     <div class="nav-links" [ngClass]="{ active: isMenuOpen }">
-
       <!-- Si no está logeado -->
       <ng-container *ngIf="!isLoggedIn; else loggedIn">
-        <a [routerLink]="['/inicio']" routerLinkActive="router-link-active">Inicio</a>
-        <a [routerLink]="['/login']" routerLinkActive="router-link-active">Login/SignUp</a>
+        <a [routerLink]="['/inicio']" routerLinkActive="router-link-active"
+          >Inicio</a
+        >
+        <a [routerLink]="['/login']" routerLinkActive="router-link-active"
+          >Login/SignUp</a
+        >
       </ng-container>
 
       <!-- Si está logeado -->
       <ng-template #loggedIn>
-        <a [routerLink]="[ hayAdmin ? '/home' : '/inicio' ]" routerLinkActive="router-link-active">
+        <a
+          [routerLink]="[hayAdmin ? '/home' : '/inicio']"
+          routerLinkActive="router-link-active"
+        >
           Inicio
         </a>
 
@@ -22,23 +28,30 @@
         <ng-container *ngFor="let rol of userRole">
           <ng-container [ngSwitch]="rol">
             <ng-container *ngSwitchCase="'ROL_ADMIN'">
-              <a [routerLink]="['/users-list']">Lista Usuarios</a>
-              <a [routerLink]="['/crear-usuario']">Crear usuario</a>
-              <a [routerLink]="['/users-list-block']">Usuarios bloqueados</a>
+              <a [routerLink]="['/invitar-usuario']">Invitar usuario</a>
+              <a [routerLink]="['/users-list-kick']">Expulsar Usuarios</a>
             </ng-container>
           </ng-container>
         </ng-container>
-
+        <ng-container *ngFor="let rol of userRole">
+          <ng-container [ngSwitch]="rol">
+            <ng-container *ngSwitchCase="'ROL_PADRE'">
+              <a [routerLink]="['/listar-gastos']">Invitar usuario</a>
+            </ng-container>
+          </ng-container>
+        </ng-container>
         <!-- Link de perfil con nombre -->
-        <a class="profile-link" [routerLink]="['/perfil']">
-        <img id="imgPerf" src="default-avatar-icon-of-social-media-user-vector.jpg" alt="Avatar">
-  {{ userName }}
-</a>
-    
-
+        <a class="profile-link" routerLinkActive="router-link-active" [routerLink]="['/perfil']">
+          <img
+            id="imgPerf"
+            src="default-avatar-icon-of-social-media-user-vector.jpg"
+            alt="Avatar"
+          />
+          {{ userName }}
+        </a>
+        <a class="profile-link" routerLinkActive="router-link-active" [routerLink]="['/crearGrupo']">Grupo Familiar</a>
         <a class="no-pointer" (click)="logout()">Logout</a>
       </ng-template>
-
     </div>
   </div>
 </nav>

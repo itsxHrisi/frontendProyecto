@@ -77,10 +77,20 @@ h2 {
   font-weight: 600;
 }
 
-.alert {
+/* src/app/componentes_global/perfil/perfil.component.css */
+
+/* Mensaje de éxito en verde */
+.alert-success {
   margin-top: 10px;
   text-align: center;
+  color: #155724;               /* verde oscuro para el texto */
+  background-color: #d4edda;    /* verde suave para el fondo */
+  border: 1px solid #c3e6cb;    /* borde verde medio */
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: 500;
 }
+
 
 .image-section,
 .image-section2 {
@@ -96,8 +106,19 @@ h2 {
   margin-top: 20px;
 }
 
+.input-group input.is-invalid {
+  border-color: #dc3545; /* rojo típico de error */
+  background-color: #f8d7da20; /* fondo muy suave */
+}
+
 #fotoHeader {
   width: 400px;
+}
+.cancel{
+  background-color: red;
+}
+.cancel:hover{
+  background-color: rgb(202, 1, 1);
 }
 
 /* Responsive */

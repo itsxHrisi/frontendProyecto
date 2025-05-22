@@ -9,53 +9,59 @@
     <form #changeForm="ngForm" (ngSubmit)="onSubmit()">
       <h2>Cambiar contraseña</h2>
 
-      <!-- Nueva contraseña -->
-      <div class="input-group">
-        <label for="newPassword">Nueva contraseña</label>
-        <input
-          type="password"
-          id="newPassword"
-          name="newPassword"
-          [(ngModel)]="newPassword"
-          #np="ngModel"
-          required
-          pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\w\s]).{8,}$"
-        />
-        <div *ngIf="(changeForm.submitted || np.touched) && np.errors" class="invalid-feedback">
-          <div *ngIf="np.errors['required']">
-            La contraseña es obligatoria.
-          </div>
-          <div *ngIf="np.errors['pattern']">
-            Debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo.
-          </div>
-        </div>
-      </div>
+<!-- Nueva contraseña -->
+<div class="input-group">
+  <label for="newPassword">Nueva contraseña</label>
+  <input
+    type="password"
+    id="newPassword"
+    name="newPassword"
+    [(ngModel)]="newPassword"
+    #np="ngModel"
+    required
+    pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\w\s]).{8,}$"
+    [ngClass]="{ 'is-invalid': np.invalid && (np.touched || changeForm.submitted) }"
+  />
+  <div *ngIf="np.invalid && (np.touched || changeForm.submitted)" class="invalid-feedback">
+    <div *ngIf="np.errors?.['required']">
+      La contraseña es obligatoria.
+    </div>
+    <div *ngIf="np.errors?.['pattern']">
+      Debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo.
+    </div>
+  </div>
+</div>
 
-      <!-- Confirmar nueva contraseña -->
-      <div class="input-group">
-        <label for="confirmPassword">Repite contraseña</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          [(ngModel)]="confirmPassword"
-          #cp="ngModel"
-          required
-        />
-        <div *ngIf="(changeForm.submitted || cp.touched) && cp.errors?.['required']" class="invalid-feedback">
-          Debes repetir la contraseña.
-        </div>
-      </div>
+<!-- Confirmar nueva contraseña -->
+<div class="input-group">
+  <label for="confirmPassword">Repite contraseña</label>
+  <input
+    type="password"
+    id="confirmPassword"
+    name="confirmPassword"
+    [(ngModel)]="confirmPassword"
+    #cp="ngModel"
+    required
+    [ngClass]="{ 'is-invalid': cp.invalid && (cp.touched || changeForm.submitted) }"
+  />
+  <div *ngIf="cp.invalid && (cp.touched || changeForm.submitted)" class="invalid-feedback">
+    <div *ngIf="cp.errors?.['required']">
+      Debes repetir la contraseña.
+    </div>
+  </div>
+</div>
+
+        
 
       <!-- Error / éxito -->
       <div *ngIf="errorMsg" class="invalid-feedback">{{ errorMsg }}</div>
       <div *ngIf="successMsg" class="alert alert-success">{{ successMsg }}</div>
 
       <!-- Botones -->
-      <button type="submit" class="login-button" [disabled]="changeForm.invalid">
+      <button type="submit" class="login-button" >
         Cambiar contraseña
       </button>
-      <button type="button" class="login-button" (click)="onCancel()">
+      <button type="button" class="login-button cancel" (click)="onCancel()">
         Cancelar
       </button>
     </form>

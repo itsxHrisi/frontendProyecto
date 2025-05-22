@@ -1,58 +1,151 @@
 <!-- src/app/componentes_global/perfil/perfil.component.html -->
 <div class="container">
-  <!-- (opcional) Logo superior -->
   <div class="image-section2">
-    <img id="fotoHeader" src="LETRAS_LOGO_editado-removebg-preview.png" alt="FM Logo">
+    <img id="fotoHeader"
+         src="LETRAS_LOGO_editado-removebg-preview.png"
+         alt="FM Logo">
   </div>
 
   <div class="login-box">
-    <form #perfilForm="ngForm" (ngSubmit)="onSubmit()">
+    <!-- novalidate para desactivar validación nativa -->
+    <form #perfilForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
       <h2>Mi Perfil</h2>
 
+      <!-- Nickname -->
       <div class="input-group">
         <label for="nickname">Nickname</label>
-        <input type="text" id="nickname" name="nickname"
-               [(ngModel)]="nickname" required />
+        <input
+          type="text"
+          id="nickname"
+          name="nickname"
+          required
+          [(ngModel)]="nickname"
+          #nicknameField="ngModel"
+          [ngClass]="{
+            'is-invalid': nicknameField.invalid && (nicknameField.touched || perfilForm.submitted)
+          }"
+        />
+        <div
+          *ngIf="nicknameField.invalid && (nicknameField.touched || perfilForm.submitted)"
+          class="invalid-feedback"
+        >
+          <div *ngIf="nicknameField.errors?.['required']">
+            El nickname es obligatorio.
+          </div>
+        </div>
       </div>
 
+      <!-- Email -->
       <div class="input-group">
         <label for="email">Email</label>
-        <input type="email" id="email" name="email"
-               [(ngModel)]="email" required />
+        <input
+          type="email"
+          email                  
+          id="email"
+          name="email"
+          required
+          [(ngModel)]="email"
+          #emailField="ngModel"
+          [ngClass]="{
+            'is-invalid': emailField.invalid && (emailField.touched || perfilForm.submitted)
+          }"
+        />
+        <div
+          *ngIf="emailField.invalid && (emailField.touched || perfilForm.submitted)"
+          class="invalid-feedback"
+        >
+          <div *ngIf="emailField.errors?.['required']">
+            El email es obligatorio.
+          </div>
+          <div *ngIf="emailField.errors?.['email']">
+            El formato del email no es válido.
+          </div>
+        </div>
       </div>
 
+      <!-- Nombre completo -->
       <div class="input-group">
         <label for="nombre">Nombre completo</label>
-        <input type="text" id="nombre" name="nombre"
-               [(ngModel)]="nombre" />
+        <input
+          type="text"
+          id="nombre"
+          name="nombre"
+          required
+          minlength="3"
+          [(ngModel)]="nombre"
+          #nombreField="ngModel"
+          [ngClass]="{
+            'is-invalid': nombreField.invalid && (nombreField.touched || perfilForm.submitted)
+          }"
+        />
+        <div
+          *ngIf="nombreField.invalid && (nombreField.touched || perfilForm.submitted)"
+          class="invalid-feedback"
+        >
+          <div *ngIf="nombreField.errors?.['required']">
+            El nombre completo es obligatorio.
+          </div>
+          <div *ngIf="nombreField.errors?.['minlength']">
+            Debe tener al menos 3 caracteres.
+          </div>
+        </div>
       </div>
 
+      <!-- Teléfono -->
       <div class="input-group">
         <label for="telefono">Teléfono</label>
-        <input type="text" id="telefono" name="telefono"
-               [(ngModel)]="telefono" />
+        <input
+          type="text"
+          id="telefono"
+          name="telefono"
+          required
+          pattern="^[0-9]{9,15}$"    
+          [(ngModel)]="telefono"
+          #telefonoField="ngModel"
+          [ngClass]="{
+            'is-invalid': telefonoField.invalid && (telefonoField.touched || perfilForm.submitted)
+          }"
+        />
+        <div
+          *ngIf="telefonoField.invalid && (telefonoField.touched || perfilForm.submitted)"
+          class="invalid-feedback"
+        >
+          <div *ngIf="telefonoField.errors?.['required']">
+            El teléfono es obligatorio.
+          </div>
+          <div *ngIf="telefonoField.errors?.['pattern']">
+            El teléfono debe tener sólo dígitos (9–15 caracteres).
+          </div>
+        </div>
       </div>
 
+      <!-- Error global de servidor -->
       <div *ngIf="errorMsg" class="invalid-feedback">
         {{ errorMsg }}
       </div>
 
-      <!-- Enlace para cambiar contraseña -->
+      <!-- Link cambiar contraseña -->
       <div class="input-group">
         <a routerLink="/cambiarpass" class="link-button">
           Cambiar mi contraseña
         </a>
       </div>
-      <button type="submit"
-              class="login-button"
-              [disabled]="perfilForm.invalid">
+
+      <!-- Mensaje de éxito -->
+      <div *ngIf="successMsg" class="alert alert-success">
+        {{ successMsg }}
+      </div>
+
+      <!-- Botón ya NO se deshabilita aquí -->
+      <button type="submit" class="login-button">
         Guardar cambios
       </button>
     </form>
   </div>
 
-  <!-- (opcional) Logo inferior -->
   <div class="image-section">
-    <img id="fotoHeader" src="LETRAS_LOGO_editado-removebg-preview.png" alt="FM Logo">
+    <img id="fotoHeader"
+         src="LETRAS_LOGO_editado-removebg-preview.png"
+         alt="FM Logo">
   </div>
 </div>

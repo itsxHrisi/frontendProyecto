@@ -1,0 +1,43 @@
+/* Botón principal */
+.action-button {
+  display: block;
+  margin: 15px auto 0;
+  background-color: var(--boton_crear_grupo);
+  color: white;
+  padding: 10px;
+  width: 260px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+}
+
+.action-button:hover {
+  background-color: var(--boton_crear_grupo_hover);
+}
+
+/* Botón secundario con color distinto */
+.secondary-button {
+  background-color: var(--boton_invitaciones);
+}
+
+.secondary-button:hover {
+  background-color: var(--boton_invitaciones_hover);
+}
+
+/* Separación extra */
+.action-button + .action-button {
+  margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .action-button {
+    width: 100%;
+    font-size: 14px;
+    padding: 8px;
+  }
+}

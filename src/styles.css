@@ -9,6 +9,11 @@
   --button_login_hover:#060735;
   --color_texto_hf:#ffffff;
   --color_texto_hf_hover:#3F708D;
+  --boton_crear_grupo:#00ff26;
+  --boton_invitaciones:#00f2ff;
+  --boton_crear_grupo_hover:#00bb1c;
+  --boton_invitaciones_hover:#00bdc7;
+
 }
 
 * {

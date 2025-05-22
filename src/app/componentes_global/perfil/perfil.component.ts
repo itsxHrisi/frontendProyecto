@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ServiceLogService }    from '../../componentes_log/service/service-log.service';
-import { RecipeUser }           from '../../interface/recipe-user';
-import { CommonModule }         from '@angular/common';
-import { FormsModule }          from '@angular/forms';
-import { RouterLink }           from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm }                       from '@angular/forms';
+import { ServiceLogService }            from '../../componentes_log/service/service-log.service';
+import { CommonModule }                 from '@angular/common';
+import { FormsModule }                  from '@angular/forms';
+import { RouterLink }                   from '@angular/router';
 
 @Component({
   selector: 'app-perfil',
@@ -13,29 +13,26 @@ import { RouterLink }           from '@angular/router';
   styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
-  // campos del formulario
-  nickname = '';
-  email    = '';
-  nombre   = '';
-  telefono = '';
-  errorMsg = '';
+  @ViewChild('perfilForm') perfilForm!: NgForm;
 
-  // guardamos el viejo nickname para la URL de actualización
+  nickname   = '';
+  email      = '';
+  nombre     = '';
+  telefono   = '';
+  errorMsg   = '';
+  successMsg = '';
+
   private oldNickname = '';
 
   constructor(private authService: ServiceLogService) {}
 
   ngOnInit(): void {
-    // 1) Cargamos perfil
     this.authService.getPerfil().subscribe({
-      next: (user: any) => {
-        // suponemos que la respuesta incluye { nickname, email, nombre, telefono }
+      next: user => {
         this.nickname    = user.nickname;
         this.email       = user.email;
         this.nombre      = user.nombre  || '';
         this.telefono    = user.telefono || '';
-
-        // guardamos el nickname viejo
         this.oldNickname = user.nickname;
       },
       error: err => {
@@ -46,7 +43,14 @@ export class PerfilComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.errorMsg = '';
+    // forzar validation UI
+    if (this.perfilForm.invalid) {
+      this.perfilForm.form.markAllAsTouched();
+      return;
+    }
+
+    this.errorMsg   = '';
+    this.successMsg = '';
 
     const payload = {
       nickname: this.nickname,
@@ -55,18 +59,15 @@ export class PerfilComponent implements OnInit {
       telefono: this.telefono
     };
 
-    this.authService
-      .updateUsuario(this.oldNickname, payload)
-      .subscribe({
-        next: (jwtDto) => {
-          alert('Perfil actualizado con éxito');
-          // si el nickname cambió, actualizamos oldNickname
-          this.oldNickname = this.nickname;
-        },
-        error: (err) => {
-          console.error('Error al actualizar perfil', err);
-          this.errorMsg = 'Error al actualizar perfil';
-        }
-      });
+    this.authService.updateUsuario(this.oldNickname, payload).subscribe({
+      next: () => {
+        this.successMsg   = 'Datos actualizados correctamente.';
+        this.oldNickname  = this.nickname;
+      },
+      error: err => {
+        console.error('Error al actualizar perfil', err);
+        this.errorMsg = err.error?.errores?.[0] || 'Error al actualizar perfil';
+      }
+    });
   }
 }

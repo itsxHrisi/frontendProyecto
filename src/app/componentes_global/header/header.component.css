@@ -1,3 +1,8 @@
+/* ────────────────────────────────────
+   NAVIGATION STYLES (unificado)
+──────────────────────────────────── */
+
+/* Contenedor principal de la barra */
 .nav {
   display: flex;
   align-items: center;
@@ -8,62 +13,26 @@
   font-family: 'Poppins', sans-serif;
   width: 100%;
 }
-/* 1) Forzar tamaño fijo al avatar: */
-#imgPerf {
-  width: 40px;
-  height: 40px;       /* misma altura que anchura */
-  object-fit: cover;  /* recortar si hace falta */
-  border-radius: 50%;
-}
 
-/* 2) Alineación vertical de texto e imagen juntos */
-.profile-link, .nav-links a.profile-link {
-  display: inline-flex;      /* o flex si ya no es inline */
-  align-items: center;       /* centra verticalmente */
-  gap: 8px;                  /* separación imagen–texto */
-  padding: 5px 10px;         /* ajusta si quieres */
-}
-
-.nav-links {
-  display: flex;
-  gap: 20px;
-  flex: 1 1 auto;
-  justify-content: center;
-
-  /* --- Ajustes para centrar verticalmente --- */
-  align-self: stretch;  /* Llenar toda la altura de .nav */
-  align-items: center;  /* Centrar los <a> verticalmente */
-  margin-right: 2vw;
-}
-
-.nav-links a {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 300;
-  color: var(--color_texto_hf);
-  background-color: transparent;
+/* Logo fijo a la izquierda */
+.logo {
+  width: 80px;
+  height: auto;
+  margin-left: 10px;
   border-radius: 5px;
-  text-decoration: none;
-  font-size: 18px;
-  padding: 10px 15px;
-  transition: 0.5s;
-}
-.no-pointer {
-  cursor: default;  /* o cursor: auto; */
-}
-.nav-links a:hover {
-  background-color: var(--button_login);
-  color: white;
+  flex-shrink: 0;
 }
 
-#fotoHeader {
-  width: 400px;
+/* Sección derecha (toggle + links) */
+.nav-right {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  align-self: stretch;
+  margin-right: 4vw;
 }
 
-.router-link-active {
-  background-color: blue;
-  color: white;
-}
-
+/* Botón hamburguesa (solo móvil) */
 .menu-toggle {
   display: none;
   font-size: 24px;
@@ -73,45 +42,74 @@
   color: white;
 }
 
-/* SECCIÓN DE LOGO SECUNDARIO (extremo derecho dentro de .nav-right) */
-.img-section {
+/* Contenedor de enlaces */
+.nav-links {
   display: flex;
+  gap: 20px;
+  flex: 1 1 auto;
+  justify-content: center;
+  align-self: stretch;
   align-items: center;
-  margin-left: auto;     /* empuja todo este bloque a la derecha */
-  /* permitimos que se encoja si hace falta */
-  flex: 0 1 auto;        
-  /* opcional: quita márgenes grandes si los tenías */
-  margin-right: 0;      
-  background-color:var(--fondo_hf);
+  margin-right: 2vw;
 }
 
-/* logo: ancho fijo en px en vez de % */
-.logo {
-  margin-left: 10px;
-  width: 80px;           /* ajústalo al tamaño real de tu imagen */
-  height: auto;
-  border-radius: 5px;
-  flex-shrink: 0;        /* que no se reduzca más allá de este ancho */
+/* Enlaces generales */
+.nav-links a,
+.profile-link,
+.nav-links a.no-pointer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  text-decoration: none;
+  color: var(--color_texto_hf);
+  background-color: transparent;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-.nav-right {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-  /* ------------------------------------------ */
-  align-self: stretch;   /* ← rellena la altura del .nav */
-  /* ------------------------------------------ */
-  margin-right: 4vw;
-}@media (max-width: 600px) {
+/* Hover y activo */
+.nav-links a:hover,
+.profile-link:hover,
+.nav-links a.no-pointer:hover,
+.nav-links a.router-link-active,
+.profile-link.router-link-active {
+  background-color: var(--button_login);
+  color: #fff;
+}
 
+/* Enlace sin puntero */
+.no-pointer {
+  cursor: default;
+}
+
+/* Perfil (avatar + nombre) */
+.profile-link {
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+#imgPerf {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ────────────────────────────────────
+   RESPONSIVE BREAKPOINTS
+──────────────────────────────────── */
+
+/* Tablets y móviles estrechos: menú colapsable */
+@media (max-width: 600px) {
   .nav {
-    position: relative;      /* contenedor de referencia para los absolute */
+    position: relative;
     flex-wrap: nowrap;
     justify-content: space-between;
-    align-items: center;
     padding: 10px 15px;
   }
-
   .menu-toggle {
     display: block;
     position: absolute;
@@ -120,17 +118,13 @@
     transform: translate(-50%, -50%);
     z-index: 10;
   }
-
-  /* cuando esté cerrado */
   .nav-links {
     display: none;
   }
-
-  /* cuando tenga .active: ocupa toda la anchura y baja */
   .nav-links.active {
     display: flex;
-    position: absolute;        /* fuera del flujo flex */
-    top: 100%;                 /* justo debajo del header */
+    position: absolute;
+    top: 100%;
     left: 0;
     right: 0;
     flex-direction: column;
@@ -138,31 +132,26 @@
     background: var(--fondo_hf);
     padding: 10px 0;
     gap: 5px;
-    z-index: 5;                /* bajo el toggle si hace falta */
+    z-index: 5;
   }
-
   .nav-links.active a {
     width: 100%;
     text-align: center;
   }
-
-  /* Logos límites de tamaño */
+  /* Ajuste logos e imágenes */
   .nav img {
     max-height: 40px;
     width: auto;
   }
 }
 
-
-/* ===========================
-   Mobile (≤600px)
-   =========================== */
+/* Móviles un poco más anchos */
 @media (max-width: 800px) {
-  #fotoHeader{
+  #fotoHeader {
     width: 250px;
   }
-  /* imágenes dentro de .nav: nunca superar cierta altura */
-.nav img {    
-  width: 100px;         /* mantiene la proporción */
-}
+  .nav img {
+    width: 100px;
+    height: auto;
+  }
 }

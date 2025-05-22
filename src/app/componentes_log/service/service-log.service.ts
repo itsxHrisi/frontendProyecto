@@ -168,11 +168,29 @@ changePassword(newPassword: string): Observable<JwtDto> {
   );
 }
 
-
+/** CREA GRUPO FAMILIAR */
+  createGrupo(nombre: string): Observable<any> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    return this.http.post<any>(
+      `${this.apiUrl}/grupos`,
+      { nombre },
+      { headers }
+    ).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error en createGrupo:', error);
+        return throwError(() => error);
+      })
+    );
+  }
   /**  GET perfil del usuario autenticado */
   getPerfil(): Observable<any> {
     const token = localStorage.getItem('auth_token') || '';
     const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    console.log(this.http.get<any>(
+      `${this.apiUrl}/usuarios/perfil`,
+      { headers }
+    ));
     return this.http.get<any>(
       `${this.apiUrl}/usuarios/perfil`,
       { headers }

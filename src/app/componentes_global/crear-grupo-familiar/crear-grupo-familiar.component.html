@@ -1,0 +1,44 @@
+<!-- src/app/componentes_grupo/crear-grupo/crear-grupo.component.html -->
+<div class="container">
+
+  <div class="login-box">
+    <form #grupoForm="ngForm" (ngSubmit)="onSubmit()">
+      <h2>Crear grupo familiar</h2>
+
+      <!-- Nombre del grupo -->
+      <div class="input-group">
+        <label for="nombre">Nombre del grupo</label>
+        <input
+          type="text"
+          id="nombre"
+          name="nombre"
+          [(ngModel)]="nombre"
+          #ng="ngModel"
+          required
+          minlength="3"
+        />
+        <div *ngIf="(grupoForm.submitted || ng.touched) && ng.errors" class="invalid-feedback">
+          <div *ngIf="ng.errors['required']">
+            El nombre es obligatorio.
+          </div>
+          <div *ngIf="ng.errors['minlength']">
+            Debe tener al menos 3 caracteres.
+          </div>
+        </div>
+      </div>
+
+      <!-- Error / éxito -->
+      <div *ngIf="errorMsg" class="invalid-feedback">{{ errorMsg }}</div>
+      <div *ngIf="successMsg" class="alert alert-success">{{ successMsg }}</div>
+
+      <!-- Botones -->
+      <button type="submit" class="login-button" [disabled]="grupoForm.invalid || cargando">
+        {{ cargando ? 'Creando...' : 'Crear grupo' }}
+      </button>
+      <button type="button" class="login-button cancel" (click)="onCancel()">
+        Cancelar
+      </button>
+    </form>
+  </div>
+
+</div>
