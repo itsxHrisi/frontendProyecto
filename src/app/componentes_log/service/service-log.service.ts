@@ -204,7 +204,9 @@ export class ServiceLogService {
   /** Validación de token local */
   isLoggedIn(): boolean {
     const token = localStorage.getItem('auth_token');
+    console.log("Se ha iniciado sesion");
     return !!token && !this.isTokenExpired(token);
+  
   }
   private isTokenExpired(token: string): boolean {
     try {
@@ -214,8 +216,8 @@ export class ServiceLogService {
       return true;
     }
   }
-
-  /** Roles */
+  
+  /** Roles as */
   getUserRoles(): string[] {
     const roles = localStorage.getItem('user_roles');
     return roles ? JSON.parse(roles) : [];
