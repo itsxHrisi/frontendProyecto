@@ -1,1 +1,47 @@
-<p>invitaciones works!</p>
+
+<!-- src/app/componentes_grupo/invitaciones/invitaciones.component.html -->
+<div class="container-invitaciones">
+  <div class="search-bar">
+    <input
+      #searchInput
+      type="text"
+      placeholder="Buscar invitaciones..."
+    />
+  </div>
+
+  <div *ngFor="let inv of filteredInvitaciones" class="invitacion-item">
+    <div class="info">
+      <!-- Si tu API no devuelve 'id', aquí mostramos el id de invitación si existe -->
+      <p *ngIf="inv.id !== undefined"><strong>ID Invitación:</strong> {{ inv.id }}</p>
+      <p><strong>Grupo:</strong> {{ inv.grupo.nombre }}</p>
+      <p><strong>De:</strong> {{ inv.grupo.administrador.nickname }}</p>
+      <p><strong>Enviado:</strong> {{ inv.fechaEnvio | date:'short' }}</p>
+    </div>
+    <div class="actions">
+      <button
+        class="accept-button"
+        (click)="cambiarEstado(inv.id!, 'ACEPTADA')"
+        [disabled]="!inv.id">
+        Aceptar
+      </button>
+      <button
+        class="reject-button"
+        (click)="cambiarEstado(inv.id!, 'RECHAZADA')"
+        [disabled]="!inv.id">
+        Rechazar
+      </button>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 0">
+      Anterior
+    </button>
+    <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+    <button
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage >= totalPages - 1">
+      Siguiente
+    </button>
+  </div>
+</div>

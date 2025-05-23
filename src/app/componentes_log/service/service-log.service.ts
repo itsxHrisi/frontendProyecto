@@ -1,15 +1,33 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+// src/app/componentes_log/service/service-log.service.ts
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, tap, throwError, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
-import { RecipeUser } from '../../interface/recipe-user';
-export interface Authority { authority: string; }
 
+export interface Authority { authority: string; }
 export interface JwtDto {
   token: string;
   username: string;
-  authorities: { authority: string }[];
+  authorities: Authority[];
+}
+
+export interface InvitacionDto {
+  id: number;
+  remitente: string;
+  grupoFamiliarId: number;
+  fechaEnvio: string;
+  estado: 'PENDIENTE' | 'ACEPTADA' | 'RECHAZADA';
+  // añade aquí más campos si tu API devuelve otros
+}
+
+export interface PaginaInvitaciones {
+  content: InvitacionDto[];
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;    // página actual
+  // puedes añadir más (sort, pageable…) si los necesitas
 }
 
 @Injectable({
@@ -17,14 +35,12 @@ export interface JwtDto {
 })
 export class ServiceLogService {
   private authUrl = environment.authUrl;
-  private apiUrl = environment.apiUrl;
+  private apiUrl  = environment.apiUrl;
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
-
   private userRoleSubject = new BehaviorSubject<string[]>(this.getUserRoles());
   userRole$ = this.userRoleSubject.asObservable();
 
@@ -35,51 +51,29 @@ export class ServiceLogService {
     return this.http
       .post<JwtDto>(`${this.authUrl}/login`, credentials, this.httpOptions)
       .pipe(
-        tap(response => {
-          if (response.token) {
-            localStorage.setItem('auth_token', response.token);
-            const roles = response.authorities.map(a => a.authority);
+        tap(res => {
+          if (res.token) {
+            localStorage.setItem('auth_token', res.token);
+            const roles = res.authorities.map(a => a.authority);
             localStorage.setItem('user_roles', JSON.stringify(roles));
             this.updateLoginStatus();
             this.updateUserRoles();
           }
         }),
-        catchError((error: HttpErrorResponse) => {
-          console.error('Error en userLogin:', error);
-          return throwError(() => error);
-        })
+        catchError((err: HttpErrorResponse) => throwError(() => err))
       );
   }
 
   /** LOGOUT */
   logout(): void {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('auth_token') || '';
     const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
-
-    this.http.post(
-      `${this.authUrl}/logout`,
-      {},
-      { headers }
-    ).subscribe({
+    this.http.post(`${this.authUrl}/logout`, {}, { headers }).subscribe({
       next: () => this.logoutLocally(),
-      error: err => {
-        console.error('Error al cerrar sesión:', err);
-        this.logoutLocally();
-      }
+      error: () => this.logoutLocally()
     });
   }
-  getOldPasswordFromToken(): string {
-    const token = localStorage.getItem('auth_token');
-    if (!token) return '';
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      // Aquí asumimos que el claim se llama `password`
-      return payload.password || '';
-    } catch (e) {
-      console.error('Error al parsear token para extraer contraseña:', e);
-      return '';
-    }
-  }
+
   private logoutLocally() {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user_roles');
@@ -89,17 +83,13 @@ export class ServiceLogService {
   }
 
   /** REGISTER */
-  userRegistro(user: RecipeUser): Observable<RecipeUser> {
-    return this.http.post<RecipeUser>(`${this.authUrl}/nuevo`, user, this.httpOptions)
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          console.error('Error en userRegistro:', error);
-          return throwError(() => error);
-        })
-      );
+  userRegistro(user: any): Observable<any> {
+    return this.http
+      .post<any>(`${this.authUrl}/nuevo`, user, this.httpOptions)
+      .pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
   }
 
-  /** GET CURRENT USERNAME FROM TOKEN */
+  /** Obtener nombre de usuario del token */
   getUsernameFromToken(): string {
     const token = localStorage.getItem('auth_token');
     if (!token) return '';
@@ -111,64 +101,60 @@ export class ServiceLogService {
     }
   }
 
-  /** FETCH USER DATA BY NICKNAME */
-  getUsuarioByNickname(nickname: string): Observable<any> {
-    return this.http.get<any>(
-      `http://localhost:8091/api/usuarios/${nickname}`,
-      this.httpOptions
-    );
-  }
- /** UPDATE USER DATA */
-  updateUsuario(oldNickname: string, updatedData: any): Observable<JwtDto> {
+  /** Perfil */
+  getPerfil(): Observable<any> {
     const token = localStorage.getItem('auth_token') || '';
     const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/usuarios/perfil`, { headers })
+      .pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
+  }
 
+  /** Update usuario */
+  updateUsuario(oldNickname: string, data: any): Observable<JwtDto> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
     return this.http.put<JwtDto>(
       `${this.apiUrl}/usuarios/${oldNickname}/actualizar`,
-      updatedData,
+      data,
       { headers }
     ).pipe(
-      tap((response: JwtDto) => {
-        if (response.token) {
-          localStorage.setItem('auth_token', response.token);
-          // ahora a² tiene tipo Authority
-          const roles = response.authorities.map((a: Authority) => a.authority);
+      tap(res => {
+        if (res.token) {
+          localStorage.setItem('auth_token', res.token);
+          const roles = res.authorities.map(a => a.authority);
           localStorage.setItem('user_roles', JSON.stringify(roles));
           this.updateLoginStatus();
           this.updateUserRoles();
         }
       }),
-      catchError((error: HttpErrorResponse) => {
-        console.error('Error en updateUsuario:', error);
-        return throwError(() => error);
-      }),
+      catchError((err: HttpErrorResponse) => throwError(() => err))
     );
-  }// src/app/componentes_log/service/service-log.service.ts
-/** Cambiar sólo la nueva contraseña (sin pedir la actual) */
-changePassword(newPassword: string): Observable<JwtDto> {
-  const nickname = this.getUsernameFromToken();
-  const token = localStorage.getItem('auth_token') || '';
-  const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+  }
 
-  return this.http.put<JwtDto>(
-    `${this.apiUrl}/usuarios/${nickname}/cambiar-password`,
-    { newPassword, confirmPassword: newPassword }, // tu DTO espera ambos
-    { headers }
-  ).pipe(
-    tap(response => {
-      // si llega nuevo token, lo guardamos
-      if (response.token) {
-        localStorage.setItem('auth_token', response.token);
-        const roles = response.authorities.map(a => a.authority);
-        localStorage.setItem('user_roles', JSON.stringify(roles));
-        this.updateLoginStatus();
-        this.updateUserRoles();
-      }
-    })
-  );
-}
+  /** Change password */
+  changePassword(newPassword: string): Observable<JwtDto> {
+    const nickname = this.getUsernameFromToken();
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    return this.http.put<JwtDto>(
+      `${this.apiUrl}/usuarios/${nickname}/cambiar-password`,
+      { newPassword, confirmPassword: newPassword },
+      { headers }
+    ).pipe(
+      tap(res => {
+        if (res.token) {
+          localStorage.setItem('auth_token', res.token);
+          const roles = res.authorities.map(a => a.authority);
+          localStorage.setItem('user_roles', JSON.stringify(roles));
+          this.updateLoginStatus();
+          this.updateUserRoles();
+        }
+      }),
+      catchError((err: HttpErrorResponse) => throwError(() => err))
+    );
+  }
 
-/** CREA GRUPO FAMILIAR */
+  /** Crear grupo familiar */
   createGrupo(nombre: string): Observable<any> {
     const token = localStorage.getItem('auth_token') || '';
     const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
@@ -176,58 +162,68 @@ changePassword(newPassword: string): Observable<JwtDto> {
       `${this.apiUrl}/grupos`,
       { nombre },
       { headers }
+    ).pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
+  }
+
+  /** Listar invitaciones paginadas */
+  getInvitaciones(page: number = 0, size: number = 10): Observable<PaginaInvitaciones> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    return this.http.get<PaginaInvitaciones>(
+      `${this.apiUrl}/invitaciones`,
+      { headers, params }
+    ).pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
+  }
+
+ /** Aceptar o rechazar invitación */
+  updateEstado(id: number, nuevoEstado: 'ACEPTADA' | 'RECHAZADA'): Observable<string> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    const params = new HttpParams().set('nuevoEstado', nuevoEstado);
+
+    return this.http.put(
+      `${this.apiUrl}/invitaciones/${id}/estado`,
+      {}, // body vacío
+      {
+        headers,
+        params,
+        responseType: 'text'  // <-- aquí le decimos que espere texto
+      }
     ).pipe(
-      catchError((error: HttpErrorResponse) => {
-        console.error('Error en createGrupo:', error);
-        return throwError(() => error);
+      catchError(err => {
+        console.error('Error en updateEstado:', err);
+        return throwError(() => err);
       })
     );
   }
-  /**  GET perfil del usuario autenticado */
-  getPerfil(): Observable<any> {
-    const token = localStorage.getItem('auth_token') || '';
-    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
-    console.log(this.http.get<any>(
-      `${this.apiUrl}/usuarios/perfil`,
-      { headers }
-    ));
-    return this.http.get<any>(
-      `${this.apiUrl}/usuarios/perfil`,
-      { headers }
-    );
-  }
-  /** TOKEN VALIDATION */
+
+  /** Validación de token local */
   isLoggedIn(): boolean {
     const token = localStorage.getItem('auth_token');
     return !!token && !this.isTokenExpired(token);
   }
-
   private isTokenExpired(token: string): boolean {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      const expiration = payload.exp * 1000;
-      if (Date.now() > expiration) {
-        this.logoutLocally();
-        return true;
-      }
-      return false;
+      return Date.now() > payload.exp * 1000;
     } catch {
-      this.logoutLocally();
       return true;
     }
   }
 
-  /** ROLE MANAGEMENT */
+  /** Roles */
   getUserRoles(): string[] {
     const roles = localStorage.getItem('user_roles');
     return roles ? JSON.parse(roles) : [];
   }
-
-  public updateLoginStatus() {
+  updateLoginStatus() {
     this.isLoggedInSubject.next(this.isLoggedIn());
   }
-
-  public updateUserRoles() {
+  updateUserRoles() {
     this.userRoleSubject.next(this.getUserRoles());
   }
 }
