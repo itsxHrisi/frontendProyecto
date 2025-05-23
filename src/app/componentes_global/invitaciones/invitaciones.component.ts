@@ -82,7 +82,7 @@ export class InvitacionesComponent implements OnInit, AfterViewInit {
   this.invitService.updateEstado(id, estado).subscribe({
     next: () => {
       if (estado === 'ACEPTADA') {
-        this.router.navigate(['/crearGrupo']);
+        this.router.navigate(['/grupo']);
       } else {
         this.loadInvitaciones(this.currentPage);
       }

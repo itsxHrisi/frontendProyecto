@@ -1,0 +1,122 @@
+/* src/app/componentes_global/grupo/grupo.component.css */
+
+/* Padre centra y da fondo */
+.container-grupo {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: var(--color_fondo);
+  min-height: calc(100vh - 60px);
+}
+
+/* Caja “píldora” */
+.grupo-box {
+  display: flex;
+  width: 80vw;
+  max-width: 1600px;
+  height: 55vh;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 30px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+/* Sidebar: columna izquierda */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 250px;            /* ancho fijo */
+  border: 2px solid black;
+}
+
+/* Cabecera dentro de sidebar */
+.grupo-header {
+  background-color: var(--button_login);
+  padding: 32px 16px;
+  min-height: 80px;
+  border-bottom: 2px solid black;
+
+  /* CENTRADO: */
+  display: flex;
+  justify-content: center;  /* centra horizontalmente */
+  align-items: center;      /* centra verticalmente */
+  text-align: center;       /* por si acaso */
+}
+
+.grupo-name {
+  margin: 0;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Menú justo abajo */
+.sidebar-menu {
+  flex: 1;                 /* ocupa el resto del sidebar */
+  background: #fafafa;
+  padding: 20px;
+  overflow-y: auto;
+}
+.sidebar-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sidebar-menu li + li {
+  margin-top: 12px;
+}
+
+/* Links y botones */
+.menu-link,
+.menu-button {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.menu-link {
+  background-color: var(--button_login);
+  color: white;
+}
+.menu-link:hover {
+  background-color: var(--button_login_hover);
+}
+.menu-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.menu-button:hover {
+  background-color: #c0392b;
+}
+
+/* Zona de contenido principal */
+.main-content {
+  flex: 1;                 /* ocupa todo el espacio restante */
+  padding: 24px;
+  overflow: auto;
+}
+
+/* Responsivo: apila en vertical */
+@media (max-width: 900px) {
+  .grupo-box {
+    flex-direction: column;
+    width: 90vw;
+    height: auto;
+    border-radius: 20px;
+  }
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+}

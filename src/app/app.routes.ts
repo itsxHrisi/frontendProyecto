@@ -10,23 +10,32 @@ import { CrearGrupoComponent }   from './componentes_global/crear-grupo/crear-gr
 import { CrearGrupoFamiliarComponent }   from './componentes_global/crear-grupo-familiar/crear-grupo-familiar.component';
 import { InvitacionesComponent }   from './componentes_global/invitaciones/invitaciones.component';
 import { authGuard }         from './componentes_log/guards/auth.guard';
+import { GrupoComponent } from './componentes_global/grupo/grupo.component';
+import { CrearGastoComponent } from './componentes_global/crear-gasto/crear-gasto.component';
 
 export const routes: Routes = [
-  // Redirige la raíz a /#/inicio
-  { path: '', pathMatch: 'full', redirectTo: 'inicio' },
-
-  // Rutas principales
+  { path: '', redirectTo: 'inicio', pathMatch: 'full' },
   { path: 'inicio', component: InicioComponent },
-  { path: 'login', canActivate: [ authGuard ], component: LoginComponent },
-  { path: 'registro', canActivate: [ authGuard ], component: RegistroComponent },
-  { path: 'perfil', component: PerfilComponent },
+  { path: 'login',    canActivate:[authGuard], component: LoginComponent },
+  { path: 'registro', canActivate:[authGuard], component: RegistroComponent },
+  { path: 'perfil',   component: PerfilComponent },
   { path: 'cambiarpass', component: CambiarPassComponent },
-  { path: 'crearGrupo', component: CrearGrupoComponent },
+  { path: 'crearGrupo',  component: CrearGrupoComponent },
   { path: 'crearGrupoFamiliar', component: CrearGrupoFamiliarComponent },
   { path: 'invitaciones', component: InvitacionesComponent },
+  {
+    path: 'grupo',
+    component: GrupoComponent,
+    children: [
+      { path: '', redirectTo: 'gastos/crear', pathMatch: 'full' },
+      { path: 'gastos/crear', component: CrearGastoComponent },
+      // futuras hijas:
+      // { path: 'gastos/mios', component: MisGastosComponent },
+      // { path: 'gastos',       component: VerGastosComponent }
+    ]
+  },
 
-  
-
-  // Wildcard: cualquier otra ruta a /#/inicio
   { path: '**', redirectTo: 'inicio' }
 ];
+
+

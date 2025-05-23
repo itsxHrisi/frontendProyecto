@@ -1,0 +1,41 @@
+<!-- src/app/componentes_global/grupo/grupo.component.html -->
+<div class="container-grupo">
+  <div class="grupo-box">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <header class="grupo-header">
+        <h2 class="grupo-name">{{ groupName }}</h2>
+      </header>
+      <nav class="sidebar-menu">
+        <ul>
+          <li *ngIf="hasRole('ROL_USER') || hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
+            <a routerLink="gastos/crear" class="menu-link" routerLinkActive="active">Crear Gasto</a>
+          </li>
+          <li *ngIf="hasRole('ROL_USER') || hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
+            <a routerLink="/gastos/mios" class="menu-link">Ver mis Gastos</a>
+          </li>
+          <li *ngIf="hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
+            <a routerLink="/gastos" class="menu-link">Ver Gastos</a>
+          </li>
+          <li *ngIf="hasRole('ROL_ADMIN')">
+            <a routerLink="/grupo/invitar" class="menu-link">Invitar Usuarios</a>
+          </li>
+          <li *ngIf="hasRole('ROL_ADMIN')">
+            <a routerLink="/grupo/expulsar" class="menu-link">Expulsar Usuarios</a>
+          </li>
+          <li *ngIf="hasRole('ROL_ADMIN')">
+            <button (click)="abandonarGrupo()" class="menu-button">Eliminar Grupo</button>
+          </li>
+          <li *ngIf="!hasRole('ROL_ADMIN')">
+            <button (click)="abandonarGrupo()" class="menu-button">Abandonar Grupo</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

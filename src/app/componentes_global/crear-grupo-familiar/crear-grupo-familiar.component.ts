@@ -1,54 +1,73 @@
-
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule }      from '@angular/common';
+import { FormsModule }       from '@angular/forms';
+import { Router, RouterLink }from '@angular/router';
+import { catchError, of }    from 'rxjs';
 import { ServiceLogService } from '../../componentes_log/service/service-log.service';
 
 @Component({
-  selector: 'app-crear-grupo-familiar',
+  selector: 'app-crear-grupo',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './crear-grupo-familiar.component.html',
-  styleUrl: './crear-grupo-familiar.component.css'
+  styleUrls: ['./crear-grupo-familiar.component.css']
 })
-export class CrearGrupoFamiliarComponent {
-  nombre = '';
+export class CrearGrupoFamiliarComponent implements OnInit {
+  nombre: string = '';
+  grupoFamiliarId: number | null = null;
+  cargando = true;
   errorMsg = '';
   successMsg = '';
-  cargando = false;
 
   constructor(
     private service: ServiceLogService,
     private router: Router
   ) {}
 
+  ngOnInit(): void {
+    // 1) comprobar perfil al inicializar
+    this.service.getPerfil().pipe(
+      catchError(err => {
+        console.error('Error al cargar perfil en CrearGrupo:', err);
+        this.cargando = false;
+        return of(null);
+      })
+    ).subscribe(perfil => {
+      this.cargando = false;
+      this.grupoFamiliarId = perfil?.grupoFamiliarId ?? null;
+      // 2) si ya tiene grupo, vamos hacia /grupo
+      if (this.grupoFamiliarId !== null) {
+        this.router.navigate(['/grupo']);
+      }
+    });
+  }
+
   onSubmit(): void {
-    this.errorMsg = '';
+    this.errorMsg   = '';
     this.successMsg = '';
 
-    // validaciones básicas
-    if (!this.nombre || this.nombre.trim().length < 3) {
+    // validación rápida
+    if (!this.nombre.trim() || this.nombre.trim().length < 3) {
       this.errorMsg = 'Ingresa un nombre válido de al menos 3 caracteres.';
       return;
     }
 
     this.cargando = true;
     this.service.createGrupo(this.nombre.trim()).subscribe({
-      next: grupo => {
+      next: () => {
         this.cargando = false;
-        this.successMsg = 'Grupo creado correctamente.';
-        // redirige, por ejemplo, al detalle del grupo
-        setTimeout(() => this.router.navigate(['/grupos', grupo.id]), 1000);
+        // tras crear, también redirige
+        this.router.navigate(['/grupo']);
       },
       error: err => {
         this.cargando = false;
+        console.error('Error al crear grupo:', err);
         this.errorMsg = err.error?.message || 'Error al crear el grupo.';
       }
     });
   }
 
   onCancel(): void {
-    this.router.navigate(['/']); // o la ruta que prefieras
+    this.router.navigate(['/']);
   }
 }

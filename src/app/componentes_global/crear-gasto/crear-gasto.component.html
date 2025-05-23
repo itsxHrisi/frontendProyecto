@@ -1,0 +1,34 @@
+<form #gastoForm="ngForm" (ngSubmit)="onSubmit(gastoForm)">
+  <div>
+    <label>Tipo de gasto</label>
+    <select name="tipoGasto" required [(ngModel)]="formModel.tipoGasto">
+      <option value="" disabled>— Selecciona —</option>
+      <option *ngFor="let t of tipoGastos" [value]="t">{{ t }}</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Subtipo</label>
+    <select name="subtipo" required [(ngModel)]="formModel.subtipo"
+            [disabled]="!formModel.tipoGasto">
+      <option value="" disabled>— Selecciona —</option>
+      <option *ngFor="let s of subtipoOptions" [value]="s">{{ s }}</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Cantidad</label>
+    <input type="text" name="cantidad" required
+           [(ngModel)]="formModel.cantidad" placeholder="e.j. 43.50" />
+  </div>
+
+  <div>
+    <label>Fecha</label>
+    <input type="date" name="fecha" required
+           [(ngModel)]="formModel.fecha" />
+  </div>
+
+  <button type="submit" [disabled]="gastoForm.invalid">
+    Crear Gasto
+  </button>
+</form>

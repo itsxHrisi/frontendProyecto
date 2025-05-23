@@ -24,22 +24,6 @@
           Inicio
         </a>
 
-        <!-- Rutas por rol -->
-        <ng-container *ngFor="let rol of userRole">
-          <ng-container [ngSwitch]="rol">
-            <ng-container *ngSwitchCase="'ROL_ADMIN'">
-              <a [routerLink]="['/invitar-usuario']">Invitar usuario</a>
-              <a [routerLink]="['/users-list-kick']">Expulsar Usuarios</a>
-            </ng-container>
-          </ng-container>
-        </ng-container>
-        <ng-container *ngFor="let rol of userRole">
-          <ng-container [ngSwitch]="rol">
-            <ng-container *ngSwitchCase="'ROL_PADRE'">
-              <a [routerLink]="['/listar-gastos']">Invitar usuario</a>
-            </ng-container>
-          </ng-container>
-        </ng-container>
         <!-- Link de perfil con nombre -->
         <a class="profile-link" routerLinkActive="router-link-active" [routerLink]="['/perfil']">
           <img
