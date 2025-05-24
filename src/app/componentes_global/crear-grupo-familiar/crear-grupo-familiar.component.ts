@@ -68,6 +68,6 @@ export class CrearGrupoFamiliarComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(['/crearGrupo']);
   }
 }

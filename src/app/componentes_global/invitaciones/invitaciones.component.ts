@@ -49,19 +49,19 @@ export class InvitacionesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  loadInvitaciones(page: number = 0): void {
-    this.invitService.getInvitaciones(page).subscribe({
-      next: (resp: PaginaInvitaciones) => {
-        this.invitaciones = resp.content;
-        this.filteredInvitaciones = [...this.invitaciones];
-        this.currentPage = resp.number;
-        this.totalPages = resp.totalPages;
-        this.applyFilter();
-      },
-      error: err => console.error('Error cargando invitaciones', err)
-    });
-  }
-
+ loadInvitaciones(page: number = 0): void {
+  // Cambiamos el size por 5
+  this.invitService.getInvitaciones(page, 3).subscribe({
+    next: (resp: PaginaInvitaciones) => {
+      this.invitaciones        = resp.content;
+      this.filteredInvitaciones = [...this.invitaciones];
+      this.currentPage         = resp.number;
+      this.totalPages          = resp.totalPages;
+      this.applyFilter();
+    },
+    error: err => console.error('Error cargando invitaciones', err)
+  });
+}
   applyFilter(): void {
     if (!this.searchTerm) {
       this.filteredInvitaciones = [...this.invitaciones];

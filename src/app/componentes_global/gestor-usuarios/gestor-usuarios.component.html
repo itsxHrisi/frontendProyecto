@@ -1,15 +1,14 @@
+<!-- src/app/componentes_global/gestor-usuarios/gestor-usuarios.component.html -->
 <div class="container-usuarios">
-  <!-- Barra de búsqueda -->
   <div class="search-bar">
     <input
       #searchInput
       type="text"
-      placeholder="Buscar usuario..."
+      placeholder="Buscar usuario…"
       class="search-input"
     />
   </div>
 
-  <!-- Wrapper para scroll horizontal en pantallas pequeñas -->
   <div class="table-wrapper">
     <table class="user-table">
       <thead>
@@ -24,7 +23,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let u of filteredUsuarios">
+        <tr *ngFor="let u of paginatedUsuarios">
           <td>{{ u.nickname }}</td>
           <td>{{ u.nombre }}</td>
           <td>{{ u.email }}</td>
@@ -39,12 +38,20 @@
             />
           </td>
           <td>
-            <button class="expulsar-button" (click)="expulsarUsuario(u)">
-              Expulsar
-            </button>
+            <button (click)="expulsarUsuario(u)">Expulsar</button>
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button (click)="prevPage()" [disabled]="currentPage === 0">
+      Anterior
+    </button>
+    <span>Página {{ currentPage + 1 }} / {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1">
+      Siguiente
+    </button>
   </div>
 </div>

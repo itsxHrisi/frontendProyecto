@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule }  from '@angular/forms';
 import { fromEvent }    from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
-import { RolDto, ServiceLogService, UserDto,GrupoDto } from '../../componentes_log/service/service-log.service';
+import { RolDto, ServiceLogService, UserDto,GrupoDto,PaginaUsuarios } from '../../componentes_log/service/service-log.service';
 
 @Component({
   selector: 'app-gestor-usuarios',
@@ -25,31 +25,36 @@ export class GestorUsuariosComponent implements OnInit, AfterViewInit {
   usuarios: UserDto[] = [];
   filteredUsuarios: UserDto[] = [];
   searchTerm = '';
+
+    // paginación
+  currentPage = 0;
+  pageSize    = 3;
+
   private grupoId!: number;
 
   constructor(
     private authService: ServiceLogService,
     private service: ServiceLogService
   ) {}
-  /** Devuelve true si el usuario tiene rol ADMIN */
-  hasAdminRole(u: UserDto): boolean {
-    return (u.roles ?? []).some((r: RolDto) => r.nombre === 'ROL_ADMIN');
-  }
-  ngOnInit(): void {
+  
+ngOnInit(): void {
     this.authService.getPerfil().pipe(
-      tap(perfil => this.grupoId = perfil.grupoFamiliarId),
-      switchMap(perfil => this.service.getGrupo(perfil.grupoFamiliarId))
+      tap(perf => this.grupoId = perf.grupoFamiliarId),
+      switchMap(perf => this.service.getGrupo(this.grupoId))
     ).subscribe({
-      next: grupo => {
-        console.log('Grupo completo:', grupo);
+      next: (grupo: GrupoDto) => {
         // filtramos fuera los admins
-        const nonAdmins = grupo.usuarios.filter(u => !this.hasAdminRole(u));
-        this.usuarios = nonAdmins;
+        const nonAdmins = grupo.usuarios.filter(u =>
+          !u.roles.some(r => r.nombre === 'ROL_ADMIN')
+        );
+        this.usuarios         = nonAdmins;
         this.filteredUsuarios = [...nonAdmins];
+        this.currentPage      = 0;
       },
       error: err => console.error(err)
     });
   }
+
   ngAfterViewInit(): void {
     fromEvent<any>(this.searchInput.nativeElement, 'keyup').pipe(
       map(e => e.target.value.trim().toLowerCase()),
@@ -61,20 +66,37 @@ export class GestorUsuariosComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   private applyFilter(): void {
-    const base = this.usuarios; // ya no contiene admins
+    this.currentPage = 0;
     if (!this.searchTerm) {
-      this.filteredUsuarios = [...base];
+      this.filteredUsuarios = [...this.usuarios];
     } else {
-      const term = this.searchTerm;
-      this.filteredUsuarios = base.filter(u =>
-        u.nickname.toLowerCase().includes(term) ||
-        u.nombre.toLowerCase().includes(term)   ||
-        u.email.toLowerCase().includes(term)    ||
-        u.telefono.toLowerCase().includes(term)
+      const t = this.searchTerm;
+      this.filteredUsuarios = this.usuarios.filter(u =>
+        u.nickname.toLowerCase().includes(t) ||
+        u.nombre.toLowerCase().includes(t)   ||
+        u.email.toLowerCase().includes(t)    ||
+        u.telefono.toLowerCase().includes(t)
       );
     }
+  }
+
+  /** Colección paginada que usa el template */
+  get paginatedUsuarios(): UserDto[] {
+    const start = this.currentPage * this.pageSize;
+    return this.filteredUsuarios.slice(start, start + this.pageSize);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredUsuarios.length / this.pageSize);
+  }
+
+  prevPage() {
+    if (this.currentPage > 0) this.currentPage--;
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages - 1) this.currentPage++;
   }
 
     getRoleNames(u: UserDto): string {
@@ -106,7 +128,10 @@ export class GestorUsuariosComponent implements OnInit, AfterViewInit {
       });
     }
   }
-
+/** Devuelve true si el usuario tiene rol ADMIN */
+  hasAdminRole(u: UserDto): boolean {
+    return (u.roles ?? []).some((r: RolDto) => r.nombre === 'ROL_ADMIN');
+  }
   expulsarUsuario(u: UserDto): void {
     this.service.expulsarUsuario(this.grupoId, u.nickname).subscribe({
       next: () => {
