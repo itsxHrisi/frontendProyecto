@@ -30,7 +30,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'gastos/crear', pathMatch: 'full' },
       { path: 'gastos/crear', component: CrearGastoComponent },
-      { path: '/gestor', component: GestorUsuariosComponent },
+      { path: 'gestor', component: GestorUsuariosComponent },
       // futuras hijas:
       // { path: 'gastos/mios', component: MisGastosComponent },
       // { path: 'gastos',       component: VerGastosComponent }

@@ -1,0 +1,50 @@
+<div class="container-usuarios">
+  <!-- Barra de búsqueda -->
+  <div class="search-bar">
+    <input
+      #searchInput
+      type="text"
+      placeholder="Buscar usuario..."
+      class="search-input"
+    />
+  </div>
+
+  <!-- Wrapper para scroll horizontal en pantallas pequeñas -->
+  <div class="table-wrapper">
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>Nickname</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Roles</th>
+          <th>Teléfono</th>
+          <th>Padre</th>
+          <th>Expulsar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of filteredUsuarios">
+          <td>{{ u.nickname }}</td>
+          <td>{{ u.nombre }}</td>
+          <td>{{ u.email }}</td>
+          <td>{{ getRoleNames(u) }}</td>
+          <td>{{ u.telefono }}</td>
+          <td>
+            <input
+              #chkPadre
+              type="checkbox"
+              [checked]="hasPadreRole(u)"
+              (change)="toggleRolPadre(u, chkPadre.checked)"
+            />
+          </td>
+          <td>
+            <button class="expulsar-button" (click)="expulsarUsuario(u)">
+              Expulsar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

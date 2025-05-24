@@ -21,7 +21,7 @@
             <a routerLink="/grupo/invitar" class="menu-link">Invitar Usuarios</a>
           </li>
           <li *ngIf="hasRole('ROL_ADMIN')">
-            <a routerLink="/grupo/gestor" class="menu-link">Gestor de Usuarios</a>
+            <a routerLink="gestor" class="menu-link">Gestor de Usuarios</a>
           </li>
           <li *ngIf="hasRole('ROL_USER')&& !hasRole('ROL_ADMIN')">
             <button (click)="abandonarGrupo()" class="menu-button">Abandonar Grupo</button>

@@ -1,7 +1,7 @@
 // src/app/componentes_log/service/service-log.service.ts
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, tap, throwError, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, tap, throwError, Observable, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
 
@@ -20,7 +20,26 @@ export interface InvitacionDto {
   estado: 'PENDIENTE' | 'ACEPTADA' | 'RECHAZADA';
   // añade aquí más campos si tu API devuelve otros
 }
-
+export interface GrupoDto {
+  id: number;
+  nombre: string;
+  administrador: {
+    id: number;
+    nombre: string;
+    nickname: string;
+    email: string;
+    roles: { id: number; nombre: string }[];
+    telefono: string;
+  };
+  usuarios: Array<{
+    id: number;
+    nombre: string;
+    nickname: string;
+    email: string;
+    roles: { id: number; nombre: string }[];
+    telefono: string;
+  }>;
+}
 export interface PaginaInvitaciones {
   content: InvitacionDto[];
   totalPages: number;
@@ -29,13 +48,24 @@ export interface PaginaInvitaciones {
   number: number;    // página actual
   // puedes añadir más (sort, pageable…) si los necesitas
 }
+export interface RolDto {
+  id: number;
+  nombre: string;
+}
+export interface PaginaUsuarios {
+  content: UserDto[];
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;  // página actual
+}
 export interface UserDto {
   id: number;
   nickname: string;
   nombre: string;
   email: string;
   telefono: string;
-  roles: string[];
+  roles: RolDto[];
 }
 @Injectable({
   providedIn: 'root'
@@ -52,6 +82,25 @@ export class ServiceLogService {
   userRole$ = this.userRoleSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {}
+// src/app/componentes_log/service/service-log.service.ts
+
+/** Devuelve sólo el array de usuarios de un grupo dado */
+getUsuariosPorGrupo(
+  grupoId: number,
+  page: number = 0,
+  size: number = 100,
+  sort: string[] = ['id,asc']
+): Observable<UserDto[]> {
+  // reusa el método genérico de filter
+  return this.getUsuariosFilter(
+    `grupoFamiliar.id:EQUAL:${grupoId}`,
+    page,
+    size,
+    sort
+  ).pipe(
+    map(pageDto => pageDto.content)  // extrae solo el array
+  );
+}
 
   /** LOGIN */
   userLogin(credentials: { nickname: string; password: string }): Observable<JwtDto> {
@@ -73,6 +122,31 @@ export class ServiceLogService {
       );
   }
 
+  /** Paginado y filtrado genérico de usuarios */
+  getUsuariosFilter(
+    filter: string,
+    page: number = 0,
+    size: number = 10,
+    sort: string[] = ['id,asc']
+  ): Observable<PaginaUsuarios> {
+    const token   = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    let params    = new HttpParams()
+      .set('filter', filter)
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    sort.forEach(s => params = params.append('sort', s));
+
+    return this.http
+      .get<PaginaUsuarios>(`${this.apiUrl}/usuarios/filter`, { headers, params })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error al cargar usuarios filtrados:', err);
+          return throwError(() => err);
+        })
+      );
+  }
   /** LOGOUT */
   logout(): void {
     const token = localStorage.getItem('auth_token') || '';
@@ -274,42 +348,71 @@ deleteGrupo(grupoId: number): Observable<string> {
         })
       );
   }
-   /** Asignar rol PADRE a un usuario */
+ 
+  /** Obtener grupo por ID */
+  getGrupo(grupoId: number): Observable<GrupoDto> {
+    const token   = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    return this.http
+      .get<GrupoDto>(`${this.apiUrl}/grupos/${grupoId}`, { headers })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error cargando grupo:', err);
+          return throwError(() => err);
+        })
+      );
+  }
+
+  /** Asignar rol PADRE a un usuario dentro del grupo */
   asignarRolPadre(nicknameDestino: string): Observable<any> {
     const token   = localStorage.getItem('auth_token') || '';
     const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
     const params  = new HttpParams()
       .set('nicknameDestino', nicknameDestino)
       .set('rol', 'PADRE');
-    return this.http.put(
-      `${this.apiUrl}/grupos/asignar-rol`,
-      null,
-      { headers, params }
-    ).pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
+    return this.http
+      .put(`${this.apiUrl}/grupos/asignar-rol`, null, { headers, params, responseType: 'text' })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error asignando rol padre:', err);
+          return throwError(() => err);
+        })
+      );
   }
 
-  /** Quitar rol PADRE de un usuario */
+  /** Quitar todas las asignaciones de rol padre para un usuario */
   quitarRolPadre(nicknameDestino: string): Observable<any> {
     const token   = localStorage.getItem('auth_token') || '';
     const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
     const params  = new HttpParams().set('nicknameDestino', nicknameDestino);
-    return this.http.put(
-      `${this.apiUrl}/grupos/limpiar-roles`,
-      null,
-      { headers, params }
-    ).pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
+    return this.http
+      .put(`${this.apiUrl}/grupos/limpiar-roles`, null, { headers, params, responseType: 'text' })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error quitando rol padre:', err);
+          return throwError(() => err);
+        })
+      );
   }
 
-  /** Expulsar un usuario del grupo */
+  /** Expulsar a un usuario del grupo */
   expulsarUsuario(grupoId: number, nicknameDestino: string): Observable<any> {
     const token   = localStorage.getItem('auth_token') || '';
     const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
-    return this.http.put(
-      `${this.apiUrl}/grupos/${grupoId}/eliminar-usuario/${nicknameDestino}`,
-      null,
-      { headers }
-    ).pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
+    return this.http
+      .put(
+        `${this.apiUrl}/grupos/${grupoId}/eliminar-usuario/${nicknameDestino}`,
+        null,
+        { headers, responseType: 'text' }
+      )
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error expulsando usuario:', err);
+          return throwError(() => err);
+        })
+      );
   }
+
   /** Roles as */
   getUserRoles(): string[] {
     const roles = localStorage.getItem('user_roles');

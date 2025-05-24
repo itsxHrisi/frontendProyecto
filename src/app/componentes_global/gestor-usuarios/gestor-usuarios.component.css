@@ -1,0 +1,79 @@
+/* Contenedor general */
+.container-usuarios {
+  padding: 20px;
+  background-color: var(--color_fondo);
+}
+
+/* Barra de búsqueda */
+.search-bar {
+  margin-bottom: 1rem;
+}
+.search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* Wrapper permite scroll en pantallas estrechas */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+/* Estilos de la tabla */
+.user-table {
+  width: 100%;
+  min-width: 600px;            /* asegura un ancho mínimo */
+  border-collapse: collapse;
+  border: 2px solid black;
+  font-family: "Poppins", sans-serif;
+}
+.user-table th,
+.user-table td {
+  border: 1px solid black;
+  padding: 8px;
+}
+
+/* Cabeceras con fondo personalizado */
+.user-table th {
+  background-color: var(--button_login);
+  color: white;
+  font-weight: 600;
+  text-align: left;
+}
+
+/* Centramos las dos últimas columnas automáticamente */
+.user-table th:nth-child(6),
+.user-table th:nth-child(7),
+.user-table td:nth-child(6),
+.user-table td:nth-child(7) {
+  text-align: center;
+}
+
+/* Botón expulsar */
+.expulsar-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.expulsar-button:hover {
+  background-color: #c0392b;
+}
+
+/* RESPONSIVE: ajusta input y tabla en pantallas muy pequeñas */
+@media (max-width: 600px) {
+  .search-input {
+    max-width: 100%;
+    font-size: 0.9rem;
+  }
+  .user-table {
+    min-width: unset;
+  }
+}
