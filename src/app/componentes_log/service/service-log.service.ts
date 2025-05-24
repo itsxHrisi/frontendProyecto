@@ -13,7 +13,7 @@ export interface JwtDto {
 }
 
 export interface InvitacionDto {
-  id: number;
+  id: string;
   remitente: string;
   grupoFamiliarId: number;
   fechaEnvio: string;
@@ -29,7 +29,14 @@ export interface PaginaInvitaciones {
   number: number;    // página actual
   // puedes añadir más (sort, pageable…) si los necesitas
 }
-
+export interface UserDto {
+  id: number;
+  nickname: string;
+  nombre: string;
+  email: string;
+  telefono: string;
+  roles: string[];
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -48,6 +55,8 @@ export class ServiceLogService {
 
   /** LOGIN */
   userLogin(credentials: { nickname: string; password: string }): Observable<JwtDto> {
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user_roles');
     return this.http
       .post<JwtDto>(`${this.authUrl}/login`, credentials, this.httpOptions)
       .pipe(
@@ -252,7 +261,55 @@ deleteGrupo(grupoId: number): Observable<string> {
     })
   );
 }
+ /** Abandonar el grupo familiar actual */
+  abandonarGrupo(): Observable<any> {
+    const token   = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    return this.http
+      .delete(`${this.apiUrl}/grupos/abandonar`, { headers, responseType: 'text' })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error abandonando grupo:', err);
+          return throwError(() => err);
+        })
+      );
+  }
+   /** Asignar rol PADRE a un usuario */
+  asignarRolPadre(nicknameDestino: string): Observable<any> {
+    const token   = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    const params  = new HttpParams()
+      .set('nicknameDestino', nicknameDestino)
+      .set('rol', 'PADRE');
+    return this.http.put(
+      `${this.apiUrl}/grupos/asignar-rol`,
+      null,
+      { headers, params }
+    ).pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
+  }
 
+  /** Quitar rol PADRE de un usuario */
+  quitarRolPadre(nicknameDestino: string): Observable<any> {
+    const token   = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    const params  = new HttpParams().set('nicknameDestino', nicknameDestino);
+    return this.http.put(
+      `${this.apiUrl}/grupos/limpiar-roles`,
+      null,
+      { headers, params }
+    ).pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
+  }
+
+  /** Expulsar un usuario del grupo */
+  expulsarUsuario(grupoId: number, nicknameDestino: string): Observable<any> {
+    const token   = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    return this.http.put(
+      `${this.apiUrl}/grupos/${grupoId}/eliminar-usuario/${nicknameDestino}`,
+      null,
+      { headers }
+    ).pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
+  }
   /** Roles as */
   getUserRoles(): string[] {
     const roles = localStorage.getItem('user_roles');

@@ -47,8 +47,19 @@ export class GrupoComponent implements OnInit {
   }
 
   abandonarGrupo(): void {
-    console.log('Abandonar grupo');
+    this.authService.abandonarGrupo()
+      .pipe(
+        finalize(() => {
+          // tras completar la petición (éxito o error), vamos a creación
+          this.router.navigate(['/crearGrupo']);
+        })
+      )
+      .subscribe({
+        next: () => console.log('Has abandonado el grupo correctamente'),
+        error: err => console.error('Error al abandonar grupo:', err)
+      });
   }
+
 
 eliminarGrupo(): void {
   if (!this.grupoId) return;
