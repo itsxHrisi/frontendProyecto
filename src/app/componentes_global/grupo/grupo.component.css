@@ -14,14 +14,22 @@
   display: flex;
   width: 80vw;
   max-width: 1600px;
-  height: 55vh;
+  height: 60vh;
   background-color: white;
   border: 2px solid black;
   border-radius: 30px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.1);
   overflow: hidden;
 }
-
+/* En tu src/app/componentes_global/grupo/grupo.component.css */
+.main-content {
+  /* convierte en flex y centra horizontal y verticalmente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* opcional: si quieres que ocupe toda la altura disponible */
+  height: 100%;
+}
 /* Sidebar: columna izquierda */
 .sidebar {
   display: flex;

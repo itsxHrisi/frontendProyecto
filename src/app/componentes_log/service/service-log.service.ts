@@ -109,6 +109,26 @@ export class ServiceLogService {
       .pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
   }
 
+  /** Crear gasto */
+  createGasto(gasto: {
+    usuario:   { id: number };
+    grupo:     { id: number };
+    tipoGasto: string;
+    subtipo:   string;
+    cantidad:  string;
+    fecha:     string;
+  }): Observable<any> {
+    const token   = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    return this.http
+      .post<any>(`${this.apiUrl}/gastos`, gasto, { headers })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error creando gasto:', err);
+          return throwError(() => err);
+        })
+      );
+  }
   /** Update usuario */
   updateUsuario(oldNickname: string, data: any): Observable<JwtDto> {
     const token = localStorage.getItem('auth_token') || '';
@@ -216,7 +236,23 @@ export class ServiceLogService {
       return true;
     }
   }
-  
+ // src/app/componentes_log/service/service-log.service.ts
+
+/** Eliminar grupo por ID */
+deleteGrupo(grupoId: number): Observable<string> {
+  const token   = localStorage.getItem('auth_token') || '';
+  const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+  return this.http.delete(
+    `${this.apiUrl}/grupos/${grupoId}`,
+    { headers, responseType: 'text' }   // <- respuesta como texto
+  ).pipe(
+    catchError((err: HttpErrorResponse) => {
+      console.error('Error al eliminar grupo:', err);
+      return throwError(() => err);
+    })
+  );
+}
+
   /** Roles as */
   getUserRoles(): string[] {
     const roles = localStorage.getItem('user_roles');

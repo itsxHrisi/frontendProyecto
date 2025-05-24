@@ -17,7 +17,7 @@ export class CrearGastoComponent implements OnInit {
   tipoGastos = ['SUPERVIVENCIA','LUJO','EDUCACION','AHORRO','INVERSION'] as const;
   subtipoMap: Record<string,string[]> = {
     SUPERVIVENCIA: ['AGUA','BASURAS','COMIDA','COMUNIDAD','FARMACIA','GAS','GASOIL','GIMNASIO','HIJOS','HIPOTECA','IBI','LUZ','MANT_COCHE','MUTUA','ROPA_IMPRESCINDIBLE','SALUD','SEGURO_HOGAR','SEGURO_VIDA','COCHERA','CASA_APARATOS','DOCUMENTOS'],
-    LUJO:          ['ESPECTACULOS','ESTETICA','MAQUILLAJE','PARKING','REGALOS','RESTAURANTES','ROPA_COMPLEMENTOS','SUBS_OCIO','VIAJES','SALIDAS_OCIO','TELEFONO_INTERNET','LOTERIA','FALLA','LUJO_NIÑOS'],
+    LUJO:          ['ESPECTACULOS','ESTETICA','MAQUILLAJE','PARKING','REGALOS','RESTAURANTES','ROPA_COMPLEMENTOS','SUBSCRIPCIONES_OCIO','VIAJES','SALIDAS_OCIO','TELEFONO_INTERNET','LOTERIA','FALLA','LUJO_NIÑOS'],
     EDUCACION:     ['CURSOS','LIBROS','MASTERS','SUBSCRIPCIONES_EDU','PROGRAMAS'],
     AHORRO:        ['BANKINTER','TRADE_REPUBLIC','CAIXABANK','SABADELL','MY_INVESTOR'],
     INVERSION:     ['HAUSERA','IB','MYINVESTOR','BINANCE']
@@ -36,8 +36,8 @@ export class CrearGastoComponent implements OnInit {
   };
 
   constructor(
-    private http: HttpClient,
-    private auth: ServiceLogService
+    private service: ServiceLogService,
+    private auth:    ServiceLogService   // ya lo inyectas
   ) {}
 
   ngOnInit(): void {
@@ -60,24 +60,30 @@ export class CrearGastoComponent implements OnInit {
     return this.subtipoMap[this.formModel.tipoGasto] || [];
   }
 
+ // CAMBIO en src/app/componentes_gastos/crear-gasto/crear-gasto.component.ts
+
+// src/app/componentes_gastos/crear-gasto/crear-gasto.component.ts
   onSubmit(f: NgForm) {
     if (f.invalid) return;
 
     const payload = {
-      usuario: { id: this.usuarioId },
-      grupo:   { id: this.grupoId },
+      usuario:   { id: this.usuarioId },
+      grupo:     { id: this.grupoId },
       tipoGasto: this.formModel.tipoGasto,
       subtipo:   this.formModel.subtipo,
-      cantidad:  this.formModel.cantidad.replace('.',','), 
+      cantidad:  this.formModel.cantidad.replace('.', ','), 
       fecha:     this.formModel.fecha
     };
-    console.log('Enviando payload:', payload);
 
-    this.http
-      .post('http://localhost:8091/api/gastos', payload)
-      .subscribe({
-        next: res => console.log('Gasto creado:', res),
-        error: err => console.error('Error al crear gasto:', err)
-      });
+    console.log('Payload a enviar via Service:', payload);
+    this.service.createGasto(payload).subscribe({
+      next: res => {
+        console.log('Gasto creado:', res);
+        // aquí podrías limpiar el formulario o redirigir
+      },
+      error: err => {
+        console.error('Falló la creación de gasto:', err);
+      }
+    });
   }
 }

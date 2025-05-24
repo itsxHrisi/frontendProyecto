@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule }        from '@angular/common';
 import { Router, RouterLink, RouterOutlet }  from '@angular/router';
 import { ServiceLogService }   from '../../componentes_log/service/service-log.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-grupo',
@@ -18,11 +19,13 @@ import { ServiceLogService }   from '../../componentes_log/service/service-log.s
 export class GrupoComponent implements OnInit {
   groupName = '';
   roles: string[] = [];
+  private grupoId!: number;  // ← guardamos el ID aquí
 
   constructor(
     private authService: ServiceLogService,
     private router: Router
   ) {}
+
 
   ngOnInit(): void {
     this.authService.getPerfil().subscribe({
@@ -30,6 +33,7 @@ export class GrupoComponent implements OnInit {
         console.log('Perfil recibido en GrupoComponent:', user);
         this.groupName = user.grupoFamiliarNombre || '';
         this.roles     = (user.roles || []).map((r: any) => r.nombre);
+        this.grupoId   = user.grupoFamiliarId;  // ← capturamos el ID
       },
       error: err => {
         console.error('No se pudo cargar perfil en GrupoComponent:', err);
@@ -45,4 +49,24 @@ export class GrupoComponent implements OnInit {
   abandonarGrupo(): void {
     console.log('Abandonar grupo');
   }
+
+eliminarGrupo(): void {
+  if (!this.grupoId) return;
+
+  this.authService.deleteGrupo(this.grupoId)
+    .pipe(
+      finalize(() => {
+        // Esto siempre se ejecuta al terminar la petición
+        this.router.navigate(['/crearGrupo']);
+      })
+    )
+    .subscribe({
+      next: () => console.log('Grupo eliminado correctamente'),
+      error: err => {
+        console.error('Error eliminando grupo:', err);
+        // Opcional: si quieres solo navegar en caso de éxito,
+        // quita el finalize() y hazlo en next().
+      }
+    });
+}
 }

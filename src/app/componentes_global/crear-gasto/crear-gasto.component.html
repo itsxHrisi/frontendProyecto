@@ -1,5 +1,9 @@
-<form #gastoForm="ngForm" (ngSubmit)="onSubmit(gastoForm)">
-  <div>
+<form
+  #gastoForm="ngForm"
+  (ngSubmit)="onSubmit(gastoForm)"
+  class="container-gasto form-box"
+>
+  <div class="input-group">
     <label>Tipo de gasto</label>
     <select name="tipoGasto" required [(ngModel)]="formModel.tipoGasto">
       <option value="" disabled>— Selecciona —</option>
@@ -7,28 +11,38 @@
     </select>
   </div>
 
-  <div>
+  <div class="input-group">
     <label>Subtipo</label>
-    <select name="subtipo" required [(ngModel)]="formModel.subtipo"
-            [disabled]="!formModel.tipoGasto">
+    <select
+      name="subtipo"
+      required
+      [(ngModel)]="formModel.subtipo"
+      [disabled]="!formModel.tipoGasto"
+    >
       <option value="" disabled>— Selecciona —</option>
-      <option *ngFor="let s of subtipoOptions" [value]="s">{{ s }}</option>
+      <option *ngFor="let s of subtipoOptions" [value]="s">
+        {{ s }}
+      </option>
     </select>
   </div>
 
-  <div>
+  <div class="input-group">
     <label>Cantidad</label>
-    <input type="text" name="cantidad" required
-           [(ngModel)]="formModel.cantidad" placeholder="e.j. 43.50" />
+    <input
+      type="text"
+      name="cantidad"
+      required
+      [(ngModel)]="formModel.cantidad"
+      placeholder="e.j. 43.50"
+    />
   </div>
 
-  <div>
+  <div class="input-group">
     <label>Fecha</label>
-    <input type="date" name="fecha" required
-           [(ngModel)]="formModel.fecha" />
+    <input type="date" name="fecha" required [(ngModel)]="formModel.fecha" />
   </div>
 
-  <button type="submit" [disabled]="gastoForm.invalid">
+  <button type="submit" class="submit-button">
     Crear Gasto
   </button>
 </form>

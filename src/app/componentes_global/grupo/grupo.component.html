@@ -23,12 +23,13 @@
           <li *ngIf="hasRole('ROL_ADMIN')">
             <a routerLink="/grupo/expulsar" class="menu-link">Expulsar Usuarios</a>
           </li>
-          <li *ngIf="hasRole('ROL_ADMIN')">
-            <button (click)="abandonarGrupo()" class="menu-button">Eliminar Grupo</button>
-          </li>
-          <li *ngIf="!hasRole('ROL_ADMIN')">
+          <li *ngIf="hasRole('ROL_USER')">
             <button (click)="abandonarGrupo()" class="menu-button">Abandonar Grupo</button>
           </li>
+          <li *ngIf="hasRole('ROL_ADMIN') && !hasRole('ROL_ADMIN')">
+            <button (click)="eliminarGrupo()" class="menu-button">Eliminar Grupo</button>
+          </li>
+          
         </ul>
       </nav>
     </div>

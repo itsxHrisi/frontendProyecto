@@ -1,5 +1,103 @@
-form { display: flex; flex-direction: column; gap: 1rem; max-width: 400px; }
-label { font-weight: 600; }
-input, select, button { padding: 0.5rem; font-size: 1rem; }
-button { background: var(--button_login); color: white; border: none; cursor: pointer; }
-button:disabled { opacity: 0.6; cursor: default; }
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 400px;
+}
+label {
+  font-weight: 600;
+}
+
+
+/* Contenedor centrado como el de perfil */
+.container-gasto {
+  display: flex;
+  background-color: var(--color_fondo);
+}
+
+/* Caja blanca similar a login-box */
+.form-box {
+  background: white;
+  padding: 30px;
+  max-width: 400px;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+.form-box h2 {
+  font-size: 28px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.input-group {
+  /* si antes tenías margin-bottom: 15px, déjalo o ajústalo así: */
+  margin-bottom: 1.5rem;
+  /* para forzar que label e input estén en bloque separados */
+  display: flex;
+  flex-direction: column;
+}
+.input-group label {
+  margin-bottom: 0.5rem;
+}
+.input-group select,
+.input-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Botón de envío */
+.submit-button {
+  background-color: var(--button_login);
+  color: white;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 10px;
+}
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.submit-button:hover:not(:disabled) {
+  background-color: var(--button_login_hover);
+}
+
+/* Validación */
+.is-invalid {
+  border-color: #dc3545;
+}
+.invalid-feedback {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+/* Convierte el form (.form-box) en un grid de 2 columnas */
+.form-box {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;               /* espacio entre filas y columnas */
+}
+
+/* Asegura que cada grupo de input ocupe una celda */
+.form-box .input-group {
+  margin-bottom: 0;          /* el gap ya da separación */
+}
+
+/* El botón abarque ambas columnas abajo */
+.form-box .submit-button {
+  grid-column: 1 / -1;
+  margin-top: 1rem;          /* separación extra sobre el grid */
+}
