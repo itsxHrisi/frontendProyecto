@@ -1,0 +1,31 @@
+<div class="table-wrapper">
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th>Usuario</th>
+        <th>Grupo</th>
+        <th>Tipo Gasto</th>
+        <th>Subtipo</th>
+        <th>Cantidad</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let gasto of paginatedGastos">
+        <td>{{ gasto.usuario }}</td>
+        <td>{{ gasto.grupo }}</td>
+        <td>{{ gasto.tipoGasto }}</td>
+        <td>{{ gasto.subtipo }}</td>
+        <td>{{ gasto.cantidad | currency }}</td>
+        <td>{{ gasto.fecha | date: 'short' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Paginación -->
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+  </div>
+</div>

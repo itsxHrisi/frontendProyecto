@@ -14,6 +14,7 @@ import { GrupoComponent } from './componentes_global/grupo/grupo.component';
 import { CrearGastoComponent } from './componentes_global/crear-gasto/crear-gasto.component';
 import { GestorUsuariosComponent } from './componentes_global/gestor-usuarios/gestor-usuarios.component';
 import { CrearInvitacionesComponent } from './componentes_global/crear-invitaciones/crear-invitaciones.component';
+import { GastosComponent } from './componentes_global/gastos/gastos.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -33,6 +34,7 @@ export const routes: Routes = [
       { path: 'gastos/crear', component: CrearGastoComponent },
       { path: 'gestor', component: GestorUsuariosComponent },
       { path: 'invitacion', component: CrearInvitacionesComponent },
+      { path: 'gastos', component: GastosComponent },
       // futuras hijas:
       // { path: 'gastos/mios', component: MisGastosComponent },
       // { path: 'gastos',       component: VerGastosComponent }

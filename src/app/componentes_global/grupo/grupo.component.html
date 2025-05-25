@@ -15,7 +15,7 @@
             <a routerLink="/gastos/mios" class="menu-link">Ver mis Gastos</a>
           </li>
           <li *ngIf="hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
-            <a routerLink="/gastos" class="menu-link">Ver Gastos</a>
+            <a routerLink="gastos" class="menu-link">Ver Gastos</a>
           </li>
           <li *ngIf="hasRole('ROL_ADMIN')">
             <a routerLink="invitacion" class="menu-link">Invitar Usuarios</a>
