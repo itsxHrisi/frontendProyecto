@@ -16,13 +16,12 @@
   margin-bottom: 20px;
 }
 .search-bar input {
-  width: 60%;
+  flex: 1;
   padding: 8px 12px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #000000;
+  border-radius: 25px;
+  font-size: 1rem;
 }
-
 .invitacion-item {
   display: flex;
   justify-content: space-between;
