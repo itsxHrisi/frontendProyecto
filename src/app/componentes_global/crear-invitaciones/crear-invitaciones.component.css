@@ -1,0 +1,142 @@
+
+
+
+
+/* src/app/componentes_global/crear-invitaciones/crear-invitaciones.component.css */
+
+/* Contenedor general */
+.container-invitaciones {
+  padding: 20px;
+  background-color: var(--color_fondo);
+  box-sizing: border-box;
+}
+
+/* Barra de búsqueda */
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+.search-bar input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+.search-bar button {
+  background-color: var(--button_login);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.search-bar button:hover {
+  background-color: var(--button_login_hover);
+}
+
+/* Wrapper con scroll horizontal si hace falta */
+.table-wrapper {
+  overflow-x: auto;
+  /* ajustar siempre al 100% del padre */
+  width: 100%;
+}
+
+/* Tabla */
+.user-table {
+  width: 100%;
+  table-layout: fixed;      /* reparte el ancho disponible */
+  border-collapse: collapse;
+  font-family: "Poppins", sans-serif;
+}
+.user-table th,
+.user-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-overflow: ellipsis;   /* si el texto es muy largo, pone "..." */
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Cabeceras */
+.user-table th {
+  background-color: var(--button_login);
+  color: white;
+  font-weight: 600;
+  text-align: left;
+}
+
+/* Fijar ancho de la columna de botón "Invitar" */
+.user-table th:nth-child(4),
+.user-table td:nth-child(4) {
+  width: 100px;              /* ajusta a tu gusto */
+  text-align: center;
+}
+
+/* Botón "Invitar" */
+.invite-button {
+  background-color: var(--boton_invitaciones);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.invite-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.invite-button:hover:not(:disabled) {
+  background-color: var(--boton_invitaciones_hover);
+}
+
+/* Paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  font-family: "Poppins", sans-serif;
+}
+.pagination button {
+  background-color: var(--button_login_hover);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.pagination button:hover:not(:disabled) {
+  background-color: var(--button_login);
+}
+.pagination span {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+/* Cuando el usuario ya está invitado: */
+.invite-button.invited {
+  background-color: var(--boton_crear_grupo_hover);
+  cursor: default;
+}
+.invite-button.invited:hover {
+  /* opcional: sin cambio de hover */
+  background-color: var(--boton_crear_grupo);
+}
+/* Responsive muy estrecho: que el input ocupe todo */
+@media (max-width: 600px) {
+  .search-bar {
+    flex-direction: column;
+  }
+  .search-bar button {
+    width: 100%;
+  }
+}

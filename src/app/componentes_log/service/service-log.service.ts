@@ -30,6 +30,8 @@ export interface GrupoDto {
     email: string;
     roles: { id: number; nombre: string }[];
     telefono: string;
+
+    
   };
   usuarios: Array<{
     id: number;
@@ -66,6 +68,19 @@ export interface UserDto {
   email: string;
   telefono: string;
   roles: RolDto[];
+ grupoFamiliar?: {
+    id:            number;
+    nombre:        string;
+    administrador: {
+      id:       number;
+      nombre:   string;
+      nickname: string;
+      email:    string;
+      roles:    RolDto[];
+      telefono: string;
+    };
+    // …
+  } | null;
 }
 @Injectable({
   providedIn: 'root'
@@ -394,6 +409,57 @@ deleteGrupo(grupoId: number): Observable<string> {
         })
       );
   }
+// src/app/componentes_log/service/service-log.service.ts
+
+  /** Devuelve sólo los usuarios que NO pertenecen a ningún grupo */
+  getUsuariosSinGrupo(
+    page: number = 0,
+    size: number = 10,
+    sort: string[] = ['id,asc']
+  ): Observable<PaginaUsuarios> {
+    // filtro: grupoFamiliar.id igual a null
+    return this.getUsuariosFilter(
+      'grupoFamiliar.id:EQUAL:null',
+      page,
+      size,
+      sort
+    );
+  }
+  /** Obtener todos los usuarios (paginados) */
+ getAllUsuarios(
+    page: number = 0,
+    size: number = 10,
+    sort: string[] = ['id,asc']
+  ): Observable<PaginaUsuarios> {
+    const token   = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    let params    = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    sort.forEach(s => params = params.append('sort', s));
+
+    return this.http
+      .get<PaginaUsuarios>(`${this.apiUrl}/usuarios/usuarios`, { headers, params })
+      .pipe(
+        catchError(err => {
+          console.error('Error al cargar todos los usuarios:', err);
+          return throwError(() => err);
+        })
+      );
+  }
+
+/** Crear invitación */
+createInvitacion(nickname: string, grupoId: number): Observable<any> {
+  const token   = localStorage.getItem('auth_token') || '';
+  const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+  return this.http
+    .post(
+      `${this.apiUrl}/invitaciones`,
+      { nickname, grupoId },
+      { headers }
+    )
+    .pipe(catchError(err => throwError(() => err)));
+}
 
   /** Expulsar a un usuario del grupo */
   expulsarUsuario(grupoId: number, nicknameDestino: string): Observable<any> {

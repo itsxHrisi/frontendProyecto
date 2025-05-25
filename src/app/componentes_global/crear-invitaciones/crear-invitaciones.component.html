@@ -1,1 +1,76 @@
 <p>crear-invitaciones works!</p>
+
+
+
+<!-- src/app/componentes_global/crear-invitaciones/crear-invitaciones.component.html -->
+<div class="container-invitaciones">
+  <div class="invitaciones-box">
+    <!-- Barra de búsqueda -->
+    <div class="search-bar">
+      <input
+        #searchInput
+        type="text"
+        placeholder="Buscar usuario..."
+        class="search-input"
+      />
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <div class="table-wrapper">
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>Nickname</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Invitar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of usuarios">
+            <td>{{ u.nickname }}</td>
+            <td>{{ u.nombre }}</td>
+            <td>{{ u.email }}</td>
+            <td>
+              <button
+                class="invite-button"
+                [class.invited]="invited.has(u.nickname)"
+                [disabled]="sending.has(u.nickname) || invited.has(u.nickname)"
+                (click)="invitar(u.nickname)"
+              >
+                <!-- si ya invitado, cambiamos texto -->
+                {{
+                  invited.has(u.nickname)
+                    ? "Invitado"
+                    : sending.has(u.nickname)
+                    ? "Enviando…"
+                    : "Invitar"
+                }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginación -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button (click)="prevPage()" [disabled]="currentPage === 0">
+        Anterior
+      </button>
+      <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1">
+        Siguiente
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
