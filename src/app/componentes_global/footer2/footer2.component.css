@@ -248,7 +248,7 @@
 @media (min-width: 769px) and (max-width: 1920px) {
   .footer-main {
     /* ampliamos el padding lateral para añadir “espacio muerto” */
-    padding: 40px 80px !important;
+    padding: 20px 50px !important;
     justify-content: space-between !important;
   }
   /* Empujamos About US hacia el centro */
