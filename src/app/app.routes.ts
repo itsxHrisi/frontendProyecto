@@ -13,6 +13,7 @@ import { authGuard }         from './componentes_log/guards/auth.guard';
 import { GrupoComponent } from './componentes_global/grupo/grupo.component';
 import { CrearGastoComponent } from './componentes_global/crear-gasto/crear-gasto.component';
 import { GestorUsuariosComponent } from './componentes_global/gestor-usuarios/gestor-usuarios.component';
+import { CrearInvitacionesComponent } from './componentes_global/crear-invitaciones/crear-invitaciones.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -31,6 +32,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'gastos/crear', pathMatch: 'full' },
       { path: 'gastos/crear', component: CrearGastoComponent },
       { path: 'gestor', component: GestorUsuariosComponent },
+      { path: 'invitacion', component: CrearInvitacionesComponent },
       // futuras hijas:
       // { path: 'gastos/mios', component: MisGastosComponent },
       // { path: 'gastos',       component: VerGastosComponent }
