@@ -25,15 +25,20 @@
 /* Estilos de la tabla */
 .user-table {
   width: 100%;
-  min-width: 600px;            /* asegura un ancho mínimo */
+  table-layout: fixed;        /* reparte el ancho de forma proporcional */
   border-collapse: collapse;
   border: 2px solid black;
   font-family: "Poppins", sans-serif;
 }
+
+/* Celdas y cabeceras */
 .user-table th,
 .user-table td {
   border: 1px solid black;
   padding: 8px;
+  overflow: hidden;           /*  recorte con puntos suspensivos */
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Cabeceras con fondo personalizado */
@@ -51,6 +56,7 @@
 .user-table td:nth-child(7) {
   text-align: center;
 }
+
 
 /* Botón expulsar */
 .expulsar-button,
@@ -98,14 +104,39 @@
   font-weight: 500;
   font-size: 0.95rem;
 }
+/* Fijar ancho de 30px a la columna del checkbox (columna 6) */
+.user-table th:nth-child(3),
+.user-table td:nth-child(3) {
+  width: 110px;
+}
 
-/* RESPONSIVE: ajusta input y tabla en pantallas muy pequeñas */
-@media (max-width: 600px) {
-  .search-input {
-    max-width: 100%;
-    font-size: 0.9rem;
+/* Vista simplificada: ocultar columnas 2,4,5 */
+@media (min-width: 901px) and (max-width: 1260px),
+       (max-width: 800px) {
+  .user-table th:nth-child(2),
+  .user-table th:nth-child(4),
+  .user-table th:nth-child(5),
+  .user-table td:nth-child(2),
+  .user-table td:nth-child(4),
+  .user-table td:nth-child(5) {
+    display: none;
   }
+
+
+}
+
+/* A menor anchura (<900px), reducimos fuente y padding */
+@media (max-width: 900px) {
   .user-table {
-    min-width: unset;
+    font-size: 0.85rem;
+  }
+  .user-table th,
+  .user-table td {
+    padding: 4px 6px;
+  }
+  .expulsar-button,
+  .pagination button {
+    padding: 4px 8px;
+    font-size: 0.75rem;
   }
 }

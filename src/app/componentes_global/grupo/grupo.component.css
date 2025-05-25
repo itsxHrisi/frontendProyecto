@@ -107,9 +107,10 @@
   background-color: #c0392b;
 }
 
-/* Zona de contenido principal */
+/* Allow the main‐content pane to shrink and scroll internally */
 .main-content {
-  flex: 1;                 /* ocupa todo el espacio restante */
+  flex: 1;
+  min-width: 0;     /* <— This is the magic */
   padding: 24px;
   overflow: auto;
 }
