@@ -42,6 +42,12 @@ export interface GrupoDto {
     telefono: string;
   }>;
 }
+export interface IngresoDto {
+  id: number;
+  cantidad: number;
+  fecha: string;
+  // (otros campos que devuelva tu API, pero con estos ya es suficiente)
+}
 export interface PaginaInvitaciones {
   content: InvitacionDto[];
   totalPages: number;
@@ -409,6 +415,20 @@ deleteGrupo(grupoId: number): Observable<string> {
         })
       );
   }
+
+   /** Listar ingresos del usuario autenticado */
+  getIngresosUsuario(): Observable<IngresoDto[]> {
+    const token   = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    return this.http
+      .get<IngresoDto[]>(`${this.apiUrl}/ingresos/usuario`, { headers })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error al cargar ingresos:', err);
+          return throwError(() => err);
+        })
+      );
+  }
 // src/app/componentes_log/service/service-log.service.ts
 
   /** Devuelve sólo los usuarios que NO pertenecen a ningún grupo */
@@ -478,7 +498,23 @@ createInvitacion(nickname: string, grupoId: number): Observable<any> {
         })
       );
   }
-
+ /** Crear un ingreso */
+  createIngreso(cantidad: string): Observable<any> {
+    const token   = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    return this.http
+      .post(
+        `${this.apiUrl}/ingresos`,
+        { cantidad },
+        { headers }
+      )
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error creando ingreso:', err);
+          return throwError(() => err);
+        })
+      );
+  }
   /** Roles as */
   getUserRoles(): string[] {
     const roles = localStorage.getItem('user_roles');

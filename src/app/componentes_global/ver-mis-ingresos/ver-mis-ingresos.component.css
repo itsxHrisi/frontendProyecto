@@ -1,0 +1,88 @@
+/* src/app/componentes_global/lista-ingresos/lista-ingresos.component.css */
+
+/* Contenedor padre centra todo */
+.container-ingresos {
+  padding: 20px;
+  background-color: var(--color_fondo);
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;    /* centro .table-container */
+}
+
+/* Nuevo wrapper de header + tabla */
+.table-container {
+  width: 80%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;    /* header y tabla arrancan a la izquierda */
+}
+
+/* Header arriba a la izquierda */
+.table-header {
+  width: 100%;
+  margin-bottom: 12px;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+/* Wrapper con scroll horizontal si hace falta */
+.table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+/* Tabla */
+.ingresos-table {
+  width: 100%;              /* ocupa el 100% de .table-container */
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-family: "Poppins", sans-serif;
+}
+
+.ingresos-table th,
+.ingresos-table td {
+  border: 2px solid #000;
+  padding: 8px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ingresos-table th {
+  background-color: var(--button_login);
+  color: white;
+  font-weight: 600;
+  text-align: left;
+}
+
+.ingresos-table th:nth-child(3),
+.ingresos-table td:nth-child(3) {
+  width: 120px;
+  text-align: center;
+}
+
+.modificar-button {
+  background-color: var(--fondo_hf);
+  border: 1px solid black;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.modificar-button:hover {
+  background-color: var(--fondo_hf_hover);
+}
+
+@media (max-width: 600px) {
+  .ingresos-table th,
+  .ingresos-table td {
+    padding: 6px;
+    font-size: 0.9rem;
+  }
+}

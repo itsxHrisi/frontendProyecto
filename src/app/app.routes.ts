@@ -15,6 +15,10 @@ import { CrearGastoComponent } from './componentes_global/crear-gasto/crear-gast
 import { GestorUsuariosComponent } from './componentes_global/gestor-usuarios/gestor-usuarios.component';
 import { CrearInvitacionesComponent } from './componentes_global/crear-invitaciones/crear-invitaciones.component';
 import { GastosComponent } from './componentes_global/gastos/gastos.component';
+import { CrearIngresosComponent } from './componentes_global/crear-ingresos/crear-ingresos.component';
+import { VerMisIngresosComponent } from './componentes_global/ver-mis-ingresos/ver-mis-ingresos.component';
+import { VerIngresosComponent } from './componentes_global/ver-ingresos/ver-ingresos.component';
+import { VerMisGastosComponent } from './componentes_global/ver-mis-gastos/ver-mis-gastos.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -30,11 +34,15 @@ export const routes: Routes = [
     path: 'grupo',
     component: GrupoComponent,
     children: [
-      { path: '', redirectTo: 'gastos/crear', pathMatch: 'full' },
-      { path: 'gastos/crear', component: CrearGastoComponent },
+      { path: '', redirectTo: 'creargasto', pathMatch: 'full' },
+      { path: 'creargasto', component: CrearGastoComponent },
+      { path: 'gastos', component: GastosComponent },
+      { path: 'misgastos', component: VerMisGastosComponent },
       { path: 'gestor', component: GestorUsuariosComponent },
       { path: 'invitacion', component: CrearInvitacionesComponent },
-      { path: 'gastos', component: GastosComponent },
+      { path: 'crearingreso', component: CrearIngresosComponent },
+      { path: 'ingresos', component: VerIngresosComponent },
+      { path: 'misingresos', component: VerMisIngresosComponent },
       // futuras hijas:
       // { path: 'gastos/mios', component: MisGastosComponent },
       // { path: 'gastos',       component: VerGastosComponent }

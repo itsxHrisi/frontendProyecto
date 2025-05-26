@@ -2,6 +2,7 @@
 :root{
   --color_fondo: #E7EEF2;
   --fondo_hf: #a2a2a2;
+  --fondo_hf_hover: #898989;
   --color_button: #2d4a5b;
   --color_button_opacity: rgba(45, 74, 91, 0.5); 
   --color_button_hover: #1E2B34;

@@ -1,0 +1,28 @@
+<!-- src/app/componentes_global/lista-ingresos/lista-ingresos.component.html -->
+<div class="container-ingresos">
+  <div class="table-container">
+    <div class="table-header">Mis ingresos</div>
+    <div class="table-wrapper">
+      <table class="ingresos-table">
+        <thead>
+          <tr>
+            <th>Cantidad</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ing of ingresos">
+            <td>{{ ing.cantidad | number:'1.2-2' }}</td>
+            <td>{{ ing.fecha | date:'short' }}</td>
+            <td>
+              <button class="modificar-button" (click)="modificarIngreso(ing.id)">
+                Modificar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
