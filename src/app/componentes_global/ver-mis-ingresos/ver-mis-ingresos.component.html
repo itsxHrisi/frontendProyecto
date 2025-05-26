@@ -1,7 +1,12 @@
-<!-- src/app/componentes_global/lista-ingresos/lista-ingresos.component.html -->
 <div class="container-ingresos">
   <div class="table-container">
     <div class="table-header">Mis ingresos</div>
+
+    <div class="total-ingresos-display">
+      Total de mis ingresos:
+      <span class="total-amount">{{ totalMisIngresos | number:'1.2-2' }} €</span>
+    </div>
+
     <div class="table-wrapper">
       <table class="ingresos-table">
         <thead>
@@ -9,6 +14,7 @@
             <th>Cantidad</th>
             <th>Fecha</th>
             <th>Acciones</th>
+            <th>Eliminar</th>
           </tr>
         </thead>
         <tbody>
@@ -16,10 +22,19 @@
             <td>{{ ing.cantidad | number:'1.2-2' }}</td>
             <td>{{ ing.fecha | date:'short' }}</td>
             <td>
-              <button class="modificar-button" (click)="modificarIngreso(ing.id)">
+              <button
+                class="modificar-button"
+                (click)="modificarIngreso(ing.id)"
+              >
                 Modificar
               </button>
             </td>
+            <td><button
+                class="eliminar-button"
+                (click)="eliminarIngreso(ing.id)"
+              >
+                Eliminar
+              </button></td>
           </tr>
         </tbody>
       </table>

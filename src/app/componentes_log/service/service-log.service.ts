@@ -42,8 +42,25 @@ export interface GrupoDto {
     telefono: string;
   }>;
 }
+export interface GastoDto {
+  id: number;
+  cantidad: number;
+  fecha: string;
+  tipoGasto: string;
+  subtipo: string;
+  usuarioNickname: string;    // ← aquí
+}
+
+export interface PaginaGastos {
+  content: GastoDto[];
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+}
 export interface IngresoDto {
   id: number;
+  usuarioNickname: string;
   cantidad: number;
   fecha: string;
   // (otros campos que devuelva tu API, pero con estos ya es suficiente)
@@ -66,6 +83,13 @@ export interface PaginaUsuarios {
   totalElements: number;
   size: number;
   number: number;  // página actual
+}export interface PaginaIngresos {
+  content: IngresoDto[];
+  totalPages: number;
+  totalElements: number;
+  number: number;
+  size: number;
+  // …otros campos que devuelva tu API (totalSum, appliedFilters, etc)
 }
 export interface UserDto {
   id: number;
@@ -356,6 +380,8 @@ deleteGrupo(grupoId: number): Observable<string> {
     })
   );
 }
+
+
  /** Abandonar el grupo familiar actual */
   abandonarGrupo(): Observable<any> {
     const token   = localStorage.getItem('auth_token') || '';
@@ -429,6 +455,34 @@ deleteGrupo(grupoId: number): Observable<string> {
         })
       );
   }
+  updateIngreso(id: number, cantidad: string): Observable<void> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    const body = { cantidad };
+    return this.http.put<void>(`${this.apiUrl}/ingresos/${id}`, body, { headers })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error actualizando ingreso:', err);
+          return throwError(() => err);
+        })
+      );
+  }
+
+ /** Obtiene un ingreso por su id **/
+  getIngresoById(id: number): Observable<IngresoDto> {
+    const token   = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    return this.http
+      .get<IngresoDto>(`${this.apiUrl}/ingresos/${id}`, { headers })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error al obtener ingreso por id:', err);
+          return throwError(() => err);
+        })
+      );
+  }
+
+  
 // src/app/componentes_log/service/service-log.service.ts
 
   /** Devuelve sólo los usuarios que NO pertenecen a ningún grupo */
@@ -444,6 +498,42 @@ deleteGrupo(grupoId: number): Observable<string> {
       size,
       sort
     );
+  }
+   deleteGasto(id: number): Observable<any> { // Cambiamos a <any> o <string> si esperas un string
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+
+    return this.http
+      .delete(`${this.apiUrl}/gastos/${id}`, {
+        headers,
+        responseType: 'text' // <-- ¡Aquí está el cambio clave!
+      })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          // El error que veías en consola (SyntaxError) ahora será capturado aquí
+          // Pero si el backend responde con 200 OK y texto, ya no será un error de parseo.
+          console.error('Error al eliminar gasto:', err);
+          return throwError(() => err); // Re-lanzar el error para que el componente lo maneje
+        })
+      );
+  }
+
+  // !!! NUEVO MÉTODO PARA ELIMINAR INGRESO !!!
+  deleteIngreso(id: number): Observable<any> { // Usamos <any> o <string> como antes
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+
+    return this.http
+      .delete(`${this.apiUrl}/ingresos/${id}`, { // <-- Endpoint del backend
+        headers,
+        responseType: 'text' // <-- ¡Importante para evitar el SyntaxError!
+      })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error al eliminar ingreso:', err);
+          return throwError(() => err);
+        })
+      );
   }
   /** Obtener todos los usuarios (paginados) */
  getAllUsuarios(
@@ -511,6 +601,67 @@ createInvitacion(nickname: string, grupoId: number): Observable<any> {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           console.error('Error creando ingreso:', err);
+          return throwError(() => err);
+        })
+      );
+  }
+  getIngresosFilter(
+  filters: string[] = [],     // ej. ['cantidad:MAYOR_QUE:30','cantidad:MENOR_QUE:100']
+  page:    number     = 0,
+  size:    number     = 5,
+): Observable<PaginaIngresos> {
+  const token   = localStorage.getItem('auth_token') || '';
+  const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+
+  // 1) Paginación
+  let params = new HttpParams()
+    .set('page', page.toString())
+    .set('size',"500000000");
+
+  // 2) Filtros de cantidad
+  filters.forEach(f => {
+    params = params.append('filter', f);
+  });
+
+  // 3) Sort duplicado (bug Spring)
+  params = params.append('sort', 'fecha,desc').append('sort', 'fecha,desc');
+
+  return this.http
+    .get<PaginaIngresos>(`${this.apiUrl}/ingresos/filter`, { headers, params })
+    .pipe(
+      catchError((err: HttpErrorResponse) => {
+        console.error('Error al cargar ingresos filtrados:', err);
+        return throwError(() => err);
+      })
+    );
+}
+ getGastosFilter(
+    nickname: string = '',
+    filters: string[] = [],      // e.g. ['tipoGasto:CONTIENE:LUJO', 'subtipo:IGUAL:BANKINTER']
+    page: number = 0,
+    size: number = 5,
+    
+  ): Observable<PaginaGastos> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+
+    let params = new HttpParams()
+      .set('nickname', nickname)
+      // aquí se añaden explícitamente los params de paginado y orden al final
+      .set('page',   page.toString())
+      .set('size',   size.toString())
+      .append('sort', 'fecha,asc')
+      .append('sort', 'fecha,asc');
+
+    filters.forEach(f => {
+      params = params.append('filter', f);
+    });
+
+    return this.http
+      .get<PaginaGastos>(`${this.apiUrl}/gastos/filter`, { headers, params })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error al cargar gastos filtrados:', err);
           return throwError(() => err);
         })
       );

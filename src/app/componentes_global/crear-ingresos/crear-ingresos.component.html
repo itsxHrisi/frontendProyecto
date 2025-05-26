@@ -1,4 +1,8 @@
 <!-- src/app/componentes_global/crear-ingresos/crear-ingresos.component.html -->
+ <!-- Mensaje de éxito -->
+<div *ngIf="successMessage" class="alert-success">
+  {{ successMessage }}
+</div>
 <form #ingresoForm="ngForm" (ngSubmit)="onSubmit(ingresoForm)" class="form-box">
   <h2>Crear Ingreso</h2>
 

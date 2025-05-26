@@ -19,6 +19,8 @@ import { CrearIngresosComponent } from './componentes_global/crear-ingresos/crea
 import { VerMisIngresosComponent } from './componentes_global/ver-mis-ingresos/ver-mis-ingresos.component';
 import { VerIngresosComponent } from './componentes_global/ver-ingresos/ver-ingresos.component';
 import { VerMisGastosComponent } from './componentes_global/ver-mis-gastos/ver-mis-gastos.component';
+import { ModificarMisIngresosComponent } from './componentes_global/modificar-mis-ingresos/modificar-mis-ingresos.component';
+import { EstadisticasComponent } from './componentes_global/estadisticas/estadisticas.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -42,7 +44,9 @@ export const routes: Routes = [
       { path: 'invitacion', component: CrearInvitacionesComponent },
       { path: 'crearingreso', component: CrearIngresosComponent },
       { path: 'ingresos', component: VerIngresosComponent },
+      { path: 'estadisticas', component: EstadisticasComponent },
       { path: 'misingresos', component: VerMisIngresosComponent },
+      { path: 'modificaringresos', component: ModificarMisIngresosComponent },
       // futuras hijas:
       // { path: 'gastos/mios', component: MisGastosComponent },
       // { path: 'gastos',       component: VerGastosComponent }

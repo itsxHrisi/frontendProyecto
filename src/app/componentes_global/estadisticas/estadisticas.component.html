@@ -1,0 +1,21 @@
+<div class="statistics-container">
+  <h2>Estadísticas Financieras del Grupo</h2>
+
+
+
+  <div class="summary-cards">
+    <div class="card expenses">
+      <h3>Total Gastos</h3>
+      <p>{{ totalGastos}} €</p>
+    </div>
+    <div class="card income">
+      <h3>Total Ingresos</h3>
+      <p>{{ totalIngresos}} €</p>
+    </div>
+    <div class="card balance">
+      <h3>Balance</h3>
+      <p [class.positive]="balance >= 0" [class.negative]="balance < 0">{{balance}} €</p>
+    </div>
+  </div>
+
+</div>

@@ -35,24 +35,22 @@ export class CrearGastoComponent implements OnInit {
     fecha:     ''
   };
 
+  // **Nuevo** mensaje de éxito
+  successMessage = '';
+
   constructor(
     private service: ServiceLogService,
-    private auth:    ServiceLogService   // ya lo inyectas
+    private auth:    ServiceLogService
   ) {}
 
   ngOnInit(): void {
-    // 1) cargar perfil y guardar ids
     this.auth.getPerfil().subscribe({
       next: perfil => {
-        console.log('Perfil en CrearGastoComponent →', perfil);
         this.usuarioId = perfil.id;
         this.grupoId   = perfil.grupoFamiliarId;
-        // inicializar fecha a hoy
         this.formModel.fecha = new Date().toISOString().slice(0,10);
       },
-      error: err => {
-        console.error('Error cargando perfil en CrearGastoComponent', err);
-      }
+      error: err => console.error('Error cargando perfil', err)
     });
   }
 
@@ -60,9 +58,6 @@ export class CrearGastoComponent implements OnInit {
     return this.subtipoMap[this.formModel.tipoGasto] || [];
   }
 
- // CAMBIO en src/app/componentes_gastos/crear-gasto/crear-gasto.component.ts
-
-// src/app/componentes_gastos/crear-gasto/crear-gasto.component.ts
   onSubmit(f: NgForm) {
     if (f.invalid) return;
 
@@ -75,11 +70,17 @@ export class CrearGastoComponent implements OnInit {
       fecha:     this.formModel.fecha
     };
 
-    console.log('Payload a enviar via Service:', payload);
     this.service.createGasto(payload).subscribe({
       next: res => {
-        console.log('Gasto creado:', res);
-        // aquí podrías limpiar el formulario o redirigir
+        // **Aquí asignamos el mensaje**
+        this.successMessage = 'El gasto se ha creado correctamente.';
+        // opcional: limpiamos el formulario y su estado
+        f.resetForm({
+          tipoGasto: '',
+          subtipo:   '',
+          cantidad:  '',
+          fecha:     new Date().toISOString().slice(0,10)
+        });
       },
       error: err => {
         console.error('Falló la creación de gasto:', err);

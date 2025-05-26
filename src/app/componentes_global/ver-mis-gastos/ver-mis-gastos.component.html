@@ -1,1 +1,64 @@
-<p>ver-mis-gastos works!</p>
+<div class="container-gastos">
+  <div class="filters">
+    <select [(ngModel)]="tipoFilter" (change)="onTipoChange()">
+      <option value="">— Tipo de gasto —</option>
+      <option *ngFor="let t of tipoGastos" [value]="t">{{ t }}</option>
+    </select>
+
+    <select
+      [(ngModel)]="subtipoFilter"
+      [disabled]="!tipoFilter"
+      (change)="onSubtipoChange()"
+    >
+      <option value="">— Subtipo —</option>
+      <option
+        *ngFor="let s of subtipoOptions[tipoFilter]"
+        [value]="s"
+      >
+        {{ s }}
+      </option>
+    </select>
+  </div>
+
+  <div class="total-gastos-display">
+    Total Mis Gastos (pág. actual):
+    <span class="total-amount">{{ totalMisGastosActualPagina | number:'1.2-2' }} €</span>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="gastos-table">
+      <thead>
+        <tr>
+          <th>Cantidad</th>
+          <th>Fecha</th>
+          <th>Tipo</th>
+          <th>Subtipo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let g of gastos">
+          <td>{{ g.cantidad | number:'1.2-2' }}</td>
+          <td>{{ g.fecha    | date:'short' }}</td>
+          <td>{{ g.tipoGasto }}</td>
+          <td>{{ g.subtipo   }}</td>
+          <td>
+            <button class="delete-button" (click)="eliminarGasto(g.id)">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button (click)="prevPage()" [disabled]="currentPage === 0">
+      Anterior
+    </button>
+    <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1">
+      Siguiente
+    </button>
+  </div>
+</div>

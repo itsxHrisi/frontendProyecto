@@ -11,6 +11,15 @@ form {
 label {
   font-weight: 600;
 }
+.alert-success {
+  background-color: #e0f7e9;
+  border: 1px solid #34a853;
+  color: #0f5132;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  font-family: "Poppins", sans-serif;
+}
 
 /* Contenedor centrado como el de perfil */
 .container-gasto {

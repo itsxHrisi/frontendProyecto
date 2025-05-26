@@ -14,6 +14,8 @@ import { ServiceLogService } from '../../componentes_log/service/service-log.ser
 })
 export class CrearIngresosComponent {
   cantidad: string = '';
+  // **Nuevo** mensaje de éxito
+  successMessage = '';
 
   constructor(
     private service: ServiceLogService,
@@ -24,9 +26,10 @@ export class CrearIngresosComponent {
     if (form.invalid) return;
     this.service.createIngreso(this.cantidad).subscribe({
       next: () => {
-        alert('Ingreso creado correctamente');
+        // sustituimos el alert por nuestro mensaje
+        this.successMessage = 'El ingreso se ha creado correctamente.';
         form.resetForm();
-        // opcional: navegar a otra vista
+        // opcional: navegación posterior
         // this.router.navigate(['/ingresos/lista']);
       },
       error: err => {

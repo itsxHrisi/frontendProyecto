@@ -38,7 +38,7 @@
 /* Tabla */
 .ingresos-table {
   width: 100%;              /* ocupa el 100% de .table-container */
-  table-layout: fixed;
+  table-layout: fixed; /* Esto es clave para que los anchos de columna fijos funcionen */
   border-collapse: collapse;
   font-family: "Poppins", sans-serif;
 }
@@ -50,6 +50,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  vertical-align: middle; /* Para centrar verticalmente el contenido */
 }
 
 .ingresos-table th {
@@ -58,13 +59,24 @@
   font-weight: 600;
   text-align: left;
 }
+.ingresos-table th:nth-child(1),
+.ingresos-table td:nth-child(1)
+.ingresos-table th:nth-child(2),
+.ingresos-table td:nth-child(2){
+width: 150px;
+}
+/* Ancho fijo para la tercera columna (Acciones) */
 
 .ingresos-table th:nth-child(3),
-.ingresos-table td:nth-child(3) {
-  width: 120px;
-  text-align: center;
+.ingresos-table td:nth-child(3),
+.ingresos-table th:nth-child(4),
+.ingresos-table td:nth-child(4) {
+  width: 100px;
+    text-align: center;
+
 }
 
+/* Estilos para los botones (modificados ligeramente para espaciado) */
 .modificar-button {
   background-color: var(--fondo_hf);
   border: 1px solid black;
@@ -74,9 +86,24 @@
   cursor: pointer;
   font-size: 0.9rem;
   transition: background 0.2s;
+  margin-right: 5px; /* Espacio entre botones */
 }
 .modificar-button:hover {
   background-color: var(--fondo_hf_hover);
+}
+
+.eliminar-button {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  padding: 6px 12px; /* Aumentado padding para que coincida mejor */
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.eliminar-button:hover {
+  background-color: #c0392b;
 }
 
 @media (max-width: 600px) {

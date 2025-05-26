@@ -1,136 +1,136 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;
-    flex: 1; 
-    background-color: var(--color_fondo);
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width:100vw;
+  height: 100vh;
+  border: 1px solid black;
+  flex: 1;
+  background-color: var(--color_fondo);
+  padding: 20px;
+  border-radius: 25px;
 }
 
 .login-box {
-    padding: 20px;
-    width: 100%;
-    max-width: 400px;
-    border-right: 1px solid black;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  
 }
-#fotoHeader{
+#fotoHeader {
   width: 400px;
 }
 h2 {
-    font-family: 'Poppins',sans-serif;
-    font-size: 35px;
-    font-weight: 700;
+  font-family: "Poppins", sans-serif;
+  font-size: 35px;
+  font-weight: 700;
   font-style: normal;
-    text-align: left;
-    margin-bottom: 10px;
+  text-align: left;
+  margin-bottom: 10px;
 }
 
 .input-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
 }
 
 .input-group label {
-    font-family: 'Poppins',sans-serif;
-    font-weight: 600;
-  font-style: normal;    margin-bottom: 5px;
-    margin-top: 10px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  margin-bottom: 5px;
+  margin-top: 10px;
 }
 
 .input-group input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 .register-button {
-    background-color: var(--button_login);
-    color: white;
-    margin-top: 20px;
-    padding: 10px;
-    width: 100%;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
-    font-family: 'Poppins',sans-serif;
-    font-weight: 500;
+  background-color: var(--button_login);
+  color: white;
+  margin-top: 20px;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
   font-style: normal;
 }
 
 .login-button:hover {
-    background-color: var(--button_login_hover);
+  background-color: var(--button_login_hover);
 }
 
 .login-link {
-    display: block;
-    text-align: center;
-    margin-top: 20px;
-    color: var(--button_login);
-    text-decoration: none;
-    font-family: 'Poppins',sans-serif;
-    font-weight: 400;
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: var(--button_login);
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
   font-style: normal;
 }
 
 .login-link:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .image-section {
-    margin-top: 20px;
-    text-align: center;
+  margin-top: 20px;
+  text-align: center;
 }
 .image-section2 {
-    display: none;
+  display: none;
 }
 
-
-
-
-
 .footer {
-    width: 100%;
-    background-color: #b0c4de;
-    text-align: center;
-    padding: 20px;
-    margin-top: auto; 
+  width: 100%;
+  background-color: #b0c4de;
+  text-align: center;
+  padding: 20px;
+  margin-top: auto;
 }
 
 .invalid-feedback {
-    color: red;
-    font-size: 14px;
-    margin-bottom: 10px;
-    text-align: center;
-    font-weight: 600;
-  }
-  /* ========================================
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 600;
+}
+/* ========================================
    Desktop (≥ 900px)
    ======================================== */
 @media (min-width: 900px) {
   .container {
     flex-direction: row;
-    height: 75vh;               /* mantiene altura completa */
+    height: 75vh; /* mantiene altura completa */
   }
 }
 @media (max-width: 900px) {
-    .container {
-        flex-direction: column;
-        text-align: center;
-        padding: 20px;
-    }
+  .container {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
 
-    .login-box {
-        max-width: 100%;
-        border: none;
-    }
-      .image-section2 {
-        margin-left: 10%;
+  .login-box {
+    max-width: 100%;
+    border: none;
+  }
+  .image-section2 {
+    margin-left: 10%;
     display: block;
     margin-top: 20px;
     text-align: center;
@@ -138,25 +138,22 @@ h2 {
   .image-section {
     display: none;
   }
-
 }
 
 @media (max-width: 600px) {
-    body{
-        height: 125%;
-    }
-    .container {
-        padding: 15px;
-        width: 100%;
-    }
+  body {
+    height: 125%;
+  }
+  .container {
+    padding: 15px;
+    width: 100%;
+  }
 
-  
-
-    .login-button {
-        font-size: 14px;
-        padding: 8px;
-    }
-     .image-section2 {
+  .login-button {
+    font-size: 14px;
+    padding: 8px;
+  }
+  .image-section2 {
     display: block;
     margin-top: 20px;
     text-align: center;
@@ -167,8 +164,8 @@ h2 {
 }
 
 @media (min-width: 900px) {
-    .container {
-        flex-direction: row;
-        gap: 40px;
-    }
+  .container {
+    flex-direction: row;
+    gap: 40px;
+  }
 }

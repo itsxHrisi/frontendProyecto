@@ -1,49 +1,74 @@
-<!-- src/app/componentes_global/grupo/grupo.component.html -->
 <div class="container-grupo">
   <div class="grupo-box">
-    <!-- SIDEBAR -->
     <div class="sidebar">
       <header class="grupo-header">
         <h2 class="grupo-name">{{ groupName }}</h2>
       </header>
       <nav class="sidebar-menu">
         <ul>
-          <li *ngIf="hasRole('ROL_USER') || hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
-            <a routerLink="creargasto" class="menu-link" routerLinkActive="active">Crear Gasto</a>
+          <li>
+            <button class="menu-button-dropdown" (click)="toggleGastos()">
+              Gastos
+              <span class="dropdown-icon" [class.rotated]="showGastos">&#9660;</span>
+            </button>
+            <ul class="submenu" [class.open]="showGastos">
+              <li *ngIf="hasRole('ROL_USER') || hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
+                <a routerLink="creargasto" class="menu-link" routerLinkActive="active">Crear Gasto</a>
+              </li>
+              <li *ngIf="hasRole('ROL_USER') || hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
+                <a routerLink="misgastos" class="menu-link">Ver mis Gastos</a>
+              </li>
+              <li *ngIf="hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
+                <a routerLink="gastos" class="menu-link">Ver Gastos</a>
+              </li>
+            </ul>
           </li>
-          <li *ngIf="hasRole('ROL_USER') || hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
-            <a routerLink="misgastos" class="menu-link">Ver mis Gastos</a>
+
+          <li>
+            <button class="menu-button-dropdown" (click)="toggleIngresos()">
+              Ingresos
+              <span class="dropdown-icon" [class.rotated]="showIngresos">&#9660;</span>
+            </button>
+            <ul class="submenu" [class.open]="showIngresos">
+              <li *ngIf="hasRole('ROL_USER') || hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
+                <a routerLink="crearingreso" class="menu-link" routerLinkActive="active">Crear Ingreso</a>
+              </li>
+              <li *ngIf="hasRole('ROL_USER') || hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
+                <a routerLink="misingresos" class="menu-link">Ver mis Ingresos</a>
+              </li>
+              <li *ngIf="hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
+                <a routerLink="ingresos" class="menu-link">Ver Ingresos</a>
+              </li>
+            </ul>
           </li>
-          <li *ngIf="hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
-            <a routerLink="gastos" class="menu-link">Ver Gastos</a>
+
+          <li *ngIf="hasRole('ROL_ADMIN') || hasRole('ROL_PADRE')">
+            <button class="menu-button-dropdown" (click)="toggleUsuarios()">
+              Usuarios
+              <span class="dropdown-icon" [class.rotated]="showUsuarios">&#9660;</span>
+            </button>
+            <ul class="submenu" [class.open]="showUsuarios">
+              <li *ngIf="hasRole('ROL_ADMIN')">
+                <a routerLink="invitacion" class="menu-link">Invitar Usuarios</a>
+              </li>
+              <li *ngIf="hasRole('ROL_ADMIN')">
+                <a routerLink="gestor" class="menu-link">Gestor de Usuarios</a>
+              </li>
+            </ul>
           </li>
-          <li *ngIf="hasRole('ROL_USER') || hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
-            <a routerLink="crearingreso" class="menu-link" routerLinkActive="active">Crear Ingreso</a>
-          </li>
-          <li *ngIf="hasRole('ROL_USER') || hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
-            <a routerLink="misingresos" class="menu-link">Ver mis Ingresos</a>
-          </li>
-          <li *ngIf="hasRole('ROL_PADRE') || hasRole('ROL_ADMIN')">
-            <a routerLink="ingresos" class="menu-link">Ver Ingresos</a>
-          </li>
-          <li *ngIf="hasRole('ROL_ADMIN')">
-            <a routerLink="invitacion" class="menu-link">Invitar Usuarios</a>
-          </li>
-          <li *ngIf="hasRole('ROL_ADMIN')">
-            <a routerLink="gestor" class="menu-link">Gestor de Usuarios</a>
-          </li>
-          <li *ngIf="hasRole('ROL_USER')&& !hasRole('ROL_ADMIN')">
+            <li *ngIf="hasRole('ROL_ADMIN')">
+                <a routerLink="estadisticas" class="menu-link">Estadisticas</a>
+            </li>
+          <li *ngIf="hasRole('ROL_USER') && !hasRole('ROL_ADMIN')">
             <button (click)="abandonarGrupo()" class="menu-button">Abandonar Grupo</button>
           </li>
           <li *ngIf="hasRole('ROL_ADMIN')">
             <button (click)="eliminarGrupo()" class="menu-button">Eliminar Grupo</button>
           </li>
-          
         </ul>
       </nav>
     </div>
 
-    <!-- MAIN CONTENT -->
     <div class="main-content">
       <router-outlet></router-outlet>
     </div>

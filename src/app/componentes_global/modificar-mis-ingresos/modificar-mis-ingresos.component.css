@@ -1,27 +1,23 @@
-/* src/app/componentes_global/crear-ingresos/crear-ingresos.component.css */
+/* src/app/componentes_global/modificar-mis-ingresos/modificar-mis-ingresos.component.css */
+/* (idéntico al de crear-ingresos, añadiendo estilos para .button-group y .cancel-button) */
 
-/* Contenedor blanco */
 .form-box {
   max-width: 400px;
   margin: 40px auto;
   padding: 30px;
   background: white;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   font-family: "Poppins", sans-serif;
   display: grid;
   gap: 1.5rem;
 }
-
-/* Título */
 .form-box h2 {
   margin: 0 0 1rem;
   text-align: center;
   font-size: 1.5rem;
   font-weight: 600;
 }
-/* src/app/componentes_global/crear-ingresos/crear-ingresos.component.css */
-
 .alert-success {
   background-color: #e0f7e9;
   border: 1px solid #34a853;
@@ -31,8 +27,6 @@
   border-radius: 4px;
   font-family: "Poppins", sans-serif;
 }
-
-/* Cada grupo de input */
 .input-group {
   display: flex;
   flex-direction: column;
@@ -47,8 +41,6 @@
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-
-/* Campo inválido */
 .is-invalid {
   border-color: #dc3545;
 }
@@ -57,8 +49,22 @@
   font-size: 0.9rem;
   margin-top: 4px;
 }
-
-/* Botón */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.cancel-button {
+  background: #999;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.cancel-button:hover {
+  background: #777;
+}
 .submit-button {
   background-color: var(--button_login);
   color: white;

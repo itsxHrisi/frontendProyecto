@@ -1,1 +1,73 @@
-<p>ver-ingresos works!</p>
+<div class="container-ingresos">
+  <div class="filters">
+    <input
+      #searchInput
+      class="search-input"
+      type="text"
+      placeholder="Buscar por usuario…"
+    />
+
+    <div class="range-group">
+      <label>Menor que: {{ menorQue }}</label>
+      <input
+        type="range"
+        min="0"
+        max="1000"
+        [(ngModel)]="menorQue"
+        (change)="loadIngresos(0)"
+      />
+    </div>
+    <div class="range-group">
+      <label>Mayor que: {{ mayorQue }}</label>
+      <input
+        type="range"
+        min="0"
+        max="1000"
+        [(ngModel)]="mayorQue"
+        (change)="loadIngresos(0)"
+      />
+    </div>
+    <div class="range-group">
+      <label>Igual a: {{ igualQue }}</label>
+      <input
+        type="number"
+        min="0"
+        max="10000000"
+        [(ngModel)]="igualQue"
+        (change)="loadIngresos(0)"
+      />
+    </div>
+  </div>
+
+  <div class="total-ingresos-display">
+    Total Ingresos (pág. actual):
+    <span class="total-amount">{{ totalIngresosActualPagina | number:'1.2-2' }} €</span>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="ingresos-table">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Cantidad</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of ingresos">
+          <td>{{ i.usuarioNickname }}</td>
+          <td>{{ i.cantidad | number:'1.2-2' }}</td>
+          <td>{{ i.fecha     | date:'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button (click)="prevPage()" [disabled]="currentPage === 0">Anterior</button>
+    <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage + 1 >= totalPages">
+      Siguiente
+    </button>
+  </div>
+</div>

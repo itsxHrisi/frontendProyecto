@@ -32,7 +32,7 @@
 /* Celdas y cabeceras */
 .user-table th,
 .user-table td {
-  border: 1px solid black;
+  border: 2px solid black;
   padding: 8px;
   overflow: hidden;           /*  recorte con puntos suspensivos */
   text-overflow: ellipsis;

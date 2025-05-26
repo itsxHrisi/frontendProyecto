@@ -4,12 +4,14 @@
    Base Styles (idénticos a los de login)
    ======================================== */
 .container {
+  margin-top: 10px;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100vw;
-  height: 80vh;
+  height: 100vh;
   background-color: var(--color_fondo);
   padding: 20px;
 }
@@ -26,10 +28,12 @@
 }
 
 .login-box {
+  border: 1px solid black;
   padding: 30px;
   width: 100%;
   max-width: 400px;
-  border-right: 1px solid black;
+  border-radius: 25px;
+  height: 700px;
 }
 /* estilo idéntico al cambio de contraseña */
 .alert-success {
@@ -53,7 +57,7 @@ h2 {
 .input-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 .input-group label {
   font-family: "Poppins", sans-serif;
@@ -71,7 +75,7 @@ h2 {
 .login-button {
   background-color: var(--button_login);
   color: white;
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 10px;
   width: 100%;
   border: none;
@@ -94,7 +98,6 @@ h2 {
   font-weight: 600;
 }
 
-
 /* resalta el borde de inputs inválidos */
 input.is-invalid {
   border-color: #dc3545;
@@ -107,7 +110,8 @@ input.is-invalid {
   margin-top: 4px;
 }
 
-.image-section, .image-section2 {
+.image-section,
+.image-section2 {
   text-align: center;
 }
 .image-section {
@@ -123,15 +127,34 @@ input.is-invalid {
 
 /* ====== Responsive ====== */
 @media (min-width: 900px) {
-  .container { flex-direction: row; height: 75vh; }
+  .container {
+    flex-direction: row;
+    height: 75vh;
+  }
 }
 @media (max-width: 900px) {
-  .container { flex-direction: column; text-align: center; height: 80vh; }
-  .login-box { border: none; }
-  .image-section2 { display: block; }
-  .image-section  { display: none; }
+  .container {
+    flex-direction: column;
+    text-align: center;
+    height: 80vh;
+  }
+  .login-box {
+    border: none;
+  }
+  .image-section2 {
+    display: block;
+  }
+  .image-section {
+    display: none;
+  }
 }
 @media (max-width: 600px) {
-  .container { height: 60vh; padding: 15px; }
-  .login-button { font-size: 14px; padding: 8px; }
+  .container {
+    height: 60vh;
+    padding: 15px;
+  }
+  .login-button {
+    font-size: 14px;
+    padding: 8px;
+  }
 }

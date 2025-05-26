@@ -1,0 +1,86 @@
+.container-gastos {
+  padding: 20px;
+  background-color: var(--color_fondo);
+  box-sizing: border-box;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.search-input,
+.filters select {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 2px solid #000;
+  border-radius: 25px;
+}
+/* en src/app/componentes_global/ver-mis-gastos/ver-mis-gastos.component.css */
+.delete-button {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.gastos-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Poppins", sans-serif;
+}
+
+.gastos-table th,
+.gastos-table td {
+  border: 2px solid #333;
+  padding: 8px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gastos-table th {
+  background-color: var(--button_login);
+  color: white;
+  font-weight: 600;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  background-color: var(--button_login);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.pagination button:not(:disabled):hover {
+  background-color: var(--button_login_hover);
+}
