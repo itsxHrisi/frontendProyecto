@@ -1,3 +1,40 @@
+/* ========================================
+   Fondo, overlay y disposición base
+   ======================================== */
+.container-grupo {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  background-image: url('../../../../public/b2ap3_thumbnail_finanzas-familiares-ok.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 70vh;
+  width: 100vw;
+  align-items: center;
+}
+
+.container-grupo::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
+  z-index: 0;
+}
+
+/* Asegura que el contenido interno esté encima del overlay */
+.container-grupo > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ========================================
+   Botones
+   ======================================== */
 /* Botón principal */
 .action-button {
   display: block;
@@ -6,7 +43,6 @@
   color: white;
   padding: 10px;
   width: 260px;
-  border: none;
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
@@ -28,12 +64,21 @@
   background-color: var(--boton_invitaciones_hover);
 }
 
-/* Separación extra */
+/* Separación extra si hay dos botones seguidos */
 .action-button + .action-button {
   margin-top: 10px;
 }
 
-/* Responsive */
+/* ========================================
+   Responsive
+   ======================================== */
+@media (max-width: 900px) {
+  .container-grupo {
+    padding: 20px;
+    /* si quieres cambiar la altura en tablet, añádelo aquí */
+  }
+}
+
 @media (max-width: 600px) {
   .action-button {
     width: 100%;

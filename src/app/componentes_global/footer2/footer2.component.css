@@ -1,8 +1,6 @@
 .site-footer {
   /* breathing room sobre este elemento */
-  margin-top: 40px !important;
   
-  box-shadow: 0 -5px 10px rgba(70,70,70,0.5);
   background-color: var(--fondo_hf);
   color: white;
   font-family: 'Poppins', sans-serif;

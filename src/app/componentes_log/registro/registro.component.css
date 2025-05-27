@@ -1,31 +1,57 @@
+/* ========================================
+   Base Styles
+   ======================================== */
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width:100vw;
+  width: 100vw;
   height: 100vh;
-  border: 1px solid black;
   flex: 1;
-  background-color: var(--color_fondo);
   padding: 20px;
+  background-color: var(--color_fondo);
   border-radius: 25px;
+  position: relative;      /* para overlay */
+  overflow: hidden;        /* evitar desbordes del blur */
+  background-image: url('../../../../public/c008c86288e40eb6add399747f40f8ec.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.4);
+  backdrop-filter: blur(5px);
+  z-index: 0;
+}
+
+/* Aseguramos que el contenido esté encima */
+.container > * {
+  position: relative;
+  z-index: 1;
 }
 
 .login-box {
   padding: 20px;
   width: 100%;
   max-width: 400px;
-  
+  border: 1px solid black;
+  border-radius: 25px;
+  background-color: var(--color_fondo);
 }
+
 #fotoHeader {
   width: 400px;
 }
+
 h2 {
   font-family: "Poppins", sans-serif;
   font-size: 35px;
   font-weight: 700;
-  font-style: normal;
   text-align: left;
   margin-bottom: 10px;
 }
@@ -39,7 +65,6 @@ h2 {
 .input-group label {
   font-family: "Poppins", sans-serif;
   font-weight: 600;
-  font-style: normal;
   margin-bottom: 5px;
   margin-top: 10px;
 }
@@ -64,10 +89,9 @@ h2 {
   transition: background 0.3s;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
-  font-style: normal;
 }
 
-.login-button:hover {
+.register-button:hover {
   background-color: var(--button_login_hover);
 }
 
@@ -79,7 +103,6 @@ h2 {
   text-decoration: none;
   font-family: "Poppins", sans-serif;
   font-weight: 400;
-  font-style: normal;
 }
 
 .login-link:hover {
@@ -90,6 +113,7 @@ h2 {
   margin-top: 20px;
   text-align: center;
 }
+
 .image-section2 {
   display: none;
 }
@@ -109,6 +133,7 @@ h2 {
   text-align: center;
   font-weight: 600;
 }
+
 /* ========================================
    Desktop (≥ 900px)
    ======================================== */
@@ -116,30 +141,40 @@ h2 {
   .container {
     flex-direction: row;
     height: 75vh; /* mantiene altura completa */
+    gap: 40px;
   }
 }
+
+/* ========================================
+   Tablet (≤ 900px)
+   ======================================== */
 @media (max-width: 900px) {
   .container {
     flex-direction: column;
     text-align: center;
     padding: 20px;
+    height: 80vh;
   }
 
   .login-box {
     max-width: 100%;
     border: none;
   }
+
   .image-section2 {
-    margin-left: 10%;
     display: block;
     margin-top: 20px;
     text-align: center;
   }
+
   .image-section {
     display: none;
   }
 }
 
+/* ========================================
+   Mobile (≤ 600px)
+   ======================================== */
 @media (max-width: 600px) {
   body {
     height: 125%;
@@ -147,25 +182,21 @@ h2 {
   .container {
     padding: 15px;
     width: 100%;
+    height: 60vh;
   }
 
-  .login-button {
+  .register-button {
     font-size: 14px;
     padding: 8px;
   }
+
   .image-section2 {
     display: block;
     margin-top: 20px;
     text-align: center;
   }
+
   .image-section {
     display: none;
-  }
-}
-
-@media (min-width: 900px) {
-  .container {
-    flex-direction: row;
-    gap: 40px;
   }
 }

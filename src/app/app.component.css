@@ -11,19 +11,12 @@ app-root {
   height: 100vh;
 }
 
-/* Header: tamaño natural + breathing room debajo */
-app-header {
-  flex: 0 0 auto;
-  margin-bottom: 60px; /* Espacio para separar del contenido */
-}
-
 /* Contenedor principal ocupa todo el espacio restante
    + breathing room abajo */
 .app-container {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  padding-bottom: 40px; /* Empuja al contenido fuera del footer */
 }
 
 /* Zona de contenido centrada y con fondos de imagen */
@@ -32,18 +25,12 @@ app-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
 
   /* --- Estilos para la imagen de fondo y el overlay --- */
   position: relative; /* Necesario para que el pseudo-elemento ::before se posicione correctamente */
   overflow: hidden; /* Para que el blur no se desborde fuera del contenedor */
 
-  /* Imagen de fondo por defecto (o para rutas no especificadas) */
-  background-image: url('/assets/images/pexels-karolina-gbrabowska-707038.jpg'); /* Una imagen de fondo por defecto */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: background-image 0.5s ease-in-out; /* Transición suave al cambiar de imagen */
+
 }
 
 /* Capa de overlay para oscurecer y aplicar blur */
@@ -61,18 +48,18 @@ app-header {
 /* --- Estilos específicos para cada ruta dentro del .contenedor --- */
 
 /* Ruta de Login */
-app-login .contenedor {
+/* app-login .contenedor {
   background-image: url('../../public/pexels-alesiakozik-6770775.jpg');
 }
 
-/* Ruta de Registro */
+/* Ruta de Registro 
 app-registro .contenedor {
   background-image: url('../../public/pexels-printexstar-11646613.jpg');
 }
 app-change-password .contenedor{
     background-image: url('../../public/pexels-rccbtn-7634158.jpg');
 }
-/* Ruta de Grupo (misma imagen siempre) */
+/* Ruta de Grupo (misma imagen siempre) 
 app-grupo .contenedor {
   background-image: url('../../public/pexels-karolina-grabowska-5900132.jpg');
 }
@@ -85,16 +72,10 @@ app-crear-grupo .contenedor {
 }
 app-inicio .contenedor{
   background-image: url('../../public/pexels-n-voitkevich-6214156.jpg');
-}
+} */
 /* Puedes añadir más rutas principales aquí con sus imágenes */
 /*
 app-home .contenedor {
   background-image: url('/assets/images/pexels-n-voitkevich-6214156.jpg');
 }
 */
-
-/* Footer: tamaño natural */
-app-footer {
-  flex: 0 0 auto;
-  margin-top: 0; /* ya lo damos al .site-footer en algunos layouts, si no, puedes necesitar un margin-top aquí */
-}

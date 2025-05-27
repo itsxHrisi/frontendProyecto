@@ -1,40 +1,68 @@
 /* src/app/componentes_global/grupo/grupo.component.css */
 
-/* Padre centra y da fondo */
+/* Padre centra, da fondo y pone imagen + overlay */
 .container-grupo {
   display: flex;
   justify-content: center;
   padding: 40px 20px;
-  background-color: var(--color_fondo);
-  min-height: calc(100vh - 60px);
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+
+  /* Imagen de fondo */
+  background-image: url('../../../../public/inteligencia-financeira-em-6-passos.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Capa de overlay oscuro + blur */
+.container-grupo::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
+  z-index: 0;
+}
+
+/* Aseguramos que el contenido esté encima del overlay */
+.grupo-box,
+.sidebar,
+.main-content {
+  position: relative;
+  z-index: 1;
 }
 
 /* Caja “píldora” */
 .grupo-box {
+  align-self: center;
   display: flex;
   width: 80vw;
   max-width: 1600px;
   height: 70vh;
-  background-color: white;
+  background-color: var(--color_fondo);
   border: 2px solid black;
   border-radius: 30px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.1);
   overflow: hidden;
 }
-/* En tu src/app/componentes_global/grupo/grupo.component.css */
+
+/* Main content */
 .main-content {
-  /* convierte en flex y centra horizontal y verticalmente */
   display: flex;
   justify-content: center;
   align-items: center;
-  /* opcional: si quieres que ocupe toda la altura disponible */
   height: 100%;
   flex: 1;
   min-width: 0;
   padding: 24px;
   overflow: auto;
 }
-/* Sidebar: columna izquierda */
+
+/* Sidebar */
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -50,7 +78,6 @@
   min-height: 80px;
   border-bottom: 2px solid black;
 
-  /* CENTRADO: */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,8 +110,7 @@
   margin-bottom: 0;
 }
 
-
-/* Links y botones (estilos base compartidos) */
+/* Links y botones base */
 .menu-link,
 .menu-button,
 .menu-button-dropdown {
@@ -100,44 +126,37 @@
   transition: background 0.3s;
   box-sizing: border-box;
   color: white;
+  background-color: var(--button_login);
   border: none;
   cursor: pointer;
 }
 
-/* Estilos específicos para enlaces */
-.menu-link {
-  background-color: var(--button_login);
-}
-.menu-link:hover {
+/* Hover enlaces */
+.menu-link:hover,
+.menu-button-dropdown:hover {
   background-color: var(--button_login_hover);
 }
 
-/* !!! NUEVOS ESTILOS PARA EL BOTÓN DESPLEGABLE PRINCIPAL !!! */
+/* Botón desplegable principal */
 .menu-button-dropdown {
-  background-color: var(--button_login);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 15px;
 }
 
-.menu-button-dropdown:hover {
-  background-color: var(--button_login_hover);
-}
-
-/* !!! NUEVOS ESTILOS PARA EL ICONO DE DESPLEGABLE !!! */
+/* Icono desplegable */
 .dropdown-icon {
   margin-left: 10px;
   transition: transform 0.3s ease;
   font-size: 0.8em;
   line-height: 1;
 }
-
 .dropdown-icon.rotated {
   transform: rotate(180deg);
 }
 
-/* !!! NUEVOS ESTILOS PARA EL SUBMENÚ !!! */
+/* Submenú oculto / visible */
 .submenu {
   list-style: none;
   padding: 0;
@@ -145,19 +164,15 @@
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.3s ease-in-out;
-  background-color: #e0e0e0;
+  background-color: #bfbfbf;
   border-radius: 8px;
 }
-
 .submenu.open {
   max-height: 200px;
 }
-
-/* Estilos para los ítems dentro del submenú */
 .submenu li {
   margin-bottom: 0;
 }
-
 .submenu .menu-link {
   padding: 8px 15px;
   font-size: 0.9em;
@@ -166,12 +181,11 @@
   text-align: left;
   border-radius: 0;
 }
-
 .submenu .menu-link:hover {
   background-color: #d0d0d0;
 }
 
-/* Estilos específicos para botones de acción (Abandonar/Eliminar) */
+/* Botones de acción */
 .menu-button {
   background-color: #e74c3c;
   margin-top: 20px;
@@ -180,8 +194,7 @@
   background-color: #c0392b;
 }
 
-
-/* Responsivo: apila en vertical */
+/* Responsive: apila en vertical */
 @media (max-width: 900px) {
   .grupo-box {
     flex-direction: column;
