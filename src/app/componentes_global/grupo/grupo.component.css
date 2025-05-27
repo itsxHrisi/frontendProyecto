@@ -19,13 +19,11 @@
 
 /* Capa de overlay oscuro + blur */
 .container-grupo::before {
-  content: "";
+ content: '';
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(5px);
-  z-index: 0;
+  background-color: rgba(0,0,0,0.4);
 }
 
 /* Aseguramos que el contenido esté encima del overlay */
