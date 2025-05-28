@@ -262,24 +262,34 @@
   /* Empujamos Contacto hacia la izquierda */
   .footer-main .contact-col {
     flex: 0 0 20% !important;
-    margin-left: 5% !important;
   }
 }
 /* ────────────────────────────────
    DESPLAZAR INFO y CONTACT 50px A LA DERECHA
    para todas las vistas excepto móviles
 ──────────────────────────────── */
-@media (min-width: 769px) {
-  .footer-main .info-col,
-  .footer-main .contact-col {
-    padding-left: 60px !important;
-  }
-}
+
 
 /* anula en móvil por si acaso */
 @media (max-width: 768px) {
   .footer-main .info-col,
   .footer-main .contact-col {
     margin-left: 0 !important;
+  }
+}
+@media (min-width: 634px) and (max-width: 770px) {
+  .footer-main .footer-col:not(.logo-col) {
+    margin-left: 30px !important;
+  }
+}
+@media (min-width: 800px) and (max-width: 1300px) {
+  .footer-main .info-col {
+    flex: 0 0 calc(25% - 30px) !important;
+    max-width: calc(25% - 30px) !important;
+  }
+
+  .footer-main .contact-col {
+    flex: 0 0 calc(25% + 30px) !important;
+    max-width: calc(25% + 30px) !important;
   }
 }
