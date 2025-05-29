@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, tap, throwError, Observable, map } from 'rxjs';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 
 export interface Authority { authority: string; }
 export interface JwtDto {
