@@ -28,12 +28,10 @@ export class InvitacionesComponent implements OnInit, AfterViewInit {
   // modo client (con filtro): slice de allInvitaciones
   filteredInvitaciones: any[] = [];
 
-  // array completo cargado una sola vez
   private allInvitaciones: any[] = [];
   private allLoaded = false;
   private totalElements = 0;
 
-  // paginación
   currentPage = 0;
   totalPages  = 0;
   readonly pageSize = 3;
@@ -60,7 +58,6 @@ export class InvitacionesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  /** Carga UNA página desde el servidor (modo sin filtro) */
   private loadServerPage(page: number): void {
     this.invitService.getInvitaciones(page, this.pageSize).subscribe({
       next: resp => {

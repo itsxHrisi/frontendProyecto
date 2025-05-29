@@ -1,14 +1,11 @@
-<!-- src/app/componentes_global/perfil/perfil.component.html -->
 <div class="container">
   
 
   <div class="login-box">
     
-    <!-- novalidate para desactivar validación nativa -->
     <form #perfilForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
       <h2>Mi Perfil</h2>
 
-      <!-- Nickname -->
       <div class="input-group">
         <label for="nickname">Nickname</label>
         <input
@@ -32,7 +29,6 @@
         </div>
       </div>
 
-      <!-- Email -->
       <div class="input-group">
         <label for="email">Email</label>
         <input
@@ -60,7 +56,6 @@
         </div>
       </div>
 
-      <!-- Nombre completo -->
       <div class="input-group">
         <label for="nombre">Nombre completo</label>
         <input
@@ -88,7 +83,6 @@
         </div>
       </div>
 
-      <!-- Teléfono -->
       <div class="input-group">
         <label for="telefono">Teléfono</label>
         <input
@@ -116,24 +110,20 @@
         </div>
       </div>
 
-      <!-- Error global de servidor -->
       <div *ngIf="errorMsg" class="invalid-feedback">
         {{ errorMsg }}
       </div>
 
-      <!-- Link cambiar contraseña -->
       <div class="input-group">
         <a routerLink="/cambiarpass" class="link-button">
           Cambiar mi contraseña
         </a>
       </div>
 
-      <!-- Mensaje de éxito -->
       <div *ngIf="successMsg" class="alert alert-success">
         {{ successMsg }}
       </div>
 
-      <!-- Botón ya NO se deshabilita aquí -->
       <button type="submit" class="login-button">
         Guardar cambios
       </button>

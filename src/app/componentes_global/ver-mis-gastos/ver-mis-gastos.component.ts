@@ -1,4 +1,3 @@
-// src/app/componentes_global/ver-mis-gastos/ver-mis-gastos.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -21,8 +20,7 @@ export class VerMisGastosComponent implements OnInit {
   tipoFilter = '';
   subtipoFilter = '';
 
-  // !!! NUEVA PROPIEDAD PARA LA SUMA TOTAL !!!
-  totalMisGastosActualPagina: number = 0; // opciones según tus enums
+  totalMisGastosActualPagina: number = 0;
 
   tipoGastos = ['SUPERVIVENCIA', 'LUJO', 'EDUCACION', 'AHORRO', 'INVERSION'];
 
@@ -81,11 +79,10 @@ export class VerMisGastosComponent implements OnInit {
       'MY_INVESTOR',
     ],
     INVERSION: ['HAUSERA', 'IB', 'MYINVESTOR', 'BINANCE'],
-  }; // paginación
-
+  }; 
   currentPage = 0;
   totalPages = 0;
-  pageSize = 5; // nickname del usuario autenticado
+  pageSize = 5; 
 
   private nickname = '';
 
@@ -125,7 +122,7 @@ export class VerMisGastosComponent implements OnInit {
           this.gastos = p.content;
           this.currentPage = p.number;
           this.totalPages = p.totalPages;
-          this.calculateTotalMisGastos(); // !!! Llamar al método para calcular la suma
+          this.calculateTotalMisGastos(); // Llamar al método para calcular la suma
         },
         error: (err) => {
           console.error('Error al cargar mis gastos:', err);
@@ -136,7 +133,6 @@ export class VerMisGastosComponent implements OnInit {
       });
   }
 
-  // !!! NUEVO MÉTODO PARA CALCULAR LA SUMA DE LOS GASTOS DE LA PÁGINA ACTUAL !!!
   calculateTotalMisGastos(): void {
     this.totalMisGastosActualPagina = this.gastos.reduce(
       (sum, gasto) => sum + gasto.cantidad,

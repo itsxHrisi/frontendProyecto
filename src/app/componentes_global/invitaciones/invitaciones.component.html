@@ -1,5 +1,4 @@
 
-<!-- src/app/componentes_grupo/invitaciones/invitaciones.component.html -->
 <div class="contenedor">
 <div class="container-invitaciones">
   <div class="search-bar">
@@ -12,7 +11,6 @@
 
   <div *ngFor="let inv of filteredInvitaciones" class="invitacion-item">
     <div class="info">
-      <!-- Si tu API no devuelve 'id', aquí mostramos el id de invitación si existe -->
       <p *ngIf="inv.id !== undefined"><strong>ID Invitación:</strong> {{ inv.id }}</p>
       <p><strong>Grupo:</strong> {{ inv.grupo.nombre }}</p>
       <p><strong>De:</strong> {{ inv.grupo.administrador.nickname }}</p>

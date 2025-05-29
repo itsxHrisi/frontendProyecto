@@ -1,4 +1,3 @@
-// src/app/componentes_global/modificar-mis-ingresos/modificar-mis-ingresos.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule }      from '@angular/common';
 import { FormsModule, NgForm }   from '@angular/forms';

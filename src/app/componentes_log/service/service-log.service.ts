@@ -661,7 +661,7 @@ createInvitacion(nickname: string, grupoId: number): Observable<any> {
   // 1) Paginación
   let params = new HttpParams()
     .set('page', page.toString())
-    .set('size',"500000000");
+    .set('size',"5000000");
 
   // 2) Filtros de cantidad
   filters.forEach(f => {

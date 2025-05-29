@@ -1,20 +1,18 @@
-// src/app/componentes_global/lista-ingresos/lista-ingresos.component.ts
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ServiceLogService, IngresoDto } from '../../componentes_log/service/service-log.service';
 
 @Component({
-  selector: 'app-lista-ingresos', // O 'app-ver-mis-ingresos' si es tu selector real
+  selector: 'app-lista-ingresos', 
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './ver-mis-ingresos.component.html', // Confirma que esta es la ruta correcta
+  templateUrl: './ver-mis-ingresos.component.html', 
   styleUrls: ['./ver-mis-ingresos.component.css']
 })
 export class VerMisIngresosComponent implements OnInit {
   ingresos: IngresoDto[] = [];
 
-  // !!! NUEVA PROPIEDAD PARA LA SUMA TOTAL !!!
   totalMisIngresos: number = 0;
 
   constructor(
@@ -31,7 +29,7 @@ export class VerMisIngresosComponent implements OnInit {
     this.service.getIngresosUsuario().subscribe({
       next: data => {
         this.ingresos = data;
-        this.calculateTotalIngresos(); // !!! Calcular la suma después de cargar los ingresos
+        this.calculateTotalIngresos(); 
       },
       error: err => {
         console.error('Error cargando lista de ingresos:', err);
@@ -41,7 +39,6 @@ export class VerMisIngresosComponent implements OnInit {
     });
   }
 
-  // !!! NUEVO MÉTODO PARA CALCULAR LA SUMA DE LOS INGRESOS !!!
   calculateTotalIngresos(): void {
     this.totalMisIngresos = this.ingresos.reduce((sum, ing) => sum + ing.cantidad, 0);
   }
@@ -50,7 +47,6 @@ export class VerMisIngresosComponent implements OnInit {
     this.router.navigate(['/grupo','modificaringresos'], { queryParams: { id } });
   }
 
-  // !!! NUEVO MÉTODO PARA ELIMINAR INGRESO !!!
   eliminarIngreso(id: number): void {
     if (!confirm('¿Estás seguro de que quieres eliminar este ingreso?')) {
       return;

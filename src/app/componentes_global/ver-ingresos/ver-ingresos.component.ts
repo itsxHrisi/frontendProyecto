@@ -45,7 +45,6 @@ export class VerIngresosComponent implements OnInit, AfterViewInit {
   totalPages  = 0;
   pageSize    = 10;
 
-  // !!! NUEVA PROPIEDAD PARA LA SUMA TOTAL !!!
   totalIngresosActualPagina: number = 0;
 
   constructor(private svc: ServiceLogService) {}
@@ -70,7 +69,7 @@ export class VerIngresosComponent implements OnInit, AfterViewInit {
             i.usuarioNickname.toLowerCase().includes(term)
           );
         }
-        this.calculateTotalIngresos(); // !!! Recalcular la suma después de filtrar localmente
+        this.calculateTotalIngresos(); 
       })
     ).subscribe();
   }
@@ -95,7 +94,7 @@ export class VerIngresosComponent implements OnInit, AfterViewInit {
           this.ingresos    = [...this.allIngresos];
           this.currentPage = p.number;
           this.totalPages  = p.totalPages;
-          this.calculateTotalIngresos(); // !!! Llamar al método para calcular la suma al cargar la página
+          this.calculateTotalIngresos(); 
         },
         error: (err) => { // Agregado 'err' para depuración
           console.error('Error al cargar ingresos:', err); // Log el error
@@ -107,7 +106,6 @@ export class VerIngresosComponent implements OnInit, AfterViewInit {
       });
   }
 
-  // !!! NUEVO MÉTODO PARA CALCULAR LA SUMA DE LOS INGRESOS DE LA PÁGINA ACTUAL !!!
   calculateTotalIngresos(): void {
     this.totalIngresosActualPagina = this.ingresos.reduce((sum, ingreso) => sum + ingreso.cantidad, 0);
   }

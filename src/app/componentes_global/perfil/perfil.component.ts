@@ -43,7 +43,6 @@ export class PerfilComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // forzar validation UI
     if (this.perfilForm.invalid) {
       this.perfilForm.form.markAllAsTouched();
       return;
