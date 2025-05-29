@@ -166,7 +166,21 @@ getUsuariosPorGrupo(
         catchError((err: HttpErrorResponse) => throwError(() => err))
       );
   }
-
+/** REGISTER */
+  userRegistro(user: any): Observable<any> {
+    return this.http
+      .post<any>(`${this.authUrl}/nuevo`, user, this.httpOptions)
+      .pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
+  }
+  /** LOGOUT */
+  logout(): void {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    this.http.post(`${this.authUrl}/logout`, {}, { headers }).subscribe({
+      next: () => this.logoutLocally(),
+      error: () => this.logoutLocally()
+    });
+  }
   /** Paginado y filtrado genérico de usuarios */
   getUsuariosFilter(
     filter: string,
@@ -192,15 +206,7 @@ getUsuariosPorGrupo(
         })
       );
   }
-  /** LOGOUT */
-  logout(): void {
-    const token = localStorage.getItem('auth_token') || '';
-    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
-    this.http.post(`${this.authUrl}/logout`, {}, { headers }).subscribe({
-      next: () => this.logoutLocally(),
-      error: () => this.logoutLocally()
-    });
-  }
+  
 
   private logoutLocally() {
     localStorage.removeItem('auth_token');
@@ -210,12 +216,7 @@ getUsuariosPorGrupo(
     this.router.navigate(['/inicio']);
   }
 
-  /** REGISTER */
-  userRegistro(user: any): Observable<any> {
-    return this.http
-      .post<any>(`${this.authUrl}/nuevo`, user, this.httpOptions)
-      .pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
-  }
+  
 
   /** Obtener nombre de usuario del token */
   getUsernameFromToken(): string {
@@ -235,27 +236,6 @@ getUsuariosPorGrupo(
     const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
     return this.http.get<any>(`${this.apiUrl}/usuarios/perfil`, { headers })
       .pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
-  }
-
-  /** Crear gasto */
-  createGasto(gasto: {
-    usuario:   { id: number };
-    grupo:     { id: number };
-    tipoGasto: string;
-    subtipo:   string;
-    cantidad:  string;
-    fecha:     string;
-  }): Observable<any> {
-    const token   = localStorage.getItem('auth_token') || '';
-    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
-    return this.http
-      .post<any>(`${this.apiUrl}/gastos`, gasto, { headers })
-      .pipe(
-        catchError((err: HttpErrorResponse) => {
-          console.error('Error creando gasto:', err);
-          return throwError(() => err);
-        })
-      );
   }
   /** Update usuario */
   updateUsuario(oldNickname: string, data: any): Observable<JwtDto> {
@@ -278,7 +258,21 @@ getUsuariosPorGrupo(
       catchError((err: HttpErrorResponse) => throwError(() => err))
     );
   }
-
+  /** Validación de token local */
+  isLoggedIn(): boolean {
+    const token = localStorage.getItem('auth_token');
+    console.log("Se ha iniciado sesion");
+    return !!token && !this.isTokenExpired(token);
+  
+  }
+  private isTokenExpired(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return Date.now() > payload.exp * 1000;
+    } catch {
+      return true;
+    }
+  }
   /** Change password */
   changePassword(newPassword: string): Observable<JwtDto> {
     const nickname = this.getUsernameFromToken();
@@ -301,8 +295,56 @@ getUsuariosPorGrupo(
       catchError((err: HttpErrorResponse) => throwError(() => err))
     );
   }
+  // src/app/componentes_log/service/service-log.service.ts
 
-  /** Crear grupo familiar */
+  /** Devuelve sólo los usuarios que NO pertenecen a ningún grupo */
+  getUsuariosSinGrupo(
+    page: number = 0,
+    size: number = 10,
+    sort: string[] = ['id,asc']
+  ): Observable<PaginaUsuarios> {
+    // filtro: grupoFamiliar.id igual a null
+    return this.getUsuariosFilter(
+      'grupoFamiliar.id:EQUAL:null',
+      page,
+      size,
+      sort
+    );
+  } /** Obtener todos los usuarios (paginados) */
+ getAllUsuarios(
+    page: number = 0,
+    size: number = 10,
+    sort: string[] = ['id,asc']
+  ): Observable<PaginaUsuarios> {
+    const token   = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    let params    = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    sort.forEach(s => params = params.append('sort', s));
+
+    return this.http
+      .get<PaginaUsuarios>(`${this.apiUrl}/usuarios/usuarios`, { headers, params })
+      .pipe(
+        catchError(err => {
+          console.error('Error al cargar todos los usuarios:', err);
+          return throwError(() => err);
+        })
+      );
+  }  
+  
+  /** Roles as */
+  getUserRoles(): string[] {
+    const roles = localStorage.getItem('user_roles');
+    return roles ? JSON.parse(roles) : [];
+  }
+  updateLoginStatus() {
+    this.isLoggedInSubject.next(this.isLoggedIn());
+  }
+  updateUserRoles() {
+    this.userRoleSubject.next(this.getUserRoles());
+  }
+/** Crear grupo familiar */
   createGrupo(nombre: string): Observable<any> {
     const token = localStorage.getItem('auth_token') || '';
     const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
@@ -311,58 +353,6 @@ getUsuariosPorGrupo(
       { nombre },
       { headers }
     ).pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
-  }
-
-  /** Listar invitaciones paginadas */
-  getInvitaciones(page: number = 0, size: number = 10): Observable<PaginaInvitaciones> {
-    const token = localStorage.getItem('auth_token') || '';
-    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
-
-    return this.http.get<PaginaInvitaciones>(
-      `${this.apiUrl}/invitaciones`,
-      { headers, params }
-    ).pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
-  }
-
- /** Aceptar o rechazar invitación */
-  updateEstado(id: number, nuevoEstado: 'ACEPTADA' | 'RECHAZADA'): Observable<string> {
-    const token = localStorage.getItem('auth_token') || '';
-    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
-    const params = new HttpParams().set('nuevoEstado', nuevoEstado);
-
-    return this.http.put(
-      `${this.apiUrl}/invitaciones/${id}/estado`,
-      {}, // body vacío
-      {
-        headers,
-        params,
-        responseType: 'text'  // <-- aquí le decimos que espere texto
-      }
-    ).pipe(
-      catchError(err => {
-        console.error('Error en updateEstado:', err);
-        return throwError(() => err);
-      })
-    );
-  }
-
-  /** Validación de token local */
-  isLoggedIn(): boolean {
-    const token = localStorage.getItem('auth_token');
-    console.log("Se ha iniciado sesion");
-    return !!token && !this.isTokenExpired(token);
-  
-  }
-  private isTokenExpired(token: string): boolean {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return Date.now() > payload.exp * 1000;
-    } catch {
-      return true;
-    }
   }
  // src/app/componentes_log/service/service-log.service.ts
 
@@ -441,7 +431,115 @@ deleteGrupo(grupoId: number): Observable<string> {
         })
       );
   }
+  
 
+  /** Listar invitaciones paginadas */
+  getInvitaciones(page: number = 0, size: number = 10): Observable<PaginaInvitaciones> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    return this.http.get<PaginaInvitaciones>(
+      `${this.apiUrl}/invitaciones`,
+      { headers, params }
+    ).pipe(catchError((err: HttpErrorResponse) => throwError(() => err)));
+  }
+
+ /** Aceptar o rechazar invitación */
+  updateEstado(id: number, nuevoEstado: 'ACEPTADA' | 'RECHAZADA'): Observable<string> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    const params = new HttpParams().set('nuevoEstado', nuevoEstado);
+
+    return this.http.put(
+      `${this.apiUrl}/invitaciones/${id}/estado`,
+      {}, // body vacío
+      {
+        headers,
+        params,
+        responseType: 'text'  // <-- aquí le decimos que espere texto
+      }
+    ).pipe(
+      catchError(err => {
+        console.error('Error en updateEstado:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+
+
+  /** Crear gasto */
+  createGasto(gasto: {
+    usuario:   { id: number };
+    grupo:     { id: number };
+    tipoGasto: string;
+    subtipo:   string;
+    cantidad:  string;
+    fecha:     string;
+  }): Observable<any> {
+    const token   = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+    return this.http
+      .post<any>(`${this.apiUrl}/gastos`, gasto, { headers })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error creando gasto:', err);
+          return throwError(() => err);
+        })
+      );
+  }
+   deleteGasto(id: number): Observable<any> { // Cambiamos a <any> o <string> si esperas un string
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+
+    return this.http
+      .delete(`${this.apiUrl}/gastos/${id}`, {
+        headers,
+        responseType: 'text' // <-- ¡Aquí está el cambio clave!
+      })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          // El error que veías en consola (SyntaxError) ahora será capturado aquí
+          // Pero si el backend responde con 200 OK y texto, ya no será un error de parseo.
+          console.error('Error al eliminar gasto:', err);
+          return throwError(() => err); // Re-lanzar el error para que el componente lo maneje
+        })
+      );
+  } 
+  getGastosFilter(
+    nickname: string = '',
+    filters: string[] = [],      // e.g. ['tipoGasto:CONTIENE:LUJO', 'subtipo:IGUAL:BANKINTER']
+    page: number = 0,
+    size: number = 5,
+    
+  ): Observable<PaginaGastos> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+
+    let params = new HttpParams()
+      .set('nickname', nickname)
+      // aquí se añaden explícitamente los params de paginado y orden al final
+      .set('page',   page.toString())
+      .set('size',   size.toString())
+      .append('sort', 'fecha,asc')
+      .append('sort', 'fecha,asc');
+
+    filters.forEach(f => {
+      params = params.append('filter', f);
+    });
+
+    return this.http
+      .get<PaginaGastos>(`${this.apiUrl}/gastos/filter`, { headers, params })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.error('Error al cargar gastos filtrados:', err);
+          return throwError(() => err);
+        })
+      );
+  }
    /** Listar ingresos del usuario autenticado */
   getIngresosUsuario(): Observable<IngresoDto[]> {
     const token   = localStorage.getItem('auth_token') || '';
@@ -483,40 +581,8 @@ deleteGrupo(grupoId: number): Observable<string> {
   }
 
   
-// src/app/componentes_log/service/service-log.service.ts
 
-  /** Devuelve sólo los usuarios que NO pertenecen a ningún grupo */
-  getUsuariosSinGrupo(
-    page: number = 0,
-    size: number = 10,
-    sort: string[] = ['id,asc']
-  ): Observable<PaginaUsuarios> {
-    // filtro: grupoFamiliar.id igual a null
-    return this.getUsuariosFilter(
-      'grupoFamiliar.id:EQUAL:null',
-      page,
-      size,
-      sort
-    );
-  }
-   deleteGasto(id: number): Observable<any> { // Cambiamos a <any> o <string> si esperas un string
-    const token = localStorage.getItem('auth_token') || '';
-    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
 
-    return this.http
-      .delete(`${this.apiUrl}/gastos/${id}`, {
-        headers,
-        responseType: 'text' // <-- ¡Aquí está el cambio clave!
-      })
-      .pipe(
-        catchError((err: HttpErrorResponse) => {
-          // El error que veías en consola (SyntaxError) ahora será capturado aquí
-          // Pero si el backend responde con 200 OK y texto, ya no será un error de parseo.
-          console.error('Error al eliminar gasto:', err);
-          return throwError(() => err); // Re-lanzar el error para que el componente lo maneje
-        })
-      );
-  }
 
   // !!! NUEVO MÉTODO PARA ELIMINAR INGRESO !!!
   deleteIngreso(id: number): Observable<any> { // Usamos <any> o <string> como antes
@@ -535,28 +601,7 @@ deleteGrupo(grupoId: number): Observable<string> {
         })
       );
   }
-  /** Obtener todos los usuarios (paginados) */
- getAllUsuarios(
-    page: number = 0,
-    size: number = 10,
-    sort: string[] = ['id,asc']
-  ): Observable<PaginaUsuarios> {
-    const token   = localStorage.getItem('auth_token') || '';
-    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
-    let params    = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
-    sort.forEach(s => params = params.append('sort', s));
-
-    return this.http
-      .get<PaginaUsuarios>(`${this.apiUrl}/usuarios/usuarios`, { headers, params })
-      .pipe(
-        catchError(err => {
-          console.error('Error al cargar todos los usuarios:', err);
-          return throwError(() => err);
-        })
-      );
-  }
+ 
 
 /** Crear invitación */
 createInvitacion(nickname: string, grupoId: number): Observable<any> {
@@ -635,46 +680,6 @@ createInvitacion(nickname: string, grupoId: number): Observable<any> {
       })
     );
 }
- getGastosFilter(
-    nickname: string = '',
-    filters: string[] = [],      // e.g. ['tipoGasto:CONTIENE:LUJO', 'subtipo:IGUAL:BANKINTER']
-    page: number = 0,
-    size: number = 5,
-    
-  ): Observable<PaginaGastos> {
-    const token = localStorage.getItem('auth_token') || '';
-    const headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
 
-    let params = new HttpParams()
-      .set('nickname', nickname)
-      // aquí se añaden explícitamente los params de paginado y orden al final
-      .set('page',   page.toString())
-      .set('size',   size.toString())
-      .append('sort', 'fecha,asc')
-      .append('sort', 'fecha,asc');
 
-    filters.forEach(f => {
-      params = params.append('filter', f);
-    });
-
-    return this.http
-      .get<PaginaGastos>(`${this.apiUrl}/gastos/filter`, { headers, params })
-      .pipe(
-        catchError((err: HttpErrorResponse) => {
-          console.error('Error al cargar gastos filtrados:', err);
-          return throwError(() => err);
-        })
-      );
-  }
-  /** Roles as */
-  getUserRoles(): string[] {
-    const roles = localStorage.getItem('user_roles');
-    return roles ? JSON.parse(roles) : [];
-  }
-  updateLoginStatus() {
-    this.isLoggedInSubject.next(this.isLoggedIn());
-  }
-  updateUserRoles() {
-    this.userRoleSubject.next(this.getUserRoles());
-  }
 }
