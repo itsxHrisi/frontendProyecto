@@ -73,10 +73,7 @@ ngOnInit(): void {
     } else {
       const t = this.searchTerm;
       this.filteredUsuarios = this.usuarios.filter(u =>
-        u.nickname.toLowerCase().includes(t) ||
-        u.nombre.toLowerCase().includes(t)   ||
-        u.email.toLowerCase().includes(t)    ||
-        u.telefono.toLowerCase().includes(t)
+        u.nickname.toLowerCase().includes(t) 
       );
     }
   }
