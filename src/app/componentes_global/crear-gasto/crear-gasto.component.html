@@ -1,5 +1,3 @@
-<!-- src/app/componentes_gastos/crear-gasto/crear-gasto.component.html -->
- <!-- Mensaje de éxito -->
 <div *ngIf="successMessage" class="alert-success">
   {{ successMessage }}
 </div>
@@ -10,7 +8,6 @@
   class="container-gasto form-box"
   novalidate
 >
-  <!-- Tipo de gasto -->
   <div class="input-group">
     <label>Tipo de gasto</label>
     <select
@@ -22,12 +19,16 @@
       <option value="" disabled>— Selecciona —</option>
       <option *ngFor="let t of tipoGastos" [value]="t">{{ t }}</option>
     </select>
-    <div class="invalid-feedback" *ngIf="gastoForm.submitted && tipoCtrl.invalid">
-      <small *ngIf="tipoCtrl.errors">El campo no puede estar vacío</small>
+    <div
+      class="invalid-feedback"
+      *ngIf="gastoForm.submitted && tipoCtrl.invalid"
+    >
+      <small *ngIf="tipoCtrl.errors?.['required']"
+        >El campo no puede estar vacío</small
+      >
     </div>
   </div>
 
-  <!-- Subtipo -->
   <div class="input-group">
     <label>Subtipo</label>
     <select
@@ -40,12 +41,16 @@
       <option value="" disabled>— Selecciona —</option>
       <option *ngFor="let s of subtipoOptions" [value]="s">{{ s }}</option>
     </select>
-    <div class="invalid-feedback" *ngIf="gastoForm.submitted && subtipoCtrl.invalid">
-      <small required *ngIf="subtipoCtrl.errors">El campo no puede estar vacío</small>
+    <div
+      class="invalid-feedback"
+      *ngIf="gastoForm.submitted && subtipoCtrl.invalid"
+    >
+      <small *ngIf="subtipoCtrl.errors?.['required']"
+        >El campo no puede estar vacío</small
+      >
     </div>
   </div>
 
-  <!-- Cantidad -->
   <div class="input-group">
     <label>Cantidad</label>
     <input
@@ -57,13 +62,19 @@
       placeholder="e.j. 43,50"
       #cantidadCtrl="ngModel"
     />
-    <div class="invalid-feedback" *ngIf="gastoForm.submitted && cantidadCtrl.invalid">
-      <small required *ngIf="cantidadCtrl.errors">El campo no puede estar vacío</small>
-      <small pattern *ngIf="cantidadCtrl.errors">No se pueden introducir letras en este campo</small>
+    <div
+      class="invalid-feedback"
+      *ngIf="cantidadCtrl.invalid && (cantidadCtrl.dirty || cantidadCtrl.touched || gastoForm.submitted)"
+    >
+      <small *ngIf="cantidadCtrl.errors?.['required']"
+        >El campo no puede estar vacío</small
+      >
+      <small *ngIf="cantidadCtrl.errors?.['pattern']"
+        >No se pueden introducir letras en este campo o el formato es incorrecto (usa ',' o '.' para decimales)</small
+      >
     </div>
   </div>
 
-  <!-- Fecha -->
   <div class="input-group">
     <label>Fecha</label>
     <input
@@ -73,16 +84,17 @@
       [(ngModel)]="formModel.fecha"
       #fechaCtrl="ngModel"
     />
-    <div class="invalid-feedback" *ngIf="gastoForm.submitted && fechaCtrl.invalid">
-      <small required *ngIf="fechaCtrl.errors">El campo no puede estar vacío</small>
+    <div
+      class="invalid-feedback"
+      *ngIf="gastoForm.submitted && fechaCtrl.invalid"
+    >
+      <small *ngIf="fechaCtrl.errors?.['required']"
+        >El campo no puede estar vacío</small
+      >
     </div>
   </div>
 
-  <button
-    type="submit"
-    class="submit-button"
-    [disabled]="gastoForm.invalid"
-  >
+  <button type="submit" class="submit-button" [disabled]="gastoForm.invalid">
     Crear Gasto
   </button>
 </form>
