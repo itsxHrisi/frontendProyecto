@@ -1,9 +1,8 @@
-<!-- src/app/componentes_global/crear-ingresos/crear-ingresos.component.html -->
- <!-- Mensaje de éxito -->
 <div *ngIf="successMessage" class="alert-success">
   {{ successMessage }}
 </div>
-<form #ingresoForm="ngForm" (ngSubmit)="onSubmit(ingresoForm)" class="form-box">
+
+<form #ingresoForm="ngForm" (ngSubmit)="onSubmit(ingresoForm)" class="form-box" novalidate>
   <h2>Crear Ingreso</h2>
 
   <div class="input-group">
@@ -14,12 +13,14 @@
       type="text"
       placeholder="e.j. 110,56"
       required
-      [(ngModel)]="cantidad"
+      pattern="^[0-9]+([.,][0-9]{1,2})?$" [(ngModel)]="cantidad"
       #c="ngModel"
-      [ngClass]="{'is-invalid': c.invalid && c.touched}"
     />
-    <div *ngIf="c.invalid && c.touched" class="invalid-feedback">
-      Ingresa una cantidad válida.
+    <div
+      class="invalid-feedback"
+      *ngIf="c.invalid && (c.dirty || c.touched || ingresoForm.submitted)" >
+      <small *ngIf="c.errors?.['required']">El campo no puede estar vacío</small>
+      <small *ngIf="c.errors?.['pattern']">No se pueden introducir letras en este campo o el formato es incorrecto (usa ',' o '.' para decimales)</small>
     </div>
   </div>
 
