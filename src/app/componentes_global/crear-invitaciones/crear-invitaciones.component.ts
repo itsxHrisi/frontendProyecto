@@ -81,9 +81,7 @@ export class CrearInvitacionesComponent implements OnInit, AfterViewInit {
         // sobre la lista completa sin grupo, aplicamos startsWith
         const filtrados = term
           ? this.todosUsuariosSinGrupo.filter(u =>
-              u.nickname.toLowerCase().startsWith(term) ||
-              u.nombre.toLowerCase().startsWith(term)   ||
-              u.email.toLowerCase().startsWith(term)
+              u.nickname.toLowerCase().startsWith(term)
             )
           : this.todosUsuariosSinGrupo;
 
