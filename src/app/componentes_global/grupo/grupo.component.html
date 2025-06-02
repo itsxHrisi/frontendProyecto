@@ -42,7 +42,7 @@
             </ul>
           </li>
 
-          <li *ngIf="hasRole('ROL_ADMIN') || hasRole('ROL_PADRE')">
+          <li *ngIf="hasRole('ROL_ADMIN')">
             <button class="menu-button-dropdown" (click)="toggleUsuarios()">
               Usuarios
               <span class="dropdown-icon" [class.rotated]="showUsuarios">&#9660;</span>
@@ -56,7 +56,7 @@
               </li>
             </ul>
           </li>
-            <li *ngIf="hasRole('ROL_ADMIN')">
+            <li *ngIf="hasRole('ROL_ADMIN') || hasRole('ROL_PADRE')">
                 <a routerLink="estadisticas" class="menu-link">Estadisticas</a>
             </li>
           <li *ngIf="hasRole('ROL_USER') && !hasRole('ROL_ADMIN')">
