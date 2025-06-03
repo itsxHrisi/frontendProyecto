@@ -138,7 +138,28 @@ input.is-invalid {
 #fotoHeader {
   width: 400px;
 }
+@media (max-width: 1910px) {
+  .login-link{
+    margin-top: 0px;
+  }
+  .input-group {
+  display: flex;
+  flex-direction: column;
+}
 
+    .login-box{
+    height: 500px;
+  }
+  .login-button{
+    margin-top: 0px;
+  }
+  .input-group input{
+  }
+  .input-group label{
+    margin-top:0px;
+    margin-bottom: 0px;
+  }
+}
 /* ====== Responsive ====== */
 @media (min-width: 900px) {
   .container {

@@ -35,11 +35,7 @@ html, body {
 }
 
 /* 2) Convierte <app-root> en un flex-column de altura mínima 100vh */
-app-root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+
 
 /* 3) El header debe mantener su tamaño natural (no “crecer”) */
 app-header {

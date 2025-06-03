@@ -131,6 +131,28 @@ h2 {
   text-align: center;
   font-weight: 600;
 }
+@media (max-width: 1910px) {
+  .login-link{
+    margin-top: 0px;
+  }
+  .input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+    .login-box{
+    height: 500px;
+  }
+  .login-button{
+    margin-top: 0px;
+  }
+  .input-group input{
+  }
+  .input-group label{
+    margin-top:0px;
+    margin-bottom: 0px;
+  }
+}
 
 /* ========================================
    Desktop (≥ 900px)

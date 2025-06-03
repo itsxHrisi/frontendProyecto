@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
   width: 100vw;
-  height: 80vh; /* altura base: ocupa toda la ventana */
+  height: 100vh; /* altura base: ocupa toda la ventana */
   padding: 20px;
 
   /* Fondo con imagen */
@@ -138,7 +138,17 @@ h2 {
 #fotoHeader {
   width: 400px;
 }
-
+@media (max-width: 1910px) {
+  .login-box{
+    height: 500px;
+  }
+  .login-button{
+    margin-top: 20px;
+  }
+  .input-group label{
+    margin-top:30px;
+  }
+}
 /* ========================================
    Desktop (≥ 900px)
    ======================================== */
